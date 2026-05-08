@@ -34,8 +34,9 @@ Requires Node 20+.
 import { validate, format, normalize, parse } from "nationid";
 
 validate("SV_DUI", "04567890-3");          // true
-validate("BR_CPF", "529.982.247-25");      // true (v0.2)
-validate("MX_RFC_PF", "MELO850315H7A");    // true (v0.2)
+validate("BR_CPF", "529.982.247-25");      // true
+validate("CL_RUT", "12.345.678-5");        // true
+validate("ES_DNI", "12345678Z");           // true
 
 format("SV_DUI", "045678903");             // "04567890-3"
 normalize("SV_DUI", "04567890-3");         // "045678903"
@@ -46,6 +47,14 @@ if (result.ok) {
   console.log(result.formatted);           // "0614-150585-101-5"
   console.log(result.confidence);          // "moderate"
 }
+```
+
+`parse()` returns a discriminated union — no exceptions are thrown from the
+public API. On failure it carries a typed `reason.kind`:
+
+```ts
+const r = parse("SV_DUI", "");
+if (!r.ok) r.reason.kind; // "empty" | "too_short" | "too_long" | "invalid_format" | "invalid_checksum"
 ```
 
 ## Tree-shakable subpath imports

@@ -163,14 +163,34 @@
   },
   "size-limit": [
     {
-      "name": "core (root)",
+      "name": "full registry (root, all 13 countries v0.1)",
       "path": "dist/index.js",
+      "limit": "20 KB"
+    },
+    {
+      "name": "single country — sv (smallest, format+1 mod-10 + 1 mod-11)",
+      "path": "dist/countries/sv/index.js",
+      "limit": "3 KB"
+    },
+    {
+      "name": "single country — br (mid, two mod-11 specs)",
+      "path": "dist/countries/br/index.js",
+      "limit": "3 KB"
+    },
+    {
+      "name": "single country — mx (largest, CURP table + RFC homoclave)",
+      "path": "dist/countries/mx/index.js",
       "limit": "5 KB"
     },
     {
-      "name": "single country (sv)",
-      "path": "dist/countries/sv/index.js",
+      "name": "single country — es (DNI letter table + CIF)",
+      "path": "dist/countries/es/index.js",
       "limit": "3 KB"
+    },
+    {
+      "name": "algorithms primitives subpath",
+      "path": "dist/algorithms/index.js",
+      "limit": "1 KB"
     }
   ]
 }

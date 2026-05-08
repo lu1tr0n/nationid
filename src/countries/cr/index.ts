@@ -1,0 +1,54 @@
+/**
+ * Costa Rica document validators.
+ *
+ * Tree-shakable subpath: `import { validate } from 'nationid/cr'`.
+ */
+
+import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
+import { cedulaFisicaSpec } from "./cedula-fisica.ts";
+import { cedulaJuridicaSpec } from "./cedula-juridica.ts";
+import { dimexSpec } from "./dimex.ts";
+
+export { cedulaFisicaSpec, cedulaJuridicaSpec, dimexSpec };
+
+const SPECS = {
+  CR_CEDULA_FISICA: cedulaFisicaSpec,
+  CR_DIMEX: dimexSpec,
+  CR_CEDULA_JURIDICA: cedulaJuridicaSpec,
+} as const;
+
+export type CRDocumentType = keyof typeof SPECS;
+
+type ShortCode = "CEDULA_FISICA" | "DIMEX" | "CEDULA_JURIDICA";
+
+/** Country-scoped validate: pass either `CR_CEDULA_FISICA` or `CEDULA_FISICA`. */
+export function validate(code: CRDocumentType | ShortCode, input: string): boolean {
+  return resolveSpec(code).validate(input);
+}
+
+export function format(code: CRDocumentType | ShortCode, input: string): string {
+  return resolveSpec(code).format(input);
+}
+
+export function normalize(code: CRDocumentType | ShortCode, input: string): string {
+  return resolveSpec(code).normalize(input);
+}
+
+export function parse(code: CRDocumentType | ShortCode, input: string): ParseResult {
+  return resolveSpec(code).parse(input);
+}
+
+function resolveSpec(code: CRDocumentType | ShortCode): DocumentSpec {
+  if (code === "CEDULA_FISICA") return cedulaFisicaSpec;
+  if (code === "DIMEX") return dimexSpec;
+  if (code === "CEDULA_JURIDICA") return cedulaJuridicaSpec;
+  return SPECS[code];
+}
+
+export const crBundle: CountryDocumentBundle = {
+  country: "CR",
+  personal: [cedulaFisicaSpec, dimexSpec],
+  tax: [cedulaJuridicaSpec, cedulaFisicaSpec],
+  defaultPersonal: "CR_CEDULA_FISICA",
+  defaultTax: "CR_CEDULA_JURIDICA",
+};

@@ -5,9 +5,27 @@
  * @packageDocumentation
  */
 
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "./core/types.ts";
+import type {
+  CountryCode,
+  CountryDocumentBundle,
+  DocumentSpec,
+  DocumentTypeCode,
+  ParseResult,
+} from "./core/types.ts";
 
+import { arBundle } from "./countries/ar/index.ts";
+import { brBundle } from "./countries/br/index.ts";
+import { clBundle } from "./countries/cl/index.ts";
+import { coBundle } from "./countries/co/index.ts";
+import { crBundle } from "./countries/cr/index.ts";
+import { doBundle } from "./countries/do/index.ts";
+import { esBundle } from "./countries/es/index.ts";
+import { gtBundle } from "./countries/gt/index.ts";
+import { hnBundle } from "./countries/hn/index.ts";
+import { mxBundle } from "./countries/mx/index.ts";
+import { peBundle } from "./countries/pe/index.ts";
 import { svBundle } from "./countries/sv/index.ts";
+import { usBundle } from "./countries/us/index.ts";
 
 // Public types
 export type {
@@ -22,23 +40,44 @@ export type {
 } from "./core/types.ts";
 
 /**
+ * Country bundles registered with the root API.
+ *
+ * Adding a new country requires:
+ *   1. Create `src/countries/<cc>/index.ts` exporting a `CountryDocumentBundle`.
+ *   2. Import the bundle here and append it to this list.
+ *   3. Extend the `CountryCode` and `DocumentTypeCode` unions in `core/types.ts`.
+ *   4. Add a subpath export entry in `package.json` and an entry in `tsup.config.ts`.
+ */
+const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
+  svBundle,
+  mxBundle,
+  coBundle,
+  brBundle,
+  peBundle,
+  arBundle,
+  clBundle,
+  doBundle,
+  gtBundle,
+  hnBundle,
+  crBundle,
+  esBundle,
+  usBundle,
+];
+
+/**
  * Internal registry mapping every supported `DocumentTypeCode` to its spec.
  *
- * Populated from country bundles imported above. Adding a new country means:
- *   1. Create `src/countries/<cc>/index.ts` with a `<cc>Bundle` export.
- *   2. Add the import + entries here.
- *   3. Extend the `CountryCode` and `DocumentTypeCode` union in `core/types.ts`.
+ * Specs may appear in multiple bundle lists (e.g. `BR_CPF` is both personal
+ * and tax). The map dedupes by `DocumentTypeCode`.
  */
-const REGISTRY: ReadonlyMap<DocumentTypeCode, DocumentSpec> = new Map<
-  DocumentTypeCode,
-  DocumentSpec
->(
-  [
-    ...svBundle.personal,
-    ...svBundle.tax,
-    // ... more country bundles will be added here as countries are implemented
-  ].map((spec) => [spec.code, spec] as const),
-);
+const REGISTRY: ReadonlyMap<DocumentTypeCode, DocumentSpec> = (() => {
+  const map = new Map<DocumentTypeCode, DocumentSpec>();
+  for (const bundle of BUNDLES) {
+    for (const spec of bundle.personal) map.set(spec.code, spec);
+    for (const spec of bundle.tax) map.set(spec.code, spec);
+  }
+  return map;
+})();
 
 /**
  * Lookup a `DocumentSpec` by its stable code.
