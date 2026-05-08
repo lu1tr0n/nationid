@@ -13,7 +13,9 @@
  *   - 3 alfanuméricos: homoclave (2 chars + 1 DV).
  *
  * Check digit: SAT homoclave algorithm — mod-11 over the first 12 chars
- * mapped through a 38-entry table, weighted 13..2 left-to-right.
+ * mapped through the SAT Anexo 19 39-entry table (`0`->0, ..., `9`->9,
+ * `A`->10, ..., `N`->23, `&`->24, `O`->25, ..., `Z`->36, ` `->37, `Ñ`->38),
+ * weighted 13..2 left-to-right.
  *   sum = sum(value(rfc[i]) * (13 - i)) for i in 0..11
  *   r   = sum mod 11
  *   dv  = 11 - r
@@ -21,12 +23,14 @@
  *     - if dv == 10 → 'A'
  *     - else        → str(dv)
  *
- * Confidence: moderate. The algorithm matches `python-stdnum` `stdnum.mx.rfc`
- * and the SAT-published Anexo 19 transformation. SAT does not publish the
- * weight vector verbatim but the formula is consistent across mature libraries
- * for two decades. Downgraded from `high` because there is no first-party SAT
- * test fixture set; we cross-checked against synthetic vectors generated from
- * the same formula and the published genérico `XAXX010101000`.
+ * Confidence: moderate. The algorithm matches `python-stdnum`
+ * `stdnum.mx.rfc` (cross-validated 2026-05-08) and the SAT-published Anexo
+ * 19 "Tabla de equivalencia para la verificación del homoclave del RFC".
+ * SAT does not publish the weight vector verbatim but the formula is
+ * consistent across mature libraries. Downgraded from `high` because there
+ * is no first-party SAT test fixture set; we cross-checked against
+ * synthetic vectors generated from the SAT formula plus python-stdnum's
+ * published doctest values (`GODE561231GR8`, `MAB9307148T4`).
  *
  * Genéricos (SAT-accepted placeholders, both validate as `high`):
  *   - `XAXX010101000` — operación con público en general / extranjero.
@@ -36,7 +40,12 @@
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { computeRfcDV, RFC_FORBIDDEN_PREFIXES } from "./shared.ts";
 
-const RAW_REGEX = /^[A-ZÑ&]{4}\d{6}[A-Z0-9]{3}$/;
+// 4 letters + 6 digits + 2 alphanumeric homoclave + 1 DV.
+// The DV at position 12 is `0-9` or `A` only — see `computeRfcDV` (residue 10
+// is mapped to `A`, residues 0-9 to `0-9`). Tightening the regex makes
+// `parse()` return `invalid_format` (instead of `invalid_checksum`) for
+// strings whose DV character is impossible.
+const RAW_REGEX = /^[A-ZÑ&]{4}\d{6}[A-Z0-9]{2}[0-9A]$/;
 
 /** Strip separators and uppercase. */
 function normalizeRfc(input: string): string {

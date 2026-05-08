@@ -33,7 +33,10 @@ const WEIGHTS = [2, 3, 4, 5, 6, 7, 8, 9] as const;
 export const dpiSpec: DocumentSpec = {
   code: "GT_DPI",
   country: "GT",
-  scope: "personal",
+  // DPI is the Guatemalan personal ID. Per `gt/nit.ts:27-29`, RENAP DPI / CUI
+  // is also accepted as NIT for tax purposes under the FEL régimen post-2022.
+  // Matches the SV_DUI precedent → scope: "both".
+  scope: "both",
   labelKey: "documents.GT_DPI.label",
   rawRegex: RAW_REGEX,
   formattedRegex: FORMATTED_REGEX,
@@ -84,6 +87,11 @@ export const dpiSpec: DocumentSpec = {
 
 function checkDigitDPI(digits: string): boolean {
   if (digits.length !== 13) return false;
+  // Departamento (positions 9-10) must be 01..22 — Guatemala has 22 administrative
+  // departamentos. RENAP cannot issue a DPI outside this range. Mirrors the
+  // analogous structural guard in `hn/dni.ts:hasValidStructure`.
+  const dept = (digits.charCodeAt(9) - 48) * 10 + (digits.charCodeAt(10) - 48);
+  if (dept < 1 || dept > 22) return false;
   const sum = mod11WeightedSum(digits.slice(0, 8), WEIGHTS);
   const r = sum % 11;
   // RENAP does not issue DPIs whose computed verifier would be 10.

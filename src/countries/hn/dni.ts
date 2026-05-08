@@ -36,7 +36,11 @@ const MIN_YEAR = 1900;
 export const dniSpec: DocumentSpec = {
   code: "HN_DNI",
   country: "HN",
-  scope: "personal",
+  // DNI is the Honduran personal ID. Per `hn/rtn.ts:9`, the first 13 digits
+  // of RTN (tax ID) for natural persons are derived from the DNI itself, so
+  // DNI is also used as the tax ID body. Matches SV_DUI precedent →
+  // scope: "both".
+  scope: "both",
   labelKey: "documents.HN_DNI.label",
   rawRegex: RAW_REGEX,
   formattedRegex: FORMATTED_REGEX,

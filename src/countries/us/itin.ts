@@ -29,7 +29,11 @@ const FORMATTED_REGEX = /^9\d{2}-\d{2}-\d{4}$/;
 export const itinSpec: DocumentSpec = {
   code: "US_ITIN",
   country: "US",
-  scope: "tax",
+  // ITIN is the IRS-issued tax processing number for individuals not eligible
+  // for an SSN. It identifies a *natural person* (personal scope) AND is
+  // used as that person's tax ID (tax scope). Matches the SV_DUI / DO_CEDULA
+  // / CL_RUT precedent: a single number serving both roles → scope: "both".
+  scope: "both",
   labelKey: "documents.US_ITIN.label",
   rawRegex: RAW_REGEX,
   formattedRegex: FORMATTED_REGEX,

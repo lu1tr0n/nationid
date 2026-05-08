@@ -11,6 +11,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.0.0
         version: 2.4.14
+      '@brazilian-utils/brazilian-utils':
+        specifier: ^2.3.0
+        version: 2.3.0
       '@changesets/cli':
         specifier: ^2.27.10
         version: 2.31.0(@types/node@22.19.18)
@@ -20,9 +23,21 @@ importers:
       '@types/node':
         specifier: ^22.10.0
         version: 22.19.18
+      '@types/validator':
+        specifier: ^13.15.10
+        version: 13.15.10
       '@vitest/coverage-v8':
         specifier: ^3.0.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.18)(jiti@2.7.0))
+      cpf-cnpj-validator:
+        specifier: ^2.1.0
+        version: 2.1.0
+      fast-check:
+        specifier: ^4.0.0
+        version: 4.7.0
+      rut.js:
+        specifier: ^2.1.0
+        version: 2.1.0
       size-limit:
         specifier: ^11.1.6
         version: 11.2.0
@@ -32,6 +47,9 @@ importers:
       typescript:
         specifier: ^5.8.0
         version: 5.9.3
+      validator:
+        specifier: ^13.15.35
+        version: 13.15.35
       vitest:
         specifier: ^3.0.0
         version: 3.2.4(@types/node@22.19.18)(jiti@2.7.0)
@@ -123,6 +141,10 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
+
+  '@brazilian-utils/brazilian-utils@2.3.0':
+    resolution: {integrity: sha512-gycd2tRqkWcS5bhSjFDgnvxIXjQuxr32xw5BAkflNpEp12r+FkuK60CDb48U7xJAszNt3sPW6u9hxEcea+CZPQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
 
   '@changesets/apply-release-plan@7.1.1':
     resolution: {integrity: sha512-9qPCm/rLx/xoOFXIHGB229+4GOL76S4MC+7tyOuTsR6+1jYlfFDQORdvwR5hDA6y4FL2BPt3qpbcQIS+dW85LA==}
@@ -716,6 +738,9 @@ packages:
   '@types/node@22.19.18':
     resolution: {integrity: sha512-9v00a+dn2yWVsYDEunWC4g/TcRKVq3r8N5FuZp7u0SGrPvdN9c2yXI9bBuf5Fl0hNCb+QTIePTn5pJs2pwBOQQ==}
 
+  '@types/validator@13.15.10':
+    resolution: {integrity: sha512-T8L6i7wCuyoK8A/ZeLYt1+q0ty3Zb9+qbSSvrIVitzT3YjZqkTZ40IbRsPanlB4h1QB3JVL1SYCdR6ngtFYcuA==}
+
   '@vitest/coverage-v8@3.2.4':
     resolution: {integrity: sha512-EyF9SXU6kS5Ku/U82E259WSnvg6c8KTjppUncuNdm5QHpe17mwREHnjDzozC8x9MZ0xfBUFSaLkRv4TMA75ALQ==}
     peerDependencies:
@@ -868,6 +893,30 @@ packages:
     resolution: {integrity: sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
+  cpf-cnpj-validator@2.1.0:
+    resolution: {integrity: sha512-tgSVKy8EK8LMRYRtoTfPICQ5innN0go/aqokEAF66HW466MHDsjBGkyPOY0KmCJ+k7Jh0CG9m70YHp30yiOCLg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@angular/forms': '>=15'
+      class-validator: ^0.14.0 || ^0.15.0
+      joi: ^17.0.0
+      reflect-metadata: ^0.2.0
+      yup: ^1.0.0
+      zod: ^3.22.0 || ^4.0.0
+    peerDependenciesMeta:
+      '@angular/forms':
+        optional: true
+      class-validator:
+        optional: true
+      joi:
+        optional: true
+      reflect-metadata:
+        optional: true
+      yup:
+        optional: true
+      zod:
+        optional: true
+
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
@@ -933,6 +982,10 @@ packages:
 
   extendable-error@0.1.7:
     resolution: {integrity: sha512-UOiS2in6/Q0FK0R0q6UY9vYpQ21mr/Qn1KOnte7vsACuNJf514WvCCUHSRCPcgjPT2bAhNIJdlE6bVap1GKmeg==}
+
+  fast-check@4.7.0:
+    resolution: {integrity: sha512-NsZRtqvSSoCP0HbNjUD+r1JH8zqZalyp6gLY9e7OYs7NK9b6AHOs2baBFeBG7bVNsuoukh89x2Yg3rPsul8ziQ==}
+    engines: {node: '>=12.17.0'}
 
   fast-glob@3.3.3:
     resolution: {integrity: sha512-7MptL8U0cqcFdzIzwOTHoilX9x5BrNqye7Z/LuC7kCMRio1EMSyqRK3BEAUD7sXRq4iT4AzTVuZdhgQ2TCvYLg==}
@@ -1269,6 +1322,9 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
+  pure-rand@8.4.0:
+    resolution: {integrity: sha512-IoM8YF/jY0hiugFo/wOWqfmarlE6J0wc6fDK1PhftMk7MGhVZl88sZimmqBBFomLOCSmcCCpsfj7wXASCpvK9A==}
+
   quansync@0.2.11:
     resolution: {integrity: sha512-AifT7QEbW9Nri4tAwR5M/uzpBuqfZf+zwaEM/QkzEjj7NBuFD2rBuy0K3dE+8wltbezDV7JMA0WfnCPYRSYbXA==}
 
@@ -1298,6 +1354,10 @@ packages:
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
+
+  rut.js@2.1.0:
+    resolution: {integrity: sha512-v8tXUbqycX2frkeZBcCJgn2dbZE29S21bOF+tRmow58m2qEVz5lGLmNaJ9ahTRfj3WEfwl55mTZi8qqE91w81g==}
+    engines: {node: '>=10'}
 
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
@@ -1465,6 +1525,10 @@ packages:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
 
+  validator@13.15.35:
+    resolution: {integrity: sha512-TQ5pAGhd5whStmqWvYF4OjQROlmv9SMFVt37qoCBdqRffuuklWYQlCNnEs2ZaIBD1kZRNnikiZOS1eqgkar0iw==}
+    engines: {node: '>= 0.10'}
+
   vite-node@3.2.4:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -1614,6 +1678,8 @@ snapshots:
 
   '@biomejs/cli-win32-x64@2.4.14':
     optional: true
+
+  '@brazilian-utils/brazilian-utils@2.3.0': {}
 
   '@changesets/apply-release-plan@7.1.1':
     dependencies:
@@ -2085,6 +2151,8 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/validator@13.15.10': {}
+
   '@vitest/coverage-v8@3.2.4(vitest@3.2.4(@types/node@22.19.18)(jiti@2.7.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
@@ -2235,6 +2303,8 @@ snapshots:
 
   consola@3.4.2: {}
 
+  cpf-cnpj-validator@2.1.0: {}
+
   cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
@@ -2333,6 +2403,10 @@ snapshots:
   expect-type@1.3.0: {}
 
   extendable-error@0.1.7: {}
+
+  fast-check@4.7.0:
+    dependencies:
+      pure-rand: 8.4.0
 
   fast-glob@3.3.3:
     dependencies:
@@ -2631,6 +2705,8 @@ snapshots:
 
   prettier@2.8.8: {}
 
+  pure-rand@8.4.0: {}
+
   quansync@0.2.11: {}
 
   queue-microtask@1.2.3: {}
@@ -2682,6 +2758,8 @@ snapshots:
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
+
+  rut.js@2.1.0: {}
 
   safer-buffer@2.1.2: {}
 
@@ -2838,6 +2916,8 @@ snapshots:
   undici-types@6.21.0: {}
 
   universalify@0.1.2: {}
+
+  validator@13.15.35: {}
 
   vite-node@3.2.4(@types/node@22.19.18)(jiti@2.7.0):
     dependencies:

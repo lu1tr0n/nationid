@@ -29,7 +29,6 @@ import { allSameDigit, stripNonDigits } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{9}$/;
-const FORMATTED_REGEX = /^\d-\d{2}-\d{5}-\d$/;
 const WEIGHTS = [7, 9, 8, 6, 5, 4, 3, 2] as const;
 
 export const rncSpec: DocumentSpec = {
@@ -38,7 +37,9 @@ export const rncSpec: DocumentSpec = {
   scope: "tax",
   labelKey: "documents.DO_RNC.label",
   rawRegex: RAW_REGEX,
-  formattedRegex: FORMATTED_REGEX,
+  // No `formattedRegex`: DGII publishes the RNC as plain digits with no
+  // separator — `format()` is the identity on the 9-digit storage form.
+  // (Older informal `1-23-45678-9` notation exists but is not canonical.)
   mask: "000000000",
   hasCheckDigit: true,
   confidence: "moderate",

@@ -25,13 +25,18 @@ const FORMATTED_REGEX = /^\d{1,3}(?:\.\d{3}){1,3}$/;
 export const ccSpec: DocumentSpec = {
   code: "CO_CC",
   country: "CO",
-  scope: "personal",
+  // CC is the Colombian personal ID, AND DIAN allows natural persons to use
+  // their CC as NIT for tax purposes (cf. `co/nit.ts` documentation).
+  // Matches the SV_DUI / DO_CEDULA / CL_RUT precedent → scope: "both".
+  scope: "both",
   labelKey: "documents.CO_CC.label",
   rawRegex: RAW_REGEX,
   formattedRegex: FORMATTED_REGEX,
-  // Variable-length: mask is the maximum (10 digits). UI renders a flexible
-  // template based on the actual length.
-  mask: "0000000000",
+  // Mask reflects the canonical *display* form (thousands-separated), which
+  // is what `format()` produces. UI consumers strip the dots to derive the
+  // 10-digit storage form, matching the SV_DUI / CL_RUT / BR_CPF precedent.
+  // Variable-length CCs (6-10 digits) render with proportional separators.
+  mask: "0.000.000.000",
   hasCheckDigit: false,
   confidence: "low",
 

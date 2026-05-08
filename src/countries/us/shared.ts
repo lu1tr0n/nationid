@@ -57,10 +57,14 @@ export const ITIN_VALID_GROUPS: ReadonlySet<string> = buildItinGroups();
  * Build the set of valid EIN 2-digit campus prefixes per IRS published list.
  *
  * Ranges (inclusive):
- *   01-06, 10-16, 20-27, 30-48, 50-77, 80-88, 90-99.
+ *   01-06, 10-16, 20-27, 30-48, 50-68, 71-77, 80-88, 90-95, 98-99.
  *
- * Reserved/never-issued: 07, 08, 09, 17, 18, 19, 28, 29, 49, 78, 79, 89.
- * Prefix `00` is reserved.
+ * Reserved/never-issued: 07, 08, 09, 17, 18, 19, 28, 29, 49, 69, 70, 78, 79,
+ * 89, 96, 97. Prefix `00` is reserved.
+ *
+ * Note: `69, 70, 96, 97` were originally absent from the IRS list and were
+ * trimmed from the nationid set after cross-validation against `validator.js`
+ * v13.15.x flagged them as agreement misses (see `docs/CROSS_VALIDATION.md`).
  */
 function buildEinPrefixes(): ReadonlySet<string> {
   const prefixes = new Set<string>();
@@ -69,9 +73,11 @@ function buildEinPrefixes(): ReadonlySet<string> {
     [10, 16],
     [20, 27],
     [30, 48],
-    [50, 77],
+    [50, 68],
+    [71, 77],
     [80, 88],
-    [90, 99],
+    [90, 95],
+    [98, 99],
   ];
   for (const range of ranges) {
     const lo = range[0];

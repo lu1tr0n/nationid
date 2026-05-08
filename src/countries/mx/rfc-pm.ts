@@ -11,8 +11,10 @@
  *   - 3 alfanuméricos: homoclave (2 chars + 1 DV).
  *
  * Check digit: same SAT homoclave algorithm as RFC PF, but the body is padded
- * with a leading space to produce a 12-char input for the weighted sum, since
- * the table assigns space → 0 (the first slot of the SAT alphabet).
+ * with a leading space to produce a 12-char input for the weighted sum.
+ * Per SAT Anexo 19 the space character has value 37; the +37 offset on the
+ * highest-weighted column (13) contributes `37*13 = 481` to the sum (`481
+ * mod 11 = 8`), which the algorithm absorbs to align PM with PF arithmetic.
  *
  *   body12 = " " + rfc[0..10]
  *   sum    = sum(value(body12[i]) * (13 - i)) for i in 0..11
@@ -22,15 +24,18 @@
  *     - if dv == 10 → 'A'
  *     - else        → str(dv)
  *
- * Confidence: moderate. Same caveats as RFC_PF — the algorithm is matches the
- * `python-stdnum` reference implementation and SAT Anexo 19 transformation,
- * but no first-party fixture set is published.
+ * Confidence: moderate. Same caveats as RFC_PF — the algorithm matches the
+ * `python-stdnum` reference implementation (cross-validated 2026-05-08) and
+ * the SAT Anexo 19 transformation, but no first-party fixture set is
+ * published.
  */
 
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { computeRfcDV } from "./shared.ts";
 
-const RAW_REGEX = /^[A-ZÑ&]{3}\d{6}[A-Z0-9]{3}$/;
+// 3 letters + 6 digits + 2 alphanumeric homoclave + 1 DV.
+// DV at position 11 is `0-9` or `A` only — see `computeRfcDV`.
+const RAW_REGEX = /^[A-ZÑ&]{3}\d{6}[A-Z0-9]{2}[0-9A]$/;
 
 function normalizeRfc(input: string): string {
   return input.replace(/[^A-Za-zÑñ&0-9]+/g, "").toUpperCase();

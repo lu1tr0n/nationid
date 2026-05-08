@@ -10,8 +10,8 @@
  *   - 7 digits: serial.
  *
  * Valid 2-digit prefixes (IRS-published): 01-06, 10-16, 20-27, 30-48,
- *   50-77, 80-88, 90-99. Reserved/never-issued: 00, 07-09, 17-19, 28-29,
- *   49, 78-79, 89.
+ *   50-68, 71-77, 80-88, 90-95, 98-99. Reserved/never-issued: 00, 07-09,
+ *   17-19, 28-29, 49, 69-70, 78-79, 89, 96-97.
  *
  * Check digit: none. Validation is structural prefix membership.
  *

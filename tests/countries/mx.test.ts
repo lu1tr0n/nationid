@@ -125,25 +125,29 @@ describe("MX — CURP", () => {
   });
 });
 
-// RFC PF test vectors with homoclave DVs computed via SAT Anexo 1-A
-// algorithm (mod-11 over first 12 chars, table including space=0, &=25,
-// weights 13..2). All bodies are SYNTHETIC.
-//   - MELO850315H79 — 4 letras + 850315 + homoclave H7 + DV 9
-//   - GAJA920101AB5 — body GAJA920101AB + DV 5
-//   - PEMA751231X15 — body PEMA751231X1 + DV 5
-//   - RUDR000115AA1 — body RUDR000115AA + DV 1
-//   - TOPA800615X90 — body TOPA800615X9 + DV 0
+// RFC PF test vectors with homoclave DVs computed via SAT Anexo 19
+// algorithm (mod-11 over first 12 chars, table per SAT Anexo 19:
+// `0`->0, ..., `9`->9, `A`->10, ..., `N`->23, `&`->24, `O`->25, ..., `Z`->36,
+// ` `->37, `Ñ`->38; weights 13..2). All bodies are SYNTHETIC. DVs were
+// recomputed after the v0.1 RFC table off-by-one fix (see
+// `docs/CROSS_VALIDATION.md` § B2) and cross-validated against
+// `python-stdnum.stdnum.mx.rfc` with `validate_check_digits=True`.
+//   - MELO850315H70 — body MELO850315H7 + DV 0
+//   - GAJA920101AB7 — body GAJA920101AB + DV 7
+//   - PEMA751231X17 — body PEMA751231X1 + DV 7
+//   - RUDR000115AA3 — body RUDR000115AA + DV 3
+//   - TOPA800615X92 — body TOPA800615X9 + DV 2
 //   - XAXX010101000 — SAT genérico (operación con público en general).
 //   - XEXX010101000 — SAT genérico (extranjero sin RFC).
 
 describe("MX — RFC Persona Física", () => {
   describe("validate", () => {
     it("accepts valid RFCs (synthetic)", () => {
-      expect(validate("RFC_PF", "MELO850315H79")).toBe(true);
-      expect(validate("RFC_PF", "GAJA920101AB5")).toBe(true);
-      expect(validate("RFC_PF", "PEMA751231X15")).toBe(true);
-      expect(validate("RFC_PF", "RUDR000115AA1")).toBe(true);
-      expect(validate("RFC_PF", "TOPA800615X90")).toBe(true);
+      expect(validate("RFC_PF", "MELO850315H70")).toBe(true);
+      expect(validate("RFC_PF", "GAJA920101AB7")).toBe(true);
+      expect(validate("RFC_PF", "PEMA751231X17")).toBe(true);
+      expect(validate("RFC_PF", "RUDR000115AA3")).toBe(true);
+      expect(validate("RFC_PF", "TOPA800615X92")).toBe(true);
     });
 
     it("accepts SAT genéricos (XAXX/XEXX)", () => {
@@ -152,12 +156,12 @@ describe("MX — RFC Persona Física", () => {
     });
 
     it("normalizes lowercase and whitespace", () => {
-      expect(validate("RFC_PF", " melo850315h79 ")).toBe(true);
-      expect(validate("RFC_PF", "MELO-850315-H79")).toBe(true);
+      expect(validate("RFC_PF", " melo850315h70 ")).toBe(true);
+      expect(validate("RFC_PF", "MELO-850315-H70")).toBe(true);
     });
 
     it("rejects invalid check digits", () => {
-      expect(validate("RFC_PF", "MELO850315H70")).toBe(false);
+      expect(validate("RFC_PF", "MELO850315H79")).toBe(false);
       expect(validate("RFC_PF", "GAJA920101AB0")).toBe(false);
       expect(validate("RFC_PF", "PEMA751231X19")).toBe(false);
     });
@@ -165,9 +169,9 @@ describe("MX — RFC Persona Física", () => {
     it("rejects malformed input (length, charset)", () => {
       expect(validate("RFC_PF", "")).toBe(false);
       expect(validate("RFC_PF", "MELO850315H7")).toBe(false); // 12 chars (PM length)
-      expect(validate("RFC_PF", "MELO850315H791")).toBe(false); // 14 chars
-      expect(validate("RFC_PF", "1234850315H79")).toBe(false); // first 4 must be letters
-      expect(validate("RFC_PF", "MELOABCDEFH79")).toBe(false); // chars 4-9 must be digits
+      expect(validate("RFC_PF", "MELO850315H701")).toBe(false); // 14 chars
+      expect(validate("RFC_PF", "1234850315H70")).toBe(false); // first 4 must be letters
+      expect(validate("RFC_PF", "MELOABCDEFH70")).toBe(false); // chars 4-9 must be digits
     });
 
     it("rejects forbidden 4-letter prefixes (palabras altisonantes)", () => {
@@ -182,14 +186,14 @@ describe("MX — RFC Persona Física", () => {
     });
 
     it("accepts the MX_RFC_PF fully-qualified code", () => {
-      expect(validate("MX_RFC_PF", "MELO850315H79")).toBe(true);
+      expect(validate("MX_RFC_PF", "MELO850315H70")).toBe(true);
     });
   });
 
   describe("format", () => {
     it("uppercases and strips separators", () => {
-      expect(format("RFC_PF", "melo850315h79")).toBe("MELO850315H79");
-      expect(format("RFC_PF", "MELO-850315-H79")).toBe("MELO850315H79");
+      expect(format("RFC_PF", "melo850315h70")).toBe("MELO850315H70");
+      expect(format("RFC_PF", "MELO-850315-H70")).toBe("MELO850315H70");
     });
 
     it("returns input unchanged for invalid length", () => {
@@ -199,12 +203,12 @@ describe("MX — RFC Persona Física", () => {
 
   describe("parse", () => {
     it("returns ok with normalized + formatted on success", () => {
-      const r = parse("RFC_PF", "MELO850315H79");
+      const r = parse("RFC_PF", "MELO850315H70");
       expect(r).toEqual({
         ok: true,
         code: "MX_RFC_PF",
-        normalized: "MELO850315H79",
-        formatted: "MELO850315H79",
+        normalized: "MELO850315H70",
+        formatted: "MELO850315H70",
         confidence: "moderate",
       });
     });
@@ -216,7 +220,7 @@ describe("MX — RFC Persona Física", () => {
     });
 
     it("returns kind=too_long for longer input", () => {
-      const r = parse("RFC_PF", "MELO850315H791");
+      const r = parse("RFC_PF", "MELO850315H701");
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.reason.kind).toBe("too_long");
     });
@@ -228,35 +232,38 @@ describe("MX — RFC Persona Física", () => {
     });
 
     it("returns kind=invalid_checksum for bad DV", () => {
-      const r = parse("RFC_PF", "MELO850315H70");
+      const r = parse("RFC_PF", "MELO850315H79");
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.reason.kind).toBe("invalid_checksum");
     });
   });
 });
 
-// RFC PM test vectors with homoclave DVs computed via the SAT algorithm with
-// the 12-char body padded by a leading space to align to the 13-char weight
-// vector. All bodies are SYNTHETIC.
-//   - ABC901231J45  — body ABC901231J4 + DV 5
-//   - XYZ850615PQ5  — body XYZ850615PQ + DV 5
-//   - MEX120831RT7  — body MEX120831RT + DV 7
-//   - GHI001215AB5  — body GHI001215AB + DV 5
-//   - BBB991231X98  — body BBB991231X9 + DV 8
+// RFC PM test vectors with homoclave DVs computed via the SAT Anexo 19
+// algorithm with the 11-char body padded by a leading space to align to the
+// 13-char weight vector. All bodies are SYNTHETIC. DVs were recomputed after
+// the v0.1 RFC table off-by-one fix (see `docs/CROSS_VALIDATION.md` § B2)
+// and cross-validated against `python-stdnum.stdnum.mx.rfc` with
+// `validate_check_digits=True`.
+//   - ABC901231J48  — body ABC901231J4 + DV 8
+//   - XYZ850615PQ8  — body XYZ850615PQ + DV 8
+//   - MEX120831RTA  — body MEX120831RT + DV A (mod-11 result 10)
+//   - GHI001215AB8  — body GHI001215AB + DV 8
+//   - BBB991231X90  — body BBB991231X9 + DV 0
 
 describe("MX — RFC Persona Moral", () => {
   describe("validate", () => {
     it("accepts valid RFCs (synthetic)", () => {
-      expect(validate("RFC_PM", "ABC901231J45")).toBe(true);
-      expect(validate("RFC_PM", "XYZ850615PQ5")).toBe(true);
-      expect(validate("RFC_PM", "MEX120831RT7")).toBe(true);
-      expect(validate("RFC_PM", "GHI001215AB5")).toBe(true);
-      expect(validate("RFC_PM", "BBB991231X98")).toBe(true);
+      expect(validate("RFC_PM", "ABC901231J48")).toBe(true);
+      expect(validate("RFC_PM", "XYZ850615PQ8")).toBe(true);
+      expect(validate("RFC_PM", "MEX120831RTA")).toBe(true);
+      expect(validate("RFC_PM", "GHI001215AB8")).toBe(true);
+      expect(validate("RFC_PM", "BBB991231X90")).toBe(true);
     });
 
     it("normalizes lowercase and whitespace", () => {
-      expect(validate("RFC_PM", " abc901231j45 ")).toBe(true);
-      expect(validate("RFC_PM", "ABC-901231-J45")).toBe(true);
+      expect(validate("RFC_PM", " abc901231j48 ")).toBe(true);
+      expect(validate("RFC_PM", "ABC-901231-J48")).toBe(true);
     });
 
     it("rejects invalid check digits", () => {
@@ -268,29 +275,29 @@ describe("MX — RFC Persona Moral", () => {
     it("rejects malformed input (length, charset)", () => {
       expect(validate("RFC_PM", "")).toBe(false);
       expect(validate("RFC_PM", "ABC901231J4")).toBe(false); // 11 chars
-      expect(validate("RFC_PM", "ABC901231J451")).toBe(false); // 13 chars (PF length)
-      expect(validate("RFC_PM", "1234901231J45")).toBe(false); // numeric prefix
-      expect(validate("RFC_PM", "ABCXXXXXXJ45")).toBe(false); // chars 3-8 must be digits
+      expect(validate("RFC_PM", "ABC901231J481")).toBe(false); // 13 chars (PF length)
+      expect(validate("RFC_PM", "1234901231J48")).toBe(false); // numeric prefix
+      expect(validate("RFC_PM", "ABCXXXXXXJ48")).toBe(false); // chars 3-8 must be digits
     });
 
     it("rejects implausible constitution dates", () => {
-      expect(validate("RFC_PM", "ABC901331J45")).toBe(false); // mes 13
-      expect(validate("RFC_PM", "ABC900032J45")).toBe(false); // día 00
+      expect(validate("RFC_PM", "ABC901331J48")).toBe(false); // mes 13
+      expect(validate("RFC_PM", "ABC900032J48")).toBe(false); // día 00
     });
 
     it("accepts the MX_RFC_PM fully-qualified code", () => {
-      expect(validate("MX_RFC_PM", "ABC901231J45")).toBe(true);
+      expect(validate("MX_RFC_PM", "ABC901231J48")).toBe(true);
     });
   });
 
   describe("parse", () => {
     it("returns ok with normalized + formatted on success", () => {
-      const r = parse("RFC_PM", "ABC901231J45");
+      const r = parse("RFC_PM", "ABC901231J48");
       expect(r).toEqual({
         ok: true,
         code: "MX_RFC_PM",
-        normalized: "ABC901231J45",
-        formatted: "ABC901231J45",
+        normalized: "ABC901231J48",
+        formatted: "ABC901231J48",
         confidence: "moderate",
       });
     });
@@ -308,7 +315,7 @@ describe("MX — RFC Persona Moral", () => {
     });
 
     it("returns kind=too_long for longer input", () => {
-      const r = parse("RFC_PM", "ABC901231J451");
+      const r = parse("RFC_PM", "ABC901231J481");
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.reason.kind).toBe("too_long");
     });

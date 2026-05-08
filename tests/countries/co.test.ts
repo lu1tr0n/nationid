@@ -35,6 +35,15 @@ describe("CO — CC (Cédula de Ciudadanía)", () => {
     it("returns input unchanged for invalid length", () => {
       expect(format("CC", "12")).toBe("12");
     });
+
+    it("mask reflects the dotted display form (regression for F-PROP-001)", async () => {
+      // CO_CC's `format()` always emits thousands-separated digits; the
+      // `mask` field used to advertise plain digits, which contradicted the
+      // formatter and broke property test P10. The fix aligns mask with
+      // format output.
+      const { ccSpec } = await import("../../src/countries/co/cc.ts");
+      expect(ccSpec.mask).toBe("0.000.000.000");
+    });
   });
 
   describe("normalize", () => {

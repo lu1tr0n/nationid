@@ -14,58 +14,70 @@
  */
 
 /**
- * Character → value table used by both CURP and RFC algorithms.
+ * Character → value table used by the SAT RFC homoclave algorithm.
  *
- * Index layout (38 positions, 0..37):
- *   ` ` (space) → 0    — RFC pad for personas morales (3-letter prefix is
- *                        prepended with a single space to align to 13 chars).
- *   `0`..`9`    → 1..10
- *   `A`..`N`    → 11..24
- *   `&`         → 25
- *   `O`..`Z`    → 26..37
+ * Index layout (39 positions, 0..38) per SAT Anexo 19 RMF "Tabla de
+ * equivalencia para la verificación del homoclave del RFC":
  *
- * `Ñ` is **not** in this table because RFCs forbid it (SAT replaces with `X`).
- * CURPs that contain `Ñ` are pre-mapped to `X` before evaluating.
+ *   `0`..`9`    → 0..9
+ *   `A`..`N`    → 10..23
+ *   `&`         → 24
+ *   `O`..`Z`    → 25..36
+ *   ` ` (space) → 37    — RFC pad for personas morales (3-letter prefix is
+ *                          prepended with a single space to align to 13 chars).
+ *   `Ñ`         → 38    — rare; SAT replaces `Ñ` with `X` in modern RFCs.
+ *
+ * The previous v0.1 implementation had a +1 offset on every value (e.g.
+ * `'0'→1` instead of `'0'→0` and put space at 0), causing every RFC
+ * homoclave check to be off by 90 in the weighted sum (90 mod 11 = 2).
+ * This was caught by cross-validation against `python-stdnum 2.2`
+ * `stdnum.mx.rfc` whose published doctest values (`GODE561231GR8`,
+ * `MAB9307148T4`) verify only under the SAT-canonical table. See
+ * `docs/CROSS_VALIDATION.md` § B2.
+ *
+ * Source: SAT Anexo 19 RMF (Tabla 1) and the public reference
+ * implementation in `python-stdnum.stdnum.mx.rfc._alphabet`.
  */
 const RFC_TABLE: Readonly<Record<string, number>> = {
-  " ": 0,
-  "0": 1,
-  "1": 2,
-  "2": 3,
-  "3": 4,
-  "4": 5,
-  "5": 6,
-  "6": 7,
-  "7": 8,
-  "8": 9,
-  "9": 10,
-  A: 11,
-  B: 12,
-  C: 13,
-  D: 14,
-  E: 15,
-  F: 16,
-  G: 17,
-  H: 18,
-  I: 19,
-  J: 20,
-  K: 21,
-  L: 22,
-  M: 23,
-  N: 24,
-  "&": 25,
-  O: 26,
-  P: 27,
-  Q: 28,
-  R: 29,
-  S: 30,
-  T: 31,
-  U: 32,
-  V: 33,
-  W: 34,
-  X: 35,
-  Y: 36,
-  Z: 37,
+  "0": 0,
+  "1": 1,
+  "2": 2,
+  "3": 3,
+  "4": 4,
+  "5": 5,
+  "6": 6,
+  "7": 7,
+  "8": 8,
+  "9": 9,
+  A: 10,
+  B: 11,
+  C: 12,
+  D: 13,
+  E: 14,
+  F: 15,
+  G: 16,
+  H: 17,
+  I: 18,
+  J: 19,
+  K: 20,
+  L: 21,
+  M: 22,
+  N: 23,
+  "&": 24,
+  O: 25,
+  P: 26,
+  Q: 27,
+  R: 28,
+  S: 29,
+  T: 30,
+  U: 31,
+  V: 32,
+  W: 33,
+  X: 34,
+  Y: 35,
+  Z: 36,
+  " ": 37,
+  Ñ: 38,
 };
 
 /**

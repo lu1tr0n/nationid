@@ -35,16 +35,18 @@
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { computeCurpDV } from "./shared.ts";
 
-/** Body charset: 18 chars, all uppercase A-Z (with optional Ñ) or digits. */
-const RAW_REGEX = /^[A-ZÑ0-9]{18}$/;
 /**
- * Strict regex per RENAPO: positions are constrained.
+ * Strict regex per RENAPO. The `rawRegex` published on the spec is THIS
+ * regex (not a looser superset), so consumers reading `spec.rawRegex` for
+ * pre-validation see the same shape that `validate()` enforces internally.
+ *
  *   - [0]: A-Z (consonant of first surname; first letter)
  *   - [1]: A-Z (vowel of first surname)
  *   - [2-3]: A-Z
  *   - [4-9]: digits AAMMDD
  *   - [10]: H or M (sex)
- *   - [11-12]: entidad federativa (validated below; cheap superset here)
+ *   - [11-12]: entidad federativa (validated below against `ENTIDADES`; the
+ *              regex is a cheap shape gate, the set check is authoritative)
  *   - [13-15]: A-Z (internal consonants — historically excludes vowels but we
  *              accept any A-Z for forward compat)
  *   - [16]: A-Z or 0-9 (homoclave; pre-1996 uses 0, post uses A)
@@ -100,7 +102,7 @@ export const curpSpec: DocumentSpec = {
   country: "MX",
   scope: "personal",
   labelKey: "documents.MX_CURP.label",
-  rawRegex: RAW_REGEX,
+  rawRegex: STRUCTURAL_REGEX,
   // CURP has no canonical "formatted" form — it is always 18 contiguous chars.
   mask: "AAAAAAAAAAAAAAAAAA",
   hasCheckDigit: true,

@@ -44,6 +44,14 @@ describe("GT — DPI", () => {
       expect(validate("DPI", "1234K6789K101")).toBe(false);
     });
 
+    it("rejects DPIs whose departamento is outside 01..22", () => {
+      // Body 12345678 → DV=9 ✓, but dept=23 / 99 / 00 are not valid Guatemalan
+      // departamentos. RENAP cannot issue these even if the verifier is correct.
+      expect(validate("DPI", "1234567892301")).toBe(false); // dept=23
+      expect(validate("DPI", "1234567899901")).toBe(false); // dept=99
+      expect(validate("DPI", "1234567890001")).toBe(false); // dept=00
+    });
+
     it("treats CUI as a synonym for DPI", () => {
       expect(validate("CUI", "1234567890101")).toBe(true);
     });
