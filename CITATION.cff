@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: nationid
+message: "If you use this software, please cite it using the metadata below."
+type: software
+authors:
+  - family-names: "Navarro"
+    given-names: "Luis"
+    email: "luis.navarro.alvarez.1991@gmail.com"
+    affiliation: "JUSTSV"
+repository-code: "https://github.com/lu1tr0n/nationid"
+url: "https://github.com/lu1tr0n/nationid"
+license: MIT
+keywords:
+  - identity-validation
+  - tax-id
+  - national-id
+  - typescript
+  - latam
+abstract: >-
+  TypeScript-first, zero-dependency validator for national identity and tax
+  documents from every country. Provides regex shape, check-digit verification,
+  normalization, and formatting per official issuer specifications.

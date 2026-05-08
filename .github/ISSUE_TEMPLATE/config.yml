@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or discussion
+    url: https://github.com/lu1tr0n/nationid/discussions
+    about: For open-ended questions, use Discussions instead of Issues.
+  - name: Security vulnerability
+    url: https://github.com/lu1tr0n/nationid/security/advisories/new
+    about: Please report vulnerabilities privately, never in a public issue.

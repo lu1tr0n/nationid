@@ -1,0 +1,96 @@
+name: Bug report
+description: Report incorrect validation, formatting, or other behavior
+title: "[bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve `nationid`. Please use **synthetic** numbers in your example, never real ones.
+
+  - type: input
+    id: version
+    attributes:
+      label: nationid version
+      description: Output of `npm list nationid`
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: country
+    attributes:
+      label: Country affected
+      options:
+        - SV (El Salvador)
+        - MX (México)
+        - CO (Colombia)
+        - BR (Brasil)
+        - PE (Perú)
+        - AR (Argentina)
+        - CL (Chile)
+        - DO (Rep. Dominicana)
+        - GT (Guatemala)
+        - HN (Honduras)
+        - CR (Costa Rica)
+        - ES (España)
+        - US (United States)
+        - Other / multi-country
+    validations:
+      required: true
+
+  - type: input
+    id: doc_code
+    attributes:
+      label: Document type code
+      description: e.g. `SV_DUI`, `BR_CPF`, `MX_RFC_PF`
+      placeholder: "SV_DUI"
+    validations:
+      required: true
+
+  - type: textarea
+    id: input
+    attributes:
+      label: Input value (synthetic)
+      description: A synthetic number that demonstrates the issue. Never paste a real document.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Runtime environment
+      placeholder: "Node 22.4 on macOS / Bun 1.2 / browser Chrome 130 / Cloudflare Workers"
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Reference / source
+      description: If you suspect the algorithm is wrong, link to an official source (issuer normativa, gov portal, etc.).
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmations
+      options:
+        - label: I am using a synthetic example, not a real document number
+          required: true
+        - label: I searched existing issues and discussions
+          required: true

@@ -1,0 +1,66 @@
+name: Add a country
+description: Request support for a new country
+title: "[country] add <ISO-2 code>"
+labels: ["country-request", "needs-triage"]
+body:
+  - type: input
+    id: iso_code
+    attributes:
+      label: ISO 3166-1 alpha-2 code
+      placeholder: "UY"
+    validations:
+      required: true
+
+  - type: input
+    id: country_name
+    attributes:
+      label: Country name
+      placeholder: "Uruguay"
+    validations:
+      required: true
+
+  - type: textarea
+    id: documents
+    attributes:
+      label: Document types you want validated
+      description: One per line. Indicate personal vs tax. e.g. `CI (personal) — Cédula de Identidad`
+      placeholder: |
+        CI (personal) — Cédula de Identidad
+        RUT (tax) — Registro Único Tributario
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Official sources for the algorithm and format
+      description: Issuer (Registro Civil, tax authority) URLs, decrees, normativa técnica.
+    validations:
+      required: true
+
+  - type: textarea
+    id: vectors
+    attributes:
+      label: Synthetic test vectors
+      description: At least 3 valid + 3 invalid. Use synthetic numbers.
+
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Are you willing to submit a PR?
+      options:
+        - Yes — I will open a PR
+        - Maybe — depends on complexity
+        - No — requesting only
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmations
+      options:
+        - label: I will use synthetic test vectors only
+          required: true
+        - label: I have read CONTRIBUTING.md and the country-add workflow
+          required: true

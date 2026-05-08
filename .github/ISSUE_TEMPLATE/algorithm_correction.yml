@@ -1,0 +1,61 @@
+name: Algorithm correction
+description: Report that a check-digit or validation algorithm is wrong
+title: "[algorithm] <country> <doc> "
+labels: ["algorithm", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Algorithm corrections are taken seriously because they affect every consumer. Please cite an official source.
+
+  - type: input
+    id: doc_code
+    attributes:
+      label: Document type code
+      placeholder: "BR_CNPJ"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior (incorrect)
+      description: Describe what `nationid` does now and why it is wrong.
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct
+    attributes:
+      label: Correct algorithm
+      description: Pseudocode or explicit weights. Cite an official source URL.
+    validations:
+      required: true
+
+  - type: textarea
+    id: vectors
+    attributes:
+      label: Test vectors that prove the bug
+      description: At least 2 vectors that the current implementation handles incorrectly. Use synthetic numbers.
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Official source URL
+      description: Government issuer, normativa, decreto, or equivalent.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity assessment
+      options:
+        - High — false positives (accepts invalid)
+        - High — false negatives (rejects valid)
+        - Medium — wrong formatted output
+        - Low — wrong placeholder or label
+    validations:
+      required: true

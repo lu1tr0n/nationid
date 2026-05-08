@@ -1,0 +1,14 @@
+# Default — owner is requested for review on every PR
+* @lu1tr0n
+
+# Country folders — open to country-specific reviewers later
+# /src/countries/sv/ @lu1tr0n
+# /src/countries/mx/ @lu1tr0n
+
+# Shared / sensitive areas — owner only
+/src/core/ @lu1tr0n
+/src/algorithms/ @lu1tr0n
+/.github/ @lu1tr0n
+/package.json @lu1tr0n
+/tsconfig.json @lu1tr0n
+/tsup.config.ts @lu1tr0n
