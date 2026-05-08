@@ -1,0 +1,176 @@
+{
+  "name": "nationid",
+  "version": "0.0.0",
+  "description": "TypeScript-first, zero-dependency validator for national identity and tax documents from every country.",
+  "keywords": [
+    "id",
+    "validation",
+    "tax-id",
+    "national-id",
+    "identity",
+    "cedula",
+    "dui",
+    "nit",
+    "rfc",
+    "curp",
+    "cpf",
+    "cnpj",
+    "rut",
+    "cuit",
+    "dni",
+    "ruc",
+    "ssn",
+    "ein",
+    "nif",
+    "latam",
+    "i18n",
+    "validator"
+  ],
+  "homepage": "https://github.com/lu1tr0n/nationid",
+  "bugs": {
+    "url": "https://github.com/lu1tr0n/nationid/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lu1tr0n/nationid.git"
+  },
+  "license": "MIT",
+  "author": "Luis Navarro <luis.navarro.alvarez.1991@gmail.com> (https://github.com/lu1tr0n)",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./algorithms": {
+      "types": "./dist/algorithms/index.d.ts",
+      "import": "./dist/algorithms/index.js",
+      "require": "./dist/algorithms/index.cjs"
+    },
+    "./sv": {
+      "types": "./dist/countries/sv/index.d.ts",
+      "import": "./dist/countries/sv/index.js",
+      "require": "./dist/countries/sv/index.cjs"
+    },
+    "./mx": {
+      "types": "./dist/countries/mx/index.d.ts",
+      "import": "./dist/countries/mx/index.js",
+      "require": "./dist/countries/mx/index.cjs"
+    },
+    "./co": {
+      "types": "./dist/countries/co/index.d.ts",
+      "import": "./dist/countries/co/index.js",
+      "require": "./dist/countries/co/index.cjs"
+    },
+    "./br": {
+      "types": "./dist/countries/br/index.d.ts",
+      "import": "./dist/countries/br/index.js",
+      "require": "./dist/countries/br/index.cjs"
+    },
+    "./pe": {
+      "types": "./dist/countries/pe/index.d.ts",
+      "import": "./dist/countries/pe/index.js",
+      "require": "./dist/countries/pe/index.cjs"
+    },
+    "./ar": {
+      "types": "./dist/countries/ar/index.d.ts",
+      "import": "./dist/countries/ar/index.js",
+      "require": "./dist/countries/ar/index.cjs"
+    },
+    "./cl": {
+      "types": "./dist/countries/cl/index.d.ts",
+      "import": "./dist/countries/cl/index.js",
+      "require": "./dist/countries/cl/index.cjs"
+    },
+    "./do": {
+      "types": "./dist/countries/do/index.d.ts",
+      "import": "./dist/countries/do/index.js",
+      "require": "./dist/countries/do/index.cjs"
+    },
+    "./gt": {
+      "types": "./dist/countries/gt/index.d.ts",
+      "import": "./dist/countries/gt/index.js",
+      "require": "./dist/countries/gt/index.cjs"
+    },
+    "./hn": {
+      "types": "./dist/countries/hn/index.d.ts",
+      "import": "./dist/countries/hn/index.js",
+      "require": "./dist/countries/hn/index.cjs"
+    },
+    "./cr": {
+      "types": "./dist/countries/cr/index.d.ts",
+      "import": "./dist/countries/cr/index.js",
+      "require": "./dist/countries/cr/index.cjs"
+    },
+    "./es": {
+      "types": "./dist/countries/es/index.d.ts",
+      "import": "./dist/countries/es/index.js",
+      "require": "./dist/countries/es/index.cjs"
+    },
+    "./us": {
+      "types": "./dist/countries/us/index.d.ts",
+      "import": "./dist/countries/us/index.js",
+      "require": "./dist/countries/us/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:dist": "vitest run --config vitest.dist.config.ts",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "size": "size-limit",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:dist",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish --provenance",
+    "prepublishOnly": "pnpm verify"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "@changesets/cli": "^2.27.10",
+    "@size-limit/preset-small-lib": "^11.1.6",
+    "@types/node": "^22.10.0",
+    "@vitest/coverage-v8": "^3.0.0",
+    "size-limit": "^11.1.6",
+    "tsup": "^8.3.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "size-limit": [
+    {
+      "name": "core (root)",
+      "path": "dist/index.js",
+      "limit": "5 KB"
+    },
+    {
+      "name": "single country (sv)",
+      "path": "dist/countries/sv/index.js",
+      "limit": "3 KB"
+    }
+  ]
+}
