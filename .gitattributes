@@ -1,0 +1,51 @@
+# Normalize line endings across platforms.
+#
+# Without this, Windows clones with `core.autocrlf=true` (the default on
+# Windows git installs) convert LF→CRLF on checkout. Biome treats CRLF as
+# a format error, so Windows CI fails on `pnpm lint`. Forcing LF for all
+# text source files keeps the repo deterministic regardless of git client
+# config and OS.
+
+# Default: any text file → LF
+* text=auto eol=lf
+
+# Explicit text + LF for source / config / docs (defensive — catches files
+# whose extension git wouldn't auto-classify as text).
+*.ts        text eol=lf
+*.tsx       text eol=lf
+*.js        text eol=lf
+*.cjs       text eol=lf
+*.mjs       text eol=lf
+*.json      text eol=lf
+*.jsonc     text eol=lf
+*.md        text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.sh        text eol=lf
+*.toml      text eol=lf
+*.html      text eol=lf
+*.css       text eol=lf
+*.svg       text eol=lf
+*.cff       text eol=lf
+LICENSE     text eol=lf
+.gitignore  text eol=lf
+.gitattributes text eol=lf
+
+# Lockfiles: text but mark linguist-generated so they don't dominate
+# language stats and don't show in PR diffs by default.
+pnpm-lock.yaml linguist-generated=true text eol=lf
+package-lock.json linguist-generated=true text eol=lf
+
+# Binary — never normalize, never diff.
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.woff      binary
+*.woff2     binary
+*.ttf       binary
+*.eot       binary
+*.zip       binary
+*.tgz       binary
+*.gz        binary

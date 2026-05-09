@@ -39,8 +39,11 @@ jobs:
       - name: Create release PR or publish
         uses: changesets/action@v1
         with:
-          version: pnpm version
-          publish: pnpm release
+          # `pnpm run version` not `pnpm version` — the latter is pnpm's built-in
+          # npm-style version-manipulation command and silently no-ops here,
+          # leaving changeset files unconsumed. Same trap on `publish`.
+          version: pnpm run version
+          publish: pnpm run release
           commit: "chore: release"
           title: "chore: release"
         env:

@@ -144,8 +144,10 @@ describe("root API — DocumentSpec invariant", () => {
       const spec = getSpec(code);
       // Use mask as a representative input shape; normalize should accept any
       // string and return a stable canonical form whose re-normalization is
-      // identical.
-      const sample = spec.mask.replace(/0/g, "1").replace(/A/g, "A").replace(/\*/g, "A");
+      // identical. Map mask placeholders → concrete chars: digit `0`→`1`,
+      // letter `A` already letter (kept), alphanumeric `*`→`A`. We only
+      // need a deterministic non-empty string; values don't have to validate.
+      const sample = spec.mask.replace(/0/g, "1").replace(/\*/g, "A");
       const once = spec.normalize(sample);
       const twice = spec.normalize(once);
       expect(twice, `${code} normalize not idempotent`).toBe(once);
