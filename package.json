@@ -137,6 +137,8 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "size": "size-limit",
+    "docs": "typedoc",
+    "docs:check": "typedoc --emit none",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:dist",
     "changeset": "changeset",
     "version": "changeset version",
@@ -156,6 +158,7 @@
     "rut.js": "^2.1.0",
     "size-limit": "^11.1.6",
     "tsup": "^8.3.0",
+    "typedoc": "^0.28.0",
     "typescript": "^5.8.0",
     "validator": "^13.15.35",
     "vitest": "^3.0.0"

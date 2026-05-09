@@ -43,6 +43,9 @@ jobs:
       - name: Test
         run: pnpm test
 
+      - name: Docs check (validate JSDoc references)
+        run: pnpm run docs:check
+
       - name: Build
         run: pnpm build
 

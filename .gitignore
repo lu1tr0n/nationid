@@ -1,5 +1,6 @@
 node_modules/
 /dist/
+/docs-site/
 coverage/
 .nyc_output/
 *.log

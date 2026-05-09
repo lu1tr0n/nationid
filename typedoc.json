@@ -1,0 +1,59 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts", "src/algorithms/index.ts", "src/countries/*/index.ts"],
+  "entryPointStrategy": "expand",
+  "tsconfig": "tsconfig.json",
+  "out": "docs-site",
+  "readme": "README.md",
+  "name": "nationid",
+  "includeVersion": true,
+  "hideGenerator": true,
+  "githubPages": true,
+  "navigationLinks": {
+    "GitHub": "https://github.com/lu1tr0n/nationid",
+    "npm": "https://www.npmjs.com/package/nationid"
+  },
+  "projectDocuments": [
+    "docs/countries/sv.md",
+    "docs/countries/mx.md",
+    "docs/countries/co.md",
+    "docs/countries/br.md",
+    "docs/countries/pe.md",
+    "docs/countries/ar.md",
+    "docs/countries/cl.md",
+    "docs/countries/do.md",
+    "docs/countries/gt.md",
+    "docs/countries/hn.md",
+    "docs/countries/cr.md",
+    "docs/countries/es.md",
+    "docs/countries/us.md"
+  ],
+  "categorizeByGroup": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "excludeExternals": true,
+  "exclude": ["**/tests/**", "**/*.test.ts", "**/dist/**", "**/node_modules/**"],
+  "validation": {
+    "notExported": false,
+    "invalidLink": true,
+    "notDocumented": false,
+    "rewrittenLink": true,
+    "unusedMergeModuleWith": true
+  },
+  "treatWarningsAsErrors": false,
+  "skipErrorChecking": false,
+  "sort": ["kind", "alphabetical"],
+  "kindSortOrder": [
+    "Project",
+    "Module",
+    "Namespace",
+    "Class",
+    "Interface",
+    "TypeAlias",
+    "Function",
+    "Variable",
+    "Enum",
+    "Reference"
+  ]
+}

@@ -8,6 +8,8 @@
 [![license](https://img.shields.io/npm/l/nationid)](./LICENSE)
 [![CI](https://github.com/lu1tr0n/nationid/actions/workflows/ci.yml/badge.svg)](https://github.com/lu1tr0n/nationid/actions)
 
+📖 **API Reference**: https://lu1tr0n.github.io/nationid/
+
 `nationid` is a focused, comprehensive library for validating national identity documents and tax IDs. It ships with checksum verification (not just regex shape), proper formatting and normalization, and works in Node, browsers, Bun, Deno and edge runtimes.
 
 ## Why
@@ -128,7 +130,7 @@ UIs can choose to surface a warning when a low-confidence document validates onl
 
 ## Contributing
 
-See [CONTRIBUTING.md](./docs/CONTRIBUTING.md). Country submissions are welcomed — every country added must include cited official sources and a comprehensive test fixture set.
+See [CONTRIBUTING.md](./CONTRIBUTING.md). Country submissions are welcomed — every country added must include cited official sources and a comprehensive test fixture set.
 
 ## License
 
