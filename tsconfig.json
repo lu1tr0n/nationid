@@ -9,7 +9,6 @@
     "isolatedModules": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "esModuleInterop": false,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -20,7 +19,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "exactOptionalPropertyTypes": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    // TypeScript 6 deprecated `baseUrl` and `esModuleInterop=false`. We removed
+    // our explicit `esModuleInterop: false` (defaults match our intent under
+    // `verbatimModuleSyntax`), but `tsup`'s DTS step synthesizes a `baseUrl`
+    // internally that we cannot control. Silence the warning until tsup
+    // emits a TS-7-compatible config; revisit and remove this line then.
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*", "tests/**/*", "*.ts"],
   "exclude": ["node_modules", "dist", "tests/dist/**/*"]
