@@ -9,6 +9,7 @@
 [![CI](https://github.com/lu1tr0n/nationid/actions/workflows/ci.yml/badge.svg)](https://github.com/lu1tr0n/nationid/actions)
 
 📖 **API Reference**: https://lu1tr0n.github.io/nationid/
+📊 **Benchmarks**: see [BENCHMARKS.md](./BENCHMARKS.md)
 
 `nationid` is a focused, comprehensive library for validating national identity documents and tax IDs. It ships with checksum verification (not just regex shape), proper formatting and normalization, and works in Node, browsers, Bun, Deno and edge runtimes.
 
