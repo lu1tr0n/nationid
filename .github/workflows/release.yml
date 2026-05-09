@@ -7,14 +7,19 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
+  contents: read
 
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      # changesets/action needs `contents: write` to push tags and the
+      # release commit, `pull-requests: write` to open the release PR,
+      # and `id-token: write` for npm provenance via OIDC.
+      contents: write
+      pull-requests: write
+      id-token: write
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:

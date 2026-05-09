@@ -9,14 +9,19 @@ on:
     - cron: "0 6 * * 1"
 
 permissions:
-  actions: read
   contents: read
-  security-events: write
 
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    permissions:
+      # `security-events: write` is required by github/codeql-action/analyze
+      # to upload SARIF results to GitHub code scanning. `actions: read` is
+      # required to fetch the workflow run metadata for private repos.
+      actions: read
+      contents: read
+      security-events: write
     strategy:
       fail-fast: false
       matrix:
