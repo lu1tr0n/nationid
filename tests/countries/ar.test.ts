@@ -144,6 +144,117 @@ describe("AR — CUIL", () => {
   });
 });
 
+// AR_CDI test vectors (computed using the same mod-11 algorithm as CUIT/CUIL,
+// weights [5,4,3,2,7,6,5,4,3,2], with prefix 50 per RG AFIP 3995/2017):
+//   - 50-12345678-2: body10 5012345678; sum=163; r=9; dv=11-9=2
+//   - 50-11111111-9: body10 5011111111; sum=57;  r=2; dv=11-2=9
+//   - 50-00000000-8: body10 5000000000; sum=25;  r=3; dv=11-3=8
+//   - 50-98765432-2: body10 5098765432; sum=207; r=9; dv=11-9=2
+//   - 50-50000000-4: body10 5050000000; sum=40;  r=7; dv=11-7=4
+
+describe("AR — CDI", () => {
+  describe("validate", () => {
+    it("accepts valid CDIs (raw and formatted, prefix 50)", () => {
+      expect(validate("CDI", "50123456782")).toBe(true);
+      expect(validate("CDI", "50-12345678-2")).toBe(true);
+      expect(validate("CDI", "50111111119")).toBe(true);
+      expect(validate("CDI", "50000000008")).toBe(true);
+      expect(validate("CDI", "50987654322")).toBe(true);
+      expect(validate("CDI", "50500000004")).toBe(true);
+    });
+
+    it("rejects invalid check digits", () => {
+      expect(validate("CDI", "50123456780")).toBe(false);
+      expect(validate("CDI", "50111111110")).toBe(false);
+      expect(validate("CDI", "50500000005")).toBe(false);
+    });
+
+    it("rejects CUIT/CUIL prefixes (even when DV would be correct)", () => {
+      // 20123456786 has correct DV for prefix 20 but is not a CDI.
+      expect(validate("CDI", "20123456786")).toBe(false);
+      // 27111111117 has correct DV for prefix 27 but is not a CDI.
+      expect(validate("CDI", "27111111117")).toBe(false);
+      // 30701234568 has correct DV for prefix 30 but is not a CDI.
+      expect(validate("CDI", "30701234568")).toBe(false);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("CDI", "")).toBe(false);
+      expect(validate("CDI", "1234")).toBe(false);
+      expect(validate("CDI", "5012345678")).toBe(false); // 10 digits — too short
+      expect(validate("CDI", "501234567823")).toBe(false); // 12 digits — too long
+      expect(validate("CDI", "ABCDEFGHIJK")).toBe(false);
+    });
+
+    it("accepts the AR_CDI fully-qualified code", () => {
+      expect(validate("AR_CDI", "50123456782")).toBe(true);
+    });
+  });
+
+  describe("format", () => {
+    it("inserts hyphens at canonical positions", () => {
+      expect(format("CDI", "50123456782")).toBe("50-12345678-2");
+      expect(format("CDI", "50-12345678-2")).toBe("50-12345678-2");
+      expect(format("CDI", "50500000004")).toBe("50-50000000-4");
+    });
+
+    it("returns input unchanged for invalid length", () => {
+      expect(format("CDI", "50")).toBe("50");
+    });
+  });
+
+  describe("normalize", () => {
+    it("strips separators", () => {
+      expect(normalize("CDI", "50-12345678-2")).toBe("50123456782");
+      expect(normalize("CDI", " 50-12345678-2 ")).toBe("50123456782");
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok with normalized + formatted on success", () => {
+      const r = parse("CDI", "50-12345678-2");
+      expect(r).toEqual({
+        ok: true,
+        code: "AR_CDI",
+        normalized: "50123456782",
+        formatted: "50-12345678-2",
+        confidence: "high",
+      });
+    });
+
+    it("returns kind=empty on empty input", () => {
+      const r = parse("CDI", "");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("empty");
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("CDI", "5012345678");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("CDI", "501234567823");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+
+    it("returns kind=invalid_format for non-CDI prefix (DV correct)", () => {
+      // Prefix 20 with valid CUIT DV; CDI must reject.
+      const r = parse("CDI", "20123456786");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("invalid_format");
+    });
+
+    it("returns kind=invalid_checksum for bad DV under prefix 50", () => {
+      const r = parse("CDI", "50123456780");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("invalid_checksum");
+    });
+  });
+});
+
 describe("AR — CUIT", () => {
   describe("validate", () => {
     it("accepts valid CUITs (personas físicas + jurídicas)", () => {

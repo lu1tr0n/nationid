@@ -7,6 +7,7 @@
 | `ES_DNI` | both (personal + NIF for naturales españoles) | 9 (8 digits + 1 letter) | DNI letter table | high |
 | `ES_NIE` | both (personal + NIF for extranjeros residentes) | 9 (1 letter + 7 digits + 1 letter) | DNI letter table after prefix substitution | high |
 | `ES_NIF_PJ` | tax | 9 (1 letter + 7 digits + 1 char) | CIF mod-10 (Luhn-like) | high |
+| `ES_NUSS` | personal (Seguridad Social) | 12 digits | mod-97 over first 10 | high |
 
 > **NIF unification (2008)**: per Real Decreto 1065/2007, persona singular's NIF is the DNI; extranjero's NIF is the NIE; jurídica's NIF retains the letter-prefix structure historically called CIF. The library exposes the legacy alias `CIF` as a synonym for `NIF_PJ`.
 
@@ -229,3 +230,76 @@ invalid (checksum):
 ### Open questions
 
 - The historical letter `K` (menores españoles emigrantes) is sometimes seen on legacy documents but is not in the AEAT CIF prefix list; this library follows AEAT's `[ABCDEFGHJNPQRSUVW]` prefix regex and rejects K. If a consumer needs to accept legacy K-prefix identifiers, file an issue to discuss a separate `ES_NIF_K` type.
+
+---
+
+## `ES_NUSS` — Número de Usuario de la Seguridad Social
+
+### Overview
+
+Personal identifier assigned by the Tesorería General de la Seguridad Social (TGSS) for affiliation, contributions, payroll (RNT/RLC), and INSS interactions. **Distinct from the NIF**: the NUSS identifies a person within the Seguridad Social system; it is not used as a tax identifier and never doubles as one.
+
+- **Issuer**: Tesorería General de la Seguridad Social (TGSS) — <https://www.seg-social.es/>
+- **Composition**: 2 provincia + 8 correlativo + 2 dígito de control
+- **Visual format**: `XX/XXXXXXXX/DD` (canonical TGSS rendering on cartilla and resoluciones)
+- **Legal basis**: Resolución TGSS 4/2008; Real Decreto 84/1996 (Reglamento General de inscripción de empresas y afiliación)
+
+### Algorithm
+
+mod-97 over the first 10 digits taken as a single integer.
+
+```
+n  = parseInt(provincia + correlativo, 10)   // 10 digits
+dv = n mod 97                                 // 0..96
+expected = pad2(dv)                           // 2-digit zero-padded string
+valid iff provided_dv == expected
+```
+
+The library implements this via a Horner-style digit-by-digit reduction (`r = (r * 10 + d) mod 97`) so the running value never exceeds 999, eliminating any reliance on full 10-digit `parseInt` precision.
+
+### Why mod-97?
+
+The mod-97 check is the same family as Belgian RRN, IBAN BBAN-level checks, and Italian codice fiscale variants. It catches all single-digit errors and most adjacent transpositions — a stronger guarantee than mod-10 Luhn for human-typed inputs.
+
+### Synthetic test vectors
+
+```
+valid:
+  - 281234567840   (provincia 28 Madrid, 2812345678 mod 97 = 40)
+  - 010000000182   (provincia 01,         100000001 mod 97 = 82)
+  - 280000000037   (correlativo all zeros, 2800000000 mod 97 = 37)
+  - 081234567869   (provincia 08 Barcelona, 812345678 mod 97 = 69)
+  - 123456789002   (DV requires zero-padding: 1234567890 mod 97 = 2 → "02")
+
+invalid (format):
+  - "" (empty)
+  - 28123456784    (11 digits)
+  - 2812345678400  (13 digits)
+  - AB1234567840   (letters at start)
+
+invalid (checksum):
+  - 281234567841
+  - 281234567800
+  - 010000000183
+  - 081234567870
+```
+
+### Cross-validation
+
+`validator.js isTaxID('es-ES')` does NOT cover NUSS — `es-ES` is restricted to the personal NIF universe (DNI/NIE/NIF_PJ). NUSS is social-security-only, not tax. Cross-validation here is documentation against TGSS / Resolución TGSS 4/2008 and against community implementations (`nuss-validator` npm).
+
+### Sources
+
+- TGSS portal: <https://www.seg-social.es/>
+- Resolución TGSS 4/2008 (estructura del Número de Usuario / Número de Afiliación a la Seguridad Social).
+- Real Decreto 84/1996 (Reglamento General de inscripción de empresas y afiliación, altas, bajas y variaciones de datos de trabajadores en la Seguridad Social).
+- Community libraries: `nuss-validator` (npm). Independent implementations agree on the mod-97 first-10 algorithm.
+
+### Recent reforms
+
+None affecting the algorithm. The NUSS pre-dates the 2008 NIF unification and was unaffected by it.
+
+### Open questions
+
+- TGSS does not publish the provincia code allocation as a stable open dataset; provincias appear to follow INE provincial codes (01..52) but the library does NOT enforce a provincia whitelist. Adding one would require monitoring INE updates and risks rejecting legitimate edge cases (e.g. transferred files).
+- A handful of legacy materials describe a "Número de Afiliación" (NAF) variant for empresas (12 digits) using the same algorithm. The library's `ES_NUSS` validates the personal NUSS form; empresas affiliation numbers are out of scope until demand surfaces.

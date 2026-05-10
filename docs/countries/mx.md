@@ -7,6 +7,7 @@
 | `MX_CURP` | personal | 18 | mod-10 over RENAPO alphabet | high |
 | `MX_RFC_PF` | tax (natural) | 13 | mod-11 SAT homoclave | moderate |
 | `MX_RFC_PM` | tax (jurídica) | 12 | mod-11 SAT homoclave (space-padded body) | moderate |
+| `MX_CLAVE_ELECTOR` | personal | 18 | none (format-only + structural) | low |
 
 ## `MX_CURP` — Clave Única de Registro de Población
 
@@ -198,3 +199,69 @@ invalid (checksum):
 ### Open questions
 
 - Same as PF — algorithm matches mature implementations but SAT does not publish the weight vector.
+
+---
+
+## `MX_CLAVE_ELECTOR` — Clave de Elector (credencial INE/IFE)
+
+### Overview
+
+18-character voter ID code printed on every credencial INE/IFE issued by the Instituto Nacional Electoral (INE). It is the most-presented physical ID in México daily life — fintech onboarding (Clip, Bitso, Stori, Nu MX), bank KYC (CNBV Disposiciones), telco SIM activation, and government services routinely request it.
+
+- **Issuer**: INE (Instituto Nacional Electoral) — <https://www.ine.mx/credencial/>
+- **Aliases**: `CLAVE_ELECTOR`, `INE`. Both resolve to this spec at the country-scoped API level.
+- **Composition**: 6 letras (2 consonantes apellido paterno + 2 consonantes apellido materno + 2 consonantes nombre) + 2 dígitos YY (año) + 2 dígitos EE (entidad federativa numérica 01..32) + 2 dígitos MM + 2 dígitos DD + 1 letra sexo (H/M) + 3 dígitos correlativo
+- **Visual format**: `LLLLLLYYEEMMDDS###` (18 contiguous chars, no separators)
+
+### Algorithm
+
+**None** — INE no publica un algoritmo de dígito verificador para la Clave de Elector. La validación de esta librería es format-only más reglas estructurales:
+
+- Regex: `/^[A-Z]{6}\d{8}[HM]\d{3}$/`
+- Entidad federativa numérica entre `01` y `32` (catálogo INE).
+- Mes entre `01` y `12`.
+- Día entre `01` y `31` (sin chequeo de mes-corto / bisiesto, alineado al estilo CURP).
+
+`hasCheckDigit` es `false`. El campo `confidence` es `low`.
+
+### Sources
+
+- INE: <https://www.ine.mx/credencial/>
+- INE Acuerdo CG58/2014 — "Estructura de la Clave de Elector".
+- Ley General de Instituciones y Procedimientos Electorales (LGIPE).
+- OECD TIN matrix MX (referencia cruzada).
+
+### Synthetic test vectors
+
+```
+valid:
+  - GMRPRZ85091015H123     (1985, ent 09 CDMX, 10/15, H)
+  - LPZNVR92151225M407     (1992, ent 15 Edo. Méx., 12/25, M)
+  - SNCHGL00140628H012     (2000, ent 14 Jalisco, 06/28, H)
+  - GVRRRZ75320101M999     (1975, ent 32 Zacatecas — boundary, 01/01)
+  - HRNNDZ05010715H088     (2005, ent 01 Aguascalientes — boundary, 07/15)
+  - PRZGRR68071231H501     (1968, ent 07 Chiapas, 12/31 — day boundary)
+
+invalid (format):
+  - GMRPRZ85091015H12      (17 chars — short)
+  - GMRPRZ85091015H1234    (19 chars — long)
+  - GMR1RZ85091015H123     (digit en slot de letras)
+  - GMRPRZ8509101AH123     (letra en slot de dígito)
+
+invalid (structural):
+  - GMRPRZ85331015H123     (entidad 33 fuera de rango)
+  - GMRPRZ85091315H123     (mes 13)
+  - GMRPRZ85091000H123     (día 00)
+  - GMRPRZ85091015X123     (sexo X — sólo H/M)
+```
+
+### Notas de divergencia
+
+- La entidad federativa en la Clave de Elector es **numérica** (`09` = CDMX, `15` = Edo. Méx., etc.), distinta del catálogo de **2 letras** que usa CURP (`DF`, `MC`). Por eso esta spec no reutiliza el `ENTIDADES` set de CURP — valida directamente el rango numérico 01..32.
+- No existe librería pública JS/Python (`validator.js`, `python-stdnum`) que cubra la Clave de Elector. Esta implementación es greenfield.
+
+### Open questions
+
+- INE podría cambiar el rango numérico de entidad federativa en el futuro (e.g. división de un estado). Confirmar contra el catálogo INE vigente cada release.
+- La regla de día actual acepta 01..31 sin validación cruzada con el mes (e.g. 31 de febrero pasa el regex). El estilo es consistente con la spec CURP del proyecto, donde la misma laxitud es deliberada.
+- Confidence se mantiene en `low` hasta que INE publique un dígito verificador o aparezca una librería oficial cross-validable.

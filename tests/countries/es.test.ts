@@ -251,6 +251,127 @@ describe("ES — NIE", () => {
 //   - A00000000: digit-DV r=0 -> '0'.
 //   - P0000000J: letter-DV r=0 -> 'JABCDEFGHI'[0]='J'.
 
+// ES NUSS test vectors. Algorithm: 12 digits = 2 provincia + 8 correlativo + 2 DV.
+// DV = (provincia · 10^8 + correlativo) mod 97, rendered as zero-padded 2 digits.
+//   - 28/12345678/40: 2812345678 mod 97 = 40
+//   - 01/00000001/82:  100000001 mod 97 = 82 (provincia leading zero)
+//   - 28/00000000/37: 2800000000 mod 97 = 37
+//   - 08/12345678/69:  812345678 mod 97 = 69
+//   - 12/34567890/02: 1234567890 mod 97 = 02 (DV requires zero-padding)
+
+describe("ES — NUSS", () => {
+  describe("validate", () => {
+    it("accepts valid NUSS (raw 12-digit form)", () => {
+      expect(validate("NUSS", "281234567840")).toBe(true);
+      expect(validate("NUSS", "010000000182")).toBe(true);
+      expect(validate("NUSS", "280000000037")).toBe(true);
+      expect(validate("NUSS", "081234567869")).toBe(true);
+      expect(validate("NUSS", "123456789002")).toBe(true);
+    });
+
+    it("accepts canonical formatted form (XX/XXXXXXXX/DD)", () => {
+      expect(validate("NUSS", "28/12345678/40")).toBe(true);
+      expect(validate("NUSS", "01/00000001/82")).toBe(true);
+      expect(validate("NUSS", "12/34567890/02")).toBe(true);
+    });
+
+    it("accepts hyphen-separated and whitespace-decorated input", () => {
+      expect(validate("NUSS", "28-12345678-40")).toBe(true);
+      expect(validate("NUSS", " 28 12345678 40 ")).toBe(true);
+    });
+
+    it("rejects invalid check digits", () => {
+      expect(validate("NUSS", "281234567841")).toBe(false);
+      expect(validate("NUSS", "281234567800")).toBe(false);
+      expect(validate("NUSS", "010000000183")).toBe(false);
+      expect(validate("NUSS", "081234567870")).toBe(false);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("NUSS", "")).toBe(false);
+      expect(validate("NUSS", "28123456784")).toBe(false); // 11 digits — too short
+      expect(validate("NUSS", "2812345678400")).toBe(false); // 13 digits — too long
+      expect(validate("NUSS", "AB1234567840")).toBe(false); // letters at start
+      expect(validate("NUSS", "28123456784X")).toBe(false); // letter in DV
+    });
+
+    it("rejects DNI/NIE/NIF_PJ shapes", () => {
+      expect(validate("NUSS", "12345678Z")).toBe(false); // DNI
+      expect(validate("NUSS", "X1234567L")).toBe(false); // NIE
+      expect(validate("NUSS", "A12345674")).toBe(false); // CIF
+    });
+
+    it("accepts the ES_NUSS fully-qualified code", () => {
+      expect(validate("ES_NUSS", "281234567840")).toBe(true);
+    });
+  });
+
+  describe("format", () => {
+    it("inserts slashes at canonical positions", () => {
+      expect(format("NUSS", "281234567840")).toBe("28/12345678/40");
+      expect(format("NUSS", "28/12345678/40")).toBe("28/12345678/40");
+      expect(format("NUSS", "010000000182")).toBe("01/00000001/82");
+    });
+
+    it("returns input unchanged for invalid length", () => {
+      expect(format("NUSS", "28")).toBe("28");
+    });
+  });
+
+  describe("normalize", () => {
+    it("strips slashes, hyphens, and whitespace", () => {
+      expect(normalize("NUSS", "28/12345678/40")).toBe("281234567840");
+      expect(normalize("NUSS", "28-12345678-40")).toBe("281234567840");
+      expect(normalize("NUSS", " 28 12345678 40 ")).toBe("281234567840");
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok with normalized + formatted on success", () => {
+      const r = parse("NUSS", "28/12345678/40");
+      expect(r).toEqual({
+        ok: true,
+        code: "ES_NUSS",
+        normalized: "281234567840",
+        formatted: "28/12345678/40",
+        confidence: "high",
+      });
+    });
+
+    it("returns kind=empty on empty input", () => {
+      const r = parse("NUSS", "");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("empty");
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("NUSS", "28123456784");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("NUSS", "2812345678400");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+
+    it("returns kind=too_short when non-digit characters reduce stripped length", () => {
+      // After stripNonDigits, "28123456784X" is 11 digits and trips too_short
+      // before any format check. Documenting the observable behaviour.
+      const r = parse("NUSS", "28123456784X");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=invalid_checksum for wrong DV", () => {
+      const r = parse("NUSS", "281234567841");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("invalid_checksum");
+    });
+  });
+});
+
 describe("ES — NIF Persona Jurídica (CIF)", () => {
   describe("validate", () => {
     it("accepts valid digit-DV prefixes (A, B, E, H)", () => {

@@ -50,3 +50,13 @@ export const CUIT_PREFIXES: ReadonlySet<string> = new Set([
 
 /** CUIL prefixes: personas físicas working under labor regime. */
 export const CUIL_PREFIXES: ReadonlySet<string> = new Set(["20", "23", "24", "27"]);
+
+/**
+ * CDI prefixes: Clave de Identificación assigned by ARCA (ex-AFIP) to personas
+ * who do not hold CUIT/CUIL but must appear in tax operations (extranjeros sin
+ * obligación, sucesiones indivisas, menores).
+ *
+ * Per RG AFIP 3995/2017, ARCA assigns CDI under prefix `50`. Algorithm and
+ * verifier are identical to CUIT/CUIL.
+ */
+export const CDI_PREFIXES: ReadonlySet<string> = new Set(["50"]);
