@@ -23,6 +23,9 @@ const ALL_COUNTRIES = [
 
 const COUNTRIES = ALL_COUNTRIES.filter((cc) => existsSync(`src/countries/${cc}/index.ts`));
 
+/** Locales shipping in v0.3.0 i18n. */
+const I18N_LOCALES = ["es", "en", "pt"] as const;
+
 export default defineConfig({
   entry: {
     index: "src/index.ts",
@@ -30,6 +33,14 @@ export default defineConfig({
     ...Object.fromEntries(
       COUNTRIES.map((cc) => [`countries/${cc}/index`, `src/countries/${cc}/index.ts`]),
     ),
+    // v0.3.0 — DX subpaths
+    "extract/index": "src/extract/index.ts",
+    "pii/index": "src/pii/index.ts",
+    "i18n/index": "src/i18n/index.ts",
+    ...Object.fromEntries(
+      I18N_LOCALES.map((loc) => [`i18n/locales/${loc}`, `src/i18n/locales/${loc}.ts`]),
+    ),
+    "catalog/index": "src/catalog/index.ts",
   },
   format: ["esm", "cjs"],
   dts: { resolve: true },

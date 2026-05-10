@@ -1,0 +1,250 @@
+/**
+ * Spanish (es) catalog strings.
+ *
+ * `displayName` and `longName` follow each country's official native naming.
+ * Spanish orthography is enforced: "número", "único", "identificación".
+ */
+
+import type { DocumentTypeCode } from "../../core/types.ts";
+import type { LocaleStrings } from "../types.ts";
+
+export const catalogEs: Record<DocumentTypeCode, LocaleStrings> = {
+  // El Salvador
+  SV_DUI: {
+    displayName: "DUI",
+    longName: "Documento Único de Identidad",
+    description: "Identificador personal único para residentes en El Salvador.",
+  },
+  SV_NIT: {
+    displayName: "NIT",
+    longName: "Número de Identificación Tributaria",
+    description: "Número tributario salvadoreño emitido por el Ministerio de Hacienda.",
+  },
+
+  // México
+  MX_CURP: {
+    displayName: "CURP",
+    longName: "Clave Única de Registro de Población",
+    description: "Identificador personal único para residentes mexicanos.",
+  },
+  MX_RFC_PF: {
+    displayName: "RFC (Persona Física)",
+    longName: "Registro Federal de Contribuyentes (Persona Física)",
+    description: "Registro tributario mexicano para personas físicas, emitido por el SAT.",
+  },
+  MX_RFC_PM: {
+    displayName: "RFC (Persona Moral)",
+    longName: "Registro Federal de Contribuyentes (Persona Moral)",
+    description: "Registro tributario mexicano para personas morales, emitido por el SAT.",
+  },
+  MX_CLAVE_ELECTOR: {
+    displayName: "Clave de Elector",
+    longName: "Clave de Elector (INE)",
+    description: "Clave electoral impresa en la credencial INE/IFE de votantes mexicanos.",
+  },
+
+  // Colombia
+  CO_CC: {
+    displayName: "Cédula de Ciudadanía",
+    longName: "Cédula de Ciudadanía",
+    description: "Documento de identidad para ciudadanos colombianos mayores de edad.",
+  },
+  CO_CE: {
+    displayName: "Cédula de Extranjería",
+    longName: "Cédula de Extranjería",
+    description: "Documento de identidad para extranjeros residentes en Colombia.",
+  },
+  CO_TI: {
+    displayName: "Tarjeta de Identidad",
+    longName: "Tarjeta de Identidad",
+    description: "Documento de identidad colombiano para menores entre 7 y 17 años.",
+  },
+  CO_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte Colombiano",
+    description: "Documento de viaje internacional emitido por la Cancillería de Colombia.",
+  },
+  CO_NIT: {
+    displayName: "NIT",
+    longName: "Número de Identificación Tributaria",
+    description: "Identificador tributario colombiano emitido por la DIAN.",
+  },
+  CO_PEP: {
+    displayName: "PEP",
+    longName: "Permiso Especial de Permanencia",
+    description: "Permiso migratorio colombiano emitido a migrantes venezolanos.",
+  },
+  CO_PPT: {
+    displayName: "PPT",
+    longName: "Permiso por Protección Temporal",
+    description: "Permiso migratorio colombiano para migrantes bajo protección temporal.",
+  },
+
+  // Brasil
+  BR_CPF: {
+    displayName: "CPF",
+    longName: "Cadastro de Pessoas Físicas",
+    description: "Registro tributario brasileño para personas físicas.",
+  },
+  BR_CNPJ: {
+    displayName: "CNPJ",
+    longName: "Cadastro Nacional da Pessoa Jurídica",
+    description: "Registro tributario brasileño para personas jurídicas.",
+  },
+  BR_CNH: {
+    displayName: "CNH",
+    longName: "Carteira Nacional de Habilitação",
+    description: "Licencia de conducir brasileña emitida por los DETRAN estatales.",
+  },
+  BR_TITULO_ELEITOR: {
+    displayName: "Título de Eleitor",
+    longName: "Título de Eleitor",
+    description: "Documento electoral brasileño emitido por la Justicia Electoral.",
+  },
+  BR_PIS: {
+    displayName: "PIS",
+    longName: "Programa de Integración Social",
+    description: "Número de seguridad social brasileño usado por la Caixa Econômica Federal.",
+  },
+
+  // Perú
+  PE_DNI: {
+    displayName: "DNI",
+    longName: "Documento Nacional de Identidad",
+    description: "Documento nacional de identidad para ciudadanos peruanos, emitido por el RENIEC.",
+  },
+  PE_RUC: {
+    displayName: "RUC",
+    longName: "Registro Único de Contribuyentes",
+    description: "Registro tributario peruano emitido por la SUNAT.",
+  },
+  PE_CE: {
+    displayName: "Carné de Extranjería",
+    longName: "Carné de Extranjería",
+    description: "Documento de identidad para extranjeros residentes en Perú.",
+  },
+
+  // Argentina
+  AR_DNI: {
+    displayName: "DNI",
+    longName: "Documento Nacional de Identidad",
+    description: "Documento nacional de identidad para ciudadanos argentinos.",
+  },
+  AR_CUIT: {
+    displayName: "CUIT",
+    longName: "Clave Única de Identificación Tributaria",
+    description: "Identificador tributario argentino emitido por la AFIP.",
+  },
+  AR_CUIL: {
+    displayName: "CUIL",
+    longName: "Código Único de Identificación Laboral",
+    description: "Identificador laboral argentino para trabajadores en relación de dependencia.",
+  },
+  AR_CDI: {
+    displayName: "CDI",
+    longName: "Clave de Identificación",
+    description: "Clave tributaria argentina para personas sin CUIT ni CUIL.",
+  },
+
+  // Chile
+  CL_RUT: {
+    displayName: "RUT/RUN",
+    longName: "Rol Único Tributario / Rol Único Nacional",
+    description: "Identificador único chileno usado tanto para fines civiles como tributarios.",
+  },
+
+  // República Dominicana
+  DO_CEDULA: {
+    displayName: "Cédula",
+    longName: "Cédula de Identidad y Electoral",
+    description: "Documento de identidad y electoral para ciudadanos dominicanos.",
+  },
+  DO_RNC: {
+    displayName: "RNC",
+    longName: "Registro Nacional de Contribuyentes",
+    description: "Identificador tributario dominicano emitido por la DGII.",
+  },
+
+  // Guatemala
+  GT_DPI: {
+    displayName: "DPI",
+    longName: "Documento Personal de Identificación",
+    description: "Documento personal de identificación para ciudadanos guatemaltecos.",
+  },
+  GT_NIT: {
+    displayName: "NIT",
+    longName: "Número de Identificación Tributaria",
+    description: "Identificador tributario guatemalteco emitido por la SAT.",
+  },
+
+  // Honduras
+  HN_DNI: {
+    displayName: "DNI",
+    longName: "Documento Nacional de Identificación",
+    description: "Documento nacional de identificación para ciudadanos hondureños.",
+  },
+  HN_RTN: {
+    displayName: "RTN",
+    longName: "Registro Tributario Nacional",
+    description: "Identificador tributario hondureño emitido por el SAR.",
+  },
+
+  // Costa Rica
+  CR_CEDULA_FISICA: {
+    displayName: "Cédula Física",
+    longName: "Cédula de Identidad",
+    description: "Cédula de identidad para personas físicas costarricenses.",
+  },
+  CR_CEDULA_JURIDICA: {
+    displayName: "Cédula Jurídica",
+    longName: "Cédula de Persona Jurídica",
+    description: "Identificador tributario y de identidad para personas jurídicas en Costa Rica.",
+  },
+  CR_DIMEX: {
+    displayName: "DIMEX",
+    longName: "Documento de Identificación Migratoria para Extranjeros",
+    description:
+      "Documento de identificación migratoria para extranjeros residentes en Costa Rica.",
+  },
+
+  // España
+  ES_DNI: {
+    displayName: "DNI",
+    longName: "Documento Nacional de Identidad",
+    description: "Documento nacional de identidad para ciudadanos españoles.",
+  },
+  ES_NIE: {
+    displayName: "NIE",
+    longName: "Número de Identidad de Extranjero",
+    description: "Número de identidad para extranjeros residentes en España.",
+  },
+  ES_NIF_PJ: {
+    displayName: "NIF (Persona Jurídica)",
+    longName: "Número de Identificación Fiscal (Persona Jurídica)",
+    description:
+      "Identificador fiscal español para personas jurídicas, anteriormente conocido como CIF.",
+  },
+  ES_NUSS: {
+    displayName: "NUSS",
+    longName: "Número de Seguridad Social",
+    description: "Número de afiliación a la Seguridad Social española.",
+  },
+
+  // United States
+  US_SSN: {
+    displayName: "SSN",
+    longName: "Número de Seguro Social",
+    description: "Número de seguro social estadounidense emitido por la SSA.",
+  },
+  US_ITIN: {
+    displayName: "ITIN",
+    longName: "Número de Identificación Personal del Contribuyente",
+    description:
+      "Identificador tributario estadounidense para personas sin SSN, emitido por el IRS.",
+  },
+  US_EIN: {
+    displayName: "EIN",
+    longName: "Número de Identificación del Empleador",
+    description: "Identificador tributario estadounidense para empleadores, emitido por el IRS.",
+  },
+};
