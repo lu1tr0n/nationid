@@ -64,8 +64,11 @@ export const ciSpec: DocumentSpec = {
       return { ok: false, code: "BO_CI", reason: { kind: "empty" } };
     }
     const cleaned = stripAndUpper(trimmed);
-    // The numeric part must be at least 6 digits.
-    const digitsOnly = cleaned.replace(/[A-Z]+$/, "");
+    // The numeric part must be at least 6 digits. The trailing dept code is
+    // at most 2 letters (LP, CB, SC, etc.), so the bounded quantifier
+    // `{0,2}` matches the actual semantic max and avoids any ReDoS concern
+    // a `+` would raise on uncontrolled input.
+    const digitsOnly = cleaned.replace(/[A-Z]{0,2}$/, "");
     if (digitsOnly.length < 6) {
       return { ok: false, code: "BO_CI", reason: { kind: "too_short" } };
     }
