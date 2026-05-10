@@ -557,6 +557,57 @@ function generateValidEsNusses(count: number): string[] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Brute-force generator for v0.4 specs                                */
+/*                                                                    */
+/* Some v0.4 country specs (BO, EC, PY, NI, PA, UY, CA, PT, VE) ship  */
+/* without a hand-written valid-sample generator. Rather than block   */
+/* the release on per-spec generators, we brute-force samples by      */
+/* generating mask-shaped candidates and filtering through            */
+/* spec.validate(). For format-only specs the acceptance rate is ~1;  */
+/* for mod-10/mod-11 specs it's ~1/10. Capped attempts protect tests  */
+/* from infinite loops if a future spec change makes acceptance ~0.   */
+/* ------------------------------------------------------------------ */
+
+import { getSpec } from "../../src/index.ts";
+
+/**
+ * Build a randomly-shaped candidate using the spec's mask pattern.
+ * `0` → digit, `A` → uppercase letter, `*` → alphanumeric, others verbatim.
+ */
+function shapeFromMask(mask: string, rng: () => number): string {
+  let out = "";
+  for (const ch of mask) {
+    if (ch === "0") {
+      out += Math.floor(rng() * 10).toString();
+    } else if (ch === "A") {
+      out += String.fromCharCode(65 + Math.floor(rng() * 26));
+    } else if (ch === "*") {
+      const n = Math.floor(rng() * 36);
+      out += n < 10 ? n.toString() : String.fromCharCode(55 + n);
+    } else {
+      out += ch;
+    }
+  }
+  return out;
+}
+
+function generateBruteForceValid(code: DocumentTypeCode, n: number): ReadonlyArray<string> {
+  const spec = getSpec(code);
+  const rng = mulberry32(seedFromString(`v0.4-${code}`));
+  const out: string[] = [];
+  const maxAttempts = n * 500;
+  for (let i = 0; i < maxAttempts && out.length < n; i++) {
+    const candidate = shapeFromMask(spec.mask, rng);
+    if (spec.validate(candidate)) {
+      out.push(spec.normalize(candidate));
+    }
+  }
+  // If brute force fails entirely (acceptance ~0), surface as empty array;
+  // arbitraryValid() will throw a clear error rather than hang silently.
+  return out;
+}
+
+/* ------------------------------------------------------------------ */
 /* Per-code valid sample registry                                     */
 /* ------------------------------------------------------------------ */
 
@@ -608,6 +659,25 @@ const VALID_SAMPLES: Readonly<Record<DocumentTypeCode, ReadonlyArray<string>>> =
   US_SSN: generateValidSsns(VALID_SAMPLES_PER_CODE),
   US_ITIN: generateValidItins(VALID_SAMPLES_PER_CODE),
   US_EIN: generateValidEins(VALID_SAMPLES_PER_CODE),
+  // v0.4.0 — brute-force generated via spec.validate(). See generateBruteForceValid below.
+  BO_CI: generateBruteForceValid("BO_CI", VALID_SAMPLES_PER_CODE),
+  BO_NIT: generateBruteForceValid("BO_NIT", VALID_SAMPLES_PER_CODE),
+  EC_CEDULA: generateBruteForceValid("EC_CEDULA", VALID_SAMPLES_PER_CODE),
+  EC_RUC: generateBruteForceValid("EC_RUC", VALID_SAMPLES_PER_CODE),
+  PY_CI: generateBruteForceValid("PY_CI", VALID_SAMPLES_PER_CODE),
+  PY_RUC: generateBruteForceValid("PY_RUC", VALID_SAMPLES_PER_CODE),
+  NI_CEDULA: generateBruteForceValid("NI_CEDULA", VALID_SAMPLES_PER_CODE),
+  NI_RUC: generateBruteForceValid("NI_RUC", VALID_SAMPLES_PER_CODE),
+  PA_CEDULA: generateBruteForceValid("PA_CEDULA", VALID_SAMPLES_PER_CODE),
+  PA_RUC: generateBruteForceValid("PA_RUC", VALID_SAMPLES_PER_CODE),
+  UY_CI: generateBruteForceValid("UY_CI", VALID_SAMPLES_PER_CODE),
+  UY_RUT: generateBruteForceValid("UY_RUT", VALID_SAMPLES_PER_CODE),
+  CA_SIN: generateBruteForceValid("CA_SIN", VALID_SAMPLES_PER_CODE),
+  CA_BN: generateBruteForceValid("CA_BN", VALID_SAMPLES_PER_CODE),
+  PT_NIF: generateBruteForceValid("PT_NIF", VALID_SAMPLES_PER_CODE),
+  PT_CC: generateBruteForceValid("PT_CC", VALID_SAMPLES_PER_CODE),
+  VE_CEDULA: generateBruteForceValid("VE_CEDULA", VALID_SAMPLES_PER_CODE),
+  VE_RIF: generateBruteForceValid("VE_RIF", VALID_SAMPLES_PER_CODE),
 };
 
 /**

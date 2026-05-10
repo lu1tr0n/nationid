@@ -5,8 +5,9 @@
  * breaking change. New countries / document codes are additive.
  */
 
-/** ISO 3166-1 alpha-2 — countries shipped in v0.1.0 */
+/** ISO 3166-1 alpha-2 — 13 countries from v0.1.0 + 9 added in v0.4.0 */
 export type CountryCode =
+  // v0.1.0
   | "SV"
   | "MX"
   | "CO"
@@ -19,7 +20,17 @@ export type CountryCode =
   | "HN"
   | "CR"
   | "ES"
-  | "US";
+  | "US"
+  // v0.4.0 — 9 new
+  | "BO"
+  | "EC"
+  | "PY"
+  | "NI"
+  | "PA"
+  | "UY"
+  | "CA"
+  | "PT"
+  | "VE";
 
 /**
  * Stable code persisted in DB. Format: `{ISO-2}_{TYPE}`.
@@ -82,7 +93,34 @@ export type DocumentTypeCode =
   // United States
   | "US_SSN"
   | "US_ITIN"
-  | "US_EIN";
+  | "US_EIN"
+  // v0.4.0 — Bolivia
+  | "BO_CI"
+  | "BO_NIT"
+  // v0.4.0 — Ecuador
+  | "EC_CEDULA"
+  | "EC_RUC"
+  // v0.4.0 — Paraguay
+  | "PY_CI"
+  | "PY_RUC"
+  // v0.4.0 — Nicaragua
+  | "NI_CEDULA"
+  | "NI_RUC"
+  // v0.4.0 — Panamá
+  | "PA_CEDULA"
+  | "PA_RUC"
+  // v0.4.0 — Uruguay
+  | "UY_CI"
+  | "UY_RUT"
+  // v0.4.0 — Canadá
+  | "CA_SIN"
+  | "CA_BN"
+  // v0.4.0 — Portugal
+  | "PT_NIF"
+  | "PT_CC"
+  // v0.4.0 — Venezuela
+  | "VE_CEDULA"
+  | "VE_RIF";
 
 /** Whether the document identifies a natural person, a tax entity, or both. */
 export type DocumentScope = "personal" | "tax" | "both";

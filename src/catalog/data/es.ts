@@ -247,4 +247,123 @@ export const catalogEs: Record<DocumentTypeCode, LocaleStrings> = {
     longName: "Número de Identificación del Empleador",
     description: "Identificador tributario estadounidense para empleadores, emitido por el IRS.",
   },
+
+  // v0.4.0 — Bolivia
+  BO_CI: {
+    displayName: "CI",
+    longName: "Cédula de Identidad",
+    description:
+      "Documento personal emitido por SEGIP, con complemento departamental opcional (LP, CB, SC, etc.).",
+  },
+  BO_NIT: {
+    displayName: "NIT",
+    longName: "Número de Identificación Tributaria",
+    description:
+      "Identificador tributario del SIN; el formato de 13 dígitos sustituye al legado tras la RND 102100000011/2021.",
+  },
+
+  // v0.4.0 — Ecuador
+  EC_CEDULA: {
+    displayName: "Cédula",
+    longName: "Cédula de Identidad",
+    description:
+      "Documento personal de 10 dígitos emitido por el Registro Civil; incluye código de provincia y dígito verificador Luhn.",
+  },
+  EC_RUC: {
+    displayName: "RUC",
+    longName: "Registro Único de Contribuyentes",
+    description:
+      "Identificador tributario del SRI: 13 dígitos con tres ramas de validación (natural, sociedad pública, jurídica privada).",
+  },
+
+  // v0.4.0 — Paraguay
+  PY_CI: {
+    displayName: "CI",
+    longName: "Cédula de Identidad",
+    description:
+      "Documento personal emitido por la Policía Nacional del Paraguay, de 6 a 9 dígitos.",
+  },
+  PY_RUC: {
+    displayName: "RUC",
+    longName: "Registro Único de Contribuyentes",
+    description: "Identificador tributario de la SET con dígito verificador mod-11 (Ley 125/91).",
+  },
+
+  // v0.4.0 — Nicaragua
+  NI_CEDULA: {
+    displayName: "Cédula",
+    longName: "Cédula de Identidad",
+    description: "Documento de identidad emitido por el CSE de Nicaragua.",
+  },
+  NI_RUC: {
+    displayName: "RUC",
+    longName: "Registro Único de Contribuyentes",
+    description: "Identificador tributario emitido por la DGI de Nicaragua.",
+  },
+
+  // v0.4.0 — Panamá
+  PA_CEDULA: {
+    displayName: "Cédula",
+    longName: "Cédula de Identidad Personal",
+    description: "Documento de identidad emitido por el Tribunal Electoral de Panamá.",
+  },
+  PA_RUC: {
+    displayName: "RUC",
+    longName: "Registro Único de Contribuyentes",
+    description: "Identificador tributario emitido por la DGI del MEF de Panamá.",
+  },
+
+  // v0.4.0 — Uruguay
+  UY_CI: {
+    displayName: "Cédula",
+    longName: "Cédula de Identidad",
+    description: "Documento de identidad emitido por la DNIC de Uruguay.",
+  },
+  UY_RUT: {
+    displayName: "RUT",
+    longName: "Registro Único Tributario",
+    description: "Identificador tributario emitido por la DGI de Uruguay.",
+  },
+
+  // v0.4.0 — Canadá
+  CA_SIN: {
+    displayName: "SIN",
+    longName: "Número de Seguro Social (Canadá)",
+    description:
+      "Número de seguro social canadiense emitido por Service Canada; sirve de identificador personal y tributario ante la CRA.",
+  },
+  CA_BN: {
+    displayName: "BN",
+    longName: "Número de Negocio",
+    description:
+      "Identificador tributario para empresas emitido por la Canada Revenue Agency, con cuentas de programa por impuesto (RT, RP, RC).",
+  },
+
+  // v0.4.0 — Portugal
+  PT_NIF: {
+    displayName: "NIF",
+    longName: "Número de Identificación Fiscal",
+    description:
+      "Identificador fiscal portugués emitido por la Autoridade Tributária; el primer dígito determina el tipo de titular (singular o coletiva).",
+  },
+  PT_CC: {
+    displayName: "Cartão de Cidadão",
+    longName: "Cartão de Cidadão",
+    description:
+      "Documento de identidad portugués emitido por el IRN; sustituye al antiguo Bilhete de Identidade.",
+  },
+
+  // v0.4.0 — Venezuela
+  VE_CEDULA: {
+    displayName: "Cédula",
+    longName: "Cédula de Identidad",
+    description:
+      "Documento de identidad venezolano emitido por SAIME; los prefijos V y E distinguen venezolanos de extranjeros residentes.",
+  },
+  VE_RIF: {
+    displayName: "RIF",
+    longName: "Registro de Información Fiscal",
+    description:
+      "Identificador tributario venezolano emitido por el SENIAT; el prefijo V/E/J/P/G/C indica el tipo de contribuyente.",
+  },
 };

@@ -245,4 +245,123 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
     longName: "Employer Identification Number",
     description: "United States tax identifier for employers, issued by the IRS.",
   },
+
+  // v0.4.0 — Bolivia
+  BO_CI: {
+    displayName: "CI",
+    longName: "Identity Card",
+    description:
+      "Personal ID issued by SEGIP, with optional 2-letter departmental suffix (LP, CB, SC, etc.).",
+  },
+  BO_NIT: {
+    displayName: "NIT",
+    longName: "Tax Identification Number",
+    description:
+      "SIN tax ID; the 13-digit format replaces the legacy 7-11 digit one after RND 102100000011/2021.",
+  },
+
+  // v0.4.0 — Ecuador
+  EC_CEDULA: {
+    displayName: "Cédula",
+    longName: "Identity Card",
+    description:
+      "10-digit personal ID issued by the Civil Registry; includes province code and Luhn-variant check digit.",
+  },
+  EC_RUC: {
+    displayName: "RUC",
+    longName: "Taxpayer Registry",
+    description:
+      "SRI tax ID: 13 digits with three validation branches (natural person, public entity, private legal entity).",
+  },
+
+  // v0.4.0 — Paraguay
+  PY_CI: {
+    displayName: "CI",
+    longName: "Identity Card",
+    description: "Personal ID issued by the Policía Nacional del Paraguay, 6 to 9 digits.",
+  },
+  PY_RUC: {
+    displayName: "RUC",
+    longName: "Taxpayer Registry",
+    description: "SET tax ID with mod-11 check digit (Ley 125/91).",
+  },
+
+  // v0.4.0 — Nicaragua
+  NI_CEDULA: {
+    displayName: "Cédula",
+    longName: "National Identity Card",
+    description: "Identity document issued by Nicaragua's Supreme Electoral Council (CSE).",
+  },
+  NI_RUC: {
+    displayName: "RUC",
+    longName: "Single Taxpayer Registry",
+    description: "Tax identifier issued by Nicaragua's DGI.",
+  },
+
+  // v0.4.0 — Panamá
+  PA_CEDULA: {
+    displayName: "Cédula",
+    longName: "Personal Identity Card",
+    description: "Identity document issued by Panama's Electoral Tribunal.",
+  },
+  PA_RUC: {
+    displayName: "RUC",
+    longName: "Single Taxpayer Registry",
+    description: "Tax identifier issued by Panama's DGI (Ministry of Economy and Finance).",
+  },
+
+  // v0.4.0 — Uruguay
+  UY_CI: {
+    displayName: "CI",
+    longName: "Identity Card",
+    description:
+      "Identity document issued by Uruguay's National Civil Identification Directorate (DNIC).",
+  },
+  UY_RUT: {
+    displayName: "RUT",
+    longName: "Single Tax Registry",
+    description: "Tax identifier issued by Uruguay's General Tax Directorate (DGI).",
+  },
+
+  // v0.4.0 — Canadá
+  CA_SIN: {
+    displayName: "SIN",
+    longName: "Social Insurance Number",
+    description:
+      "Canadian social insurance number issued by Service Canada; serves as both personal ID and tax identifier with the CRA.",
+  },
+  CA_BN: {
+    displayName: "BN",
+    longName: "Business Number",
+    description:
+      "Canadian business tax identifier issued by the Canada Revenue Agency, extended with per-program accounts (RT, RP, RC).",
+  },
+
+  // v0.4.0 — Portugal
+  PT_NIF: {
+    displayName: "NIF",
+    longName: "Tax Identification Number",
+    description:
+      "Portuguese tax identifier issued by the Autoridade Tributária; the first digit indicates whether the holder is an individual or a legal entity.",
+  },
+  PT_CC: {
+    displayName: "Citizen Card",
+    longName: "Cartão de Cidadão",
+    description:
+      "Portuguese national identity card issued by IRN; replaces the legacy Bilhete de Identidade.",
+  },
+
+  // v0.4.0 — Venezuela
+  VE_CEDULA: {
+    displayName: "Cédula",
+    longName: "Cédula de Identidad",
+    description:
+      "Venezuelan national ID issued by SAIME; the V and E prefixes distinguish Venezuelan citizens from foreign residents.",
+  },
+  VE_RIF: {
+    displayName: "RIF",
+    longName: "Tax Information Registry",
+    description:
+      "Venezuelan tax identifier issued by SENIAT; the V/E/J/P/G/C prefix indicates the taxpayer type.",
+  },
 };

@@ -17,7 +17,7 @@
 
 Existing tools cover a fraction of the world. `validator.js` only validates 6 LATAM tax IDs. `cpf-cnpj-validator` covers Brazil. `rut.js` covers Chile. None ship El Salvador, Guatemala, Honduras, Dominican Republic, or Costa Rica with checksum verification.
 
-`nationid` fills that gap. v0.1 ships **13 countries with ~28 document codes**, all with proper algorithms documented from official sources.
+`nationid` fills that gap. As of v0.4 it ships **22 countries with ~58 document codes**, all with proper algorithms documented from official sources.
 
 ## Install
 
@@ -104,23 +104,32 @@ listDocuments("MX", "es");
 
 Each subpath is independently tree-shakable. Single locales (`nationid/i18n/es`, `/en`, `/pt`) ship as <200B bundles.
 
-## Coverage (v0.1)
+## Coverage (22 countries)
 
 | Country | Personal | Tax |
 |---------|----------|-----|
 | 🇸🇻 El Salvador | DUI | NIT |
-| 🇲🇽 México | CURP | RFC (PF + PM) |
-| 🇨🇴 Colombia | CC, CE, TI, Pasaporte | NIT |
-| 🇧🇷 Brasil | CPF | CNPJ |
+| 🇲🇽 México | CURP, Clave de Elector | RFC (PF + PM) |
+| 🇨🇴 Colombia | CC, CE, TI, Pasaporte, PEP, PPT | NIT |
+| 🇧🇷 Brasil | CPF, CNH, Título de Eleitor | CNPJ, PIS |
 | 🇵🇪 Perú | DNI, CE | RUC |
-| 🇦🇷 Argentina | DNI, CUIL | CUIT |
+| 🇦🇷 Argentina | DNI, CUIL | CUIT, CDI |
 | 🇨🇱 Chile | RUT/RUN | RUT/RUN |
 | 🇩🇴 Rep. Dominicana | Cédula | RNC |
 | 🇬🇹 Guatemala | DPI | NIT |
 | 🇭🇳 Honduras | DNI | RTN |
 | 🇨🇷 Costa Rica | Cédula física, DIMEX | Cédula jurídica |
-| 🇪🇸 España | DNI, NIE | NIF (CIF) |
+| 🇪🇸 España | DNI, NIE | NIF (CIF), NUSS |
 | 🇺🇸 United States | SSN, ITIN | EIN |
+| 🇧🇴 Bolivia *(v0.4)* | CI | NIT |
+| 🇪🇨 Ecuador *(v0.4)* | Cédula | RUC |
+| 🇵🇾 Paraguay *(v0.4)* | CI | RUC |
+| 🇳🇮 Nicaragua *(v0.4)* | Cédula | RUC |
+| 🇵🇦 Panamá *(v0.4)* | Cédula | RUC |
+| 🇺🇾 Uruguay *(v0.4)* | CI | RUT |
+| 🇨🇦 Canadá *(v0.4)* | SIN | BN |
+| 🇵🇹 Portugal *(v0.4)* | CC | NIF |
+| 🇻🇪 Venezuela *(v0.4)* | Cédula | RIF |
 
 Full per-country docs with algorithms and sources cited live in [`docs/countries/`](./docs/countries).
 
@@ -152,10 +161,10 @@ UIs can choose to surface a warning when a low-confidence document validates onl
 ## Roadmap
 
 - **v0.1** — 13 countries: SV, MX, CO, BR, PE, AR, CL, DO, GT, HN, CR, ES, US ✅
-- **v0.2** — 8 additional codes in covered countries: `BR_CNH`, `BR_TITULO_ELEITOR`, `BR_PIS`, `AR_CDI`, `ES_NUSS`, `MX_CLAVE_ELECTOR` (alias `MX_INE`), `CO_PEP`, `CO_PPT` ✅
-- **v0.3** — `extract` (DOB, sex from CURP/CPF/etc.) + `pii` (mask, hash) helpers
-- **v0.4** — 9 new countries: UY, VE, PA, EC, BO, PY, NI, CA, PT
-- **v0.5** — Europe principal: GB, FR, DE, IT, NL, BE, CH, SE, NO, DK, FI, PL + i18n bundles
+- **v0.2** — 8 additional codes in covered countries: `BR_CNH`, `BR_TITULO_ELEITOR`, `BR_PIS`, `AR_CDI`, `ES_NUSS`, `MX_CLAVE_ELECTOR`, `CO_PEP`, `CO_PPT` ✅
+- **v0.3** — `extract` (DOB, sex, region) + `pii` (mask, hash, lastN) + `i18n` (es/en/pt error messages) + `catalog` (queryable document metadata) ✅
+- **v0.4** — 9 new countries: UY, VE, PA, EC, BO, PY, NI, CA, PT ✅
+- **v0.5** — Europe principal: GB, FR, DE, IT, NL, BE, CH, SE, NO, DK, FI, PL + additional i18n locales
 - **v0.6** — Asia: IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL
 - **v0.7** — `@nationid/react` companion with `<DocumentInput>`
 - **v1.0** — API stability, all current countries at High confidence
