@@ -8,6 +8,7 @@
 | `MX_RFC_PF` | tax (natural) | 13 | mod-11 SAT homoclave | moderate |
 | `MX_RFC_PM` | tax (jurídica) | 12 | mod-11 SAT homoclave (space-padded body) | moderate |
 | `MX_CLAVE_ELECTOR` | personal | 18 | none (format-only + structural) | low |
+| `MX_NSS` | personal (social security) | 11 | Luhn / mod-10 | high |
 
 ## `MX_CURP` — Clave Única de Registro de Población
 
@@ -265,3 +266,93 @@ invalid (structural):
 - INE podría cambiar el rango numérico de entidad federativa en el futuro (e.g. división de un estado). Confirmar contra el catálogo INE vigente cada release.
 - La regla de día actual acepta 01..31 sin validación cruzada con el mes (e.g. 31 de febrero pasa el regex). El estilo es consistente con la spec CURP del proyecto, donde la misma laxitud es deliberada.
 - Confidence se mantiene en `low` hasta que INE publique un dígito verificador o aparezca una librería oficial cross-validable.
+
+---
+
+## `MX_NSS` — Número de Seguridad Social
+
+### Overview
+
+IMSS-issued social-security number for Mexican workers and beneficiaries. Required for payroll, healthcare, retirement (Afore), and incapacities. Distinct from CURP (national ID) and RFC (tax) — most payroll systems require all three.
+
+- **Issuer**: IMSS (Instituto Mexicano del Seguro Social) — <https://www.imss.gob.mx/tramites/imss02008/>
+- **Composition**: 2 digits subdelegación + 2 digits año de afiliación (YY) + 2 digits año de nacimiento (YY) + 4 digits folio + 1 digit DV
+- **Visual format**: `00000000000` (11 contiguous digits). Some IMSS-printed documents group as `XX-XX-XX-XXXX-X` for legibility; `normalize()` strips those separators idempotently.
+
+### Algorithm
+
+Standard **Luhn / ISO/IEC 7812-1** mod-10 over the 11 digits:
+
+```
+from rightmost digit, double every 2nd digit
+if a doubled value > 9, subtract 9
+sum all digits with the doubling rule applied
+valid iff sum mod 10 == 0
+```
+
+Additional rule: all-same-digit values (e.g. `00000000000`, `11111111111`) are rejected as placeholders even if they happen to be Luhn-valid.
+
+### Sources
+
+- IMSS: <https://www.imss.gob.mx/tramites/imss02008/>
+- Ley del Seguro Social, Art. 15 fracción II
+- Reglamento de la LSS en materia de Afiliación, Clasificación de Empresas, Recaudación y Fiscalización
+- Cross-validated against `tochotitlan/nss-validator` and the IMSS portal Luhn behavior.
+
+### Synthetic test vectors
+
+```
+valid (Luhn):
+  - 12345678903     body 1234567890, DV 3
+  - 01234567897     body 0123456789, DV 7
+  - 09876543217     body 0987654321, DV 7
+
+invalid (format):
+  - "" (empty)
+  - 1234567890   (10 digits)
+  - 123456789034 (12 digits)
+  - 12345A67903  (non-digit)
+  - 00000000000  (all-same-digit placeholder)
+
+invalid (checksum):
+  - 12345678900
+  - 12345678901
+  - 09876543210
+```
+
+### Recent reforms
+
+None affecting the format. The IMSS portal expanded online verification in 2018 and 2024 but the 11-digit Luhn structure has been stable since the 1990s.
+
+### Open questions
+
+- The library does not validate that the subdelegación code (digits 1-2) corresponds to a real IMSS office; the catalog is large, sparsely assigned, and not stable across reorganizations. Coupling the validator to a snapshot would create false negatives.
+
+---
+
+## `MX_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Secretaría de Relaciones Exteriores (SRE).
+Current series follow a 1-letter + 8-digit shape (9 chars), commonly with a
+leading `G` or `N` (e.g. `G12345678`).
+
+- **Issuer**: SRE — <https://www.gob.mx/sre>
+- **Composition**: 1 uppercase letter + 8 digits
+- **Visual format**: 9 contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`moderate` — multiple secondary confirmations including consular guides; SRE
+has not published a format spec.
+
+### Sources
+
+- Wikipedia, *Mexican passport*: <https://en.wikipedia.org/wiki/Mexican_passport>
+- TrustDocHub: <https://trustdochub.com/en/verify-mexican-passport/>

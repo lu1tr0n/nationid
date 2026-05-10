@@ -7,17 +7,21 @@
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
 import { dpiSpec } from "./dpi.ts";
 import { nitSpec } from "./nit.ts";
+import { passportSpec } from "./passport.ts";
 
-export { dpiSpec, nitSpec };
+export { dpiSpec, nitSpec, passportSpec };
 
 const SPECS = {
   GT_DPI: dpiSpec,
   GT_NIT: nitSpec,
+  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
+  // `GT_PASAPORTE` after all v0.5 agents complete.
+  GT_PASAPORTE: passportSpec,
 } as const;
 
 export type GTDocumentType = keyof typeof SPECS;
 
-type ShortCode = "DPI" | "CUI" | "NIT";
+type ShortCode = "DPI" | "CUI" | "NIT" | "PASAPORTE";
 
 /** Country-scoped validate: pass either `GT_DPI` or just `DPI` / `CUI`. */
 export function validate(code: GTDocumentType | ShortCode, input: string): boolean {
@@ -40,12 +44,13 @@ function resolveSpec(code: GTDocumentType | ShortCode): DocumentSpec {
   // CUI is a synonym for DPI used by RENAP.
   if (code === "DPI" || code === "CUI") return dpiSpec;
   if (code === "NIT") return nitSpec;
+  if (code === "PASAPORTE") return passportSpec;
   return SPECS[code];
 }
 
 export const gtBundle: CountryDocumentBundle = {
   country: "GT",
-  personal: [dpiSpec],
+  personal: [dpiSpec, passportSpec],
   tax: [nitSpec, dpiSpec],
   defaultPersonal: "GT_DPI",
   defaultTax: "GT_NIT",

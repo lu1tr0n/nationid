@@ -238,3 +238,55 @@ describe("PY — RUC", () => {
     });
   });
 });
+
+describe("PY — Pasaporte (PY_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (6-9 alphanumeric)", () => {
+      expect(validate("PASAPORTE", "123456")).toBe(true);
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "P1234567")).toBe(true);
+      expect(validate("PASAPORTE", "PY1234567")).toBe(true);
+      expect(validate("PASAPORTE", " 123456 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "12345")).toBe(false);
+      expect(validate("PASAPORTE", "1234567890")).toBe(false);
+      expect(validate("PASAPORTE", "@@@@@@")).toBe(false);
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "p1234567")).toBe(true);
+    });
+
+    it("accepts the PY_PASAPORTE fully-qualified code", () => {
+      expect(validate("PY_PASAPORTE", "123456")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "p1234567");
+      expect(r).toEqual({
+        ok: true,
+        code: "PY_PASAPORTE",
+        normalized: "P1234567",
+        formatted: "P1234567",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "1234567890");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

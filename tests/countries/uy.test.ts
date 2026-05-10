@@ -241,3 +241,56 @@ describe("UY — RUT", () => {
     });
   });
 });
+
+describe("UY — Pasaporte (UY_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (1 letter + 6 digits)", () => {
+      expect(validate("PASAPORTE", "B123456")).toBe(true);
+      expect(validate("PASAPORTE", "A000001")).toBe(true);
+      expect(validate("PASAPORTE", "Z999999")).toBe(true);
+      expect(validate("PASAPORTE", "C123456")).toBe(true);
+      expect(validate("PASAPORTE", " B123456 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "1234567")).toBe(false); // 7 digits no letter
+      expect(validate("PASAPORTE", "B12345")).toBe(false); // too short
+      expect(validate("PASAPORTE", "B1234567")).toBe(false); // too long
+      expect(validate("PASAPORTE", "AB12345")).toBe(false); // 2 letters
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "b123456")).toBe(true);
+    });
+
+    it("accepts the UY_PASAPORTE fully-qualified code", () => {
+      expect(validate("UY_PASAPORTE", "B123456")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "b123456");
+      expect(r).toEqual({
+        ok: true,
+        code: "UY_PASAPORTE",
+        normalized: "B123456",
+        formatted: "B123456",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "B12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "B1234567");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

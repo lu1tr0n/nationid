@@ -516,3 +516,59 @@ describe("ES — NIF Persona Jurídica (CIF)", () => {
     });
   });
 });
+
+describe("ES — Pasaporte (ES_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts modern 3 letters + 6 digits format", () => {
+      // Verified shape per Microsoft Purview SIT entity for Spain passport.
+      expect(validate("PASAPORTE", "AAB123456")).toBe(true);
+      expect(validate("PASAPORTE", "XYZ987654")).toBe(true);
+    });
+
+    it("accepts Microsoft Purview legacy variants (8 chars: 2 letters/digits + 6 digits)", () => {
+      expect(validate("PASAPORTE", "AB123456")).toBe(true);
+      expect(validate("PASAPORTE", "12345678")).toBe(true); // 2 digits + 6
+      expect(validate("PASAPORTE", "A1B23456")).toBe(false); // letter in digit-only tail
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "A123456")).toBe(false); // too short
+      expect(validate("PASAPORTE", "ABCD123456")).toBe(false); // too long
+      expect(validate("PASAPORTE", "@@@@@@@@")).toBe(false);
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "aab123456")).toBe(true);
+    });
+
+    it("accepts the ES_PASAPORTE fully-qualified code", () => {
+      expect(validate("ES_PASAPORTE", "AAB123456")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success with high confidence (verified)", () => {
+      const r = parse("PASAPORTE", "aab123456");
+      expect(r).toEqual({
+        ok: true,
+        code: "ES_PASAPORTE",
+        normalized: "AAB123456",
+        formatted: "AAB123456",
+        confidence: "high",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "A12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "ABCD123456");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

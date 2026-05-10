@@ -324,3 +324,71 @@ describe("AR — CUIT", () => {
     });
   });
 });
+
+describe("AR — Pasaporte (AR_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (8-9 alphanumeric)", () => {
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "123456789")).toBe(true);
+      expect(validate("PASAPORTE", "AAB12345Z")).toBe(true);
+      expect(validate("PASAPORTE", "RENAPER1")).toBe(true);
+      expect(validate("PASAPORTE", " 123456789 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "1234567")).toBe(false); // too short
+      expect(validate("PASAPORTE", "1234567890")).toBe(false); // too long
+      expect(validate("PASAPORTE", "@@@@@@@@")).toBe(false);
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "abc12345")).toBe(true);
+    });
+
+    it("accepts the AR_PASAPORTE fully-qualified code", () => {
+      expect(validate("AR_PASAPORTE", "12345678")).toBe(true);
+    });
+  });
+
+  describe("normalize", () => {
+    it("is idempotent", () => {
+      const a = normalize("PASAPORTE", "abc12345");
+      expect(normalize("PASAPORTE", a)).toBe(a);
+      expect(a).toBe("ABC12345");
+    });
+  });
+
+  describe("format", () => {
+    it("round-trips through normalize → format", () => {
+      const raw = "abc12345";
+      const n = normalize("PASAPORTE", raw);
+      expect(format("PASAPORTE", n)).toBe(n);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "abc12345");
+      expect(r).toEqual({
+        ok: true,
+        code: "AR_PASAPORTE",
+        normalized: "ABC12345",
+        formatted: "ABC12345",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for fewer than 8 chars", () => {
+      const r = parse("PASAPORTE", "1234567");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for more than 9 chars", () => {
+      const r = parse("PASAPORTE", "1234567890");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

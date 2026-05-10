@@ -11,11 +11,13 @@
  *   - 4 digits: correlativo
  *   - 1 letter: dígito verificador alfabético
  *
- * Check digit: alphabetic letter (A-Z). The CSE does **not** publish the
- * algorithm, and community libraries do not agree on a formula. We therefore
- * validate **format only**: 14-character structure plus a plausible
- * DD/MM in the embedded birth-date field. The trailing letter is
- * accepted as `[A-Z]` without checksum verification.
+ * Check digit: alphabetic letter A-Z **excluding I, O and Z** (the CSE
+ * excludes these three letters to avoid visual confusion with `1`, `0`
+ * and `2`). The CSE does **not** publish the algorithm and community
+ * libraries do not agree on a formula. We therefore validate **format
+ * only**: 14-character structure plus a plausible DD/MM in the embedded
+ * birth-date field. The trailing letter is accepted as
+ * `[ABCDEFGHJKLMNPQRSTUVWXY]` without checksum verification.
  *
  * Confidence: `low` — format-only.
  */
@@ -23,8 +25,9 @@
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
-const RAW_REGEX = /^\d{3}\d{6}\d{4}[A-Z]$/;
-const FORMATTED_REGEX = /^\d{3}-\d{6}-\d{4}[A-Z]$/;
+// Trailing DV letter excludes I, O, Z per CSE security rules.
+const RAW_REGEX = /^\d{3}\d{6}\d{4}[ABCDEFGHJKLMNPQRSTUVWXY]$/;
+const FORMATTED_REGEX = /^\d{3}-\d{6}-\d{4}[ABCDEFGHJKLMNPQRSTUVWXY]$/;
 
 export const cedulaSpec: DocumentSpec = {
   code: "NI_CEDULA",

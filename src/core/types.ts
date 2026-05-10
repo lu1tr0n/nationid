@@ -120,7 +120,31 @@ export type DocumentTypeCode =
   | "PT_CC"
   // v0.4.0 — Venezuela
   | "VE_CEDULA"
-  | "VE_RIF";
+  | "VE_RIF"
+  // v0.5.0 — México (new social security code)
+  | "MX_NSS"
+  // v0.5.0 — Passport family (CO_PASAPORTE already shipped above)
+  | "SV_PASAPORTE"
+  | "MX_PASAPORTE"
+  | "BR_PASAPORTE"
+  | "PE_PASAPORTE"
+  | "AR_PASAPORTE"
+  | "CL_PASAPORTE"
+  | "DO_PASAPORTE"
+  | "GT_PASAPORTE"
+  | "HN_PASAPORTE"
+  | "CR_PASAPORTE"
+  | "ES_PASAPORTE"
+  | "US_PASAPORTE"
+  | "BO_PASAPORTE"
+  | "EC_PASAPORTE"
+  | "PY_PASAPORTE"
+  | "NI_PASAPORTE"
+  | "PA_PASAPORTE"
+  | "UY_PASAPORTE"
+  | "CA_PASAPORTE"
+  | "PT_PASAPORTE"
+  | "VE_PASAPORTE";
 
 /** Whether the document identifies a natural person, a tax entity, or both. */
 export type DocumentScope = "personal" | "tax" | "both";

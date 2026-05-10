@@ -139,3 +139,32 @@ None affecting the format.
 ### Open questions
 
 - A future contributor with insider knowledge of CRA tooling may promote the BN to checksum-enforced moderate confidence; until then, format-only is the correct conservative default.
+
+---
+
+## `CA_PASAPORTE` — Passport
+
+### Overview
+
+Travel document issued by IRCC / Passport Program. Current ePassports use 2
+uppercase letters + 6 digits (e.g., `AB123456`). A newer 1L+6D+2L variant
+has been observed in community reports but is not confirmed by IRCC, so the
+spec keeps the 2L+6D shape documented by Microsoft Purview.
+
+- **Issuer**: IRCC
+- **Composition**: 2 letters + 6 digits
+- **Visual format**: 8 contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`high` — Microsoft Purview SIT entity, IRCC-aligned.
+
+### Sources
+
+- Microsoft Purview, *Canada passport number*: <https://learn.microsoft.com/en-us/purview/sit-defn-canada-passport-number>
+- Wikipedia, *Canadian passport*: <https://en.wikipedia.org/wiki/Canadian_passport>

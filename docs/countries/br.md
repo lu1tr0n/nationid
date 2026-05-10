@@ -5,7 +5,7 @@
 | Code | Scope | Length | Check digit | Confidence |
 |------|-------|--------|-------------|-----------|
 | `BR_CPF` | personal | 11 | double mod-11 | high |
-| `BR_CNPJ` | tax | 14 | double mod-11 | high |
+| `BR_CNPJ` | tax | 14 | double mod-11 (alphanumeric-aware, IN RFB 2.229/2024) | high |
 | `BR_CNH` | personal | 11 | double mod-11 (CONTRAN) | high |
 | `BR_TITULO_ELEITOR` | personal | 12 | double mod-11 (TSE) | high |
 | `BR_PIS` | both | 11 | single mod-11 (Caixa) | high |
@@ -52,40 +52,62 @@ All-same-digit sequences (`111.111.111-11`, etc.) are rejected by convention.
 
 ### Overview
 
-Tax registration for legal entities (businesses, NGOs, etc.). Issued by Receita Federal do Brasil.
+Tax registration for legal entities (businesses, NGOs, etc.). Issued by Receita Federal do Brasil. Two coexisting forms are accepted by the validator:
+
+| Form | Issuance window | Body chars 1-12 | DV chars 13-14 | Mask |
+|------|-----------------|-----------------|----------------|------|
+| Legacy numeric | through 2026-06-30 | `\d{12}` | `\d{2}` | `00.000.000/0000-00` |
+| Alphanumeric | from 2026-07-01 onward (IN RFB 2.229/2024) | `[A-Z0-9]{12}` | `\d{2}` | `**.***.***-****-DD` |
+
+Every legacy numeric CNPJ remains valid forever — they are a strict subset of the alphanumeric form because `[A-Z0-9]` includes `[0-9]`.
 
 - **Issuer**: Receita Federal — <https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/cnpj>
-- **Composition**: 8 root digits + 4 branch digits + 2 check digits
-- **Visual format**: `00.000.000/0000-00`
+- **Composition**: 12-char body (root + branch) + 2 numeric check digits
+- **Confidence**: `high`
 
-### Algorithm
+### Algorithm (alphanumeric-aware)
 
-Two mod-11 check digits.
+For each char `c` at position `i` in the body, the numeric value used in the weighted mod-11 sum is `value(c) = c.charCodeAt(0) - 48`. This expands to:
+
+| Char range | Numeric value |
+|------------|---------------|
+| `'0'..'9'` | `0..9` |
+| `'A'..'Z'` | `17..42` (`'A'`=65−48=17, …, `'Z'`=90−48=42) |
+
+The weights and final mapping are unchanged from the legacy spec:
 
 ```
 DV1: weights [5,4,3,2,9,8,7,6,5,4,3,2] over chars 1-12
      r = sum mod 11
-     DV1 = 0    if r < 2
-           11 - r otherwise
+     DV1 = 0       if r < 2
+           11 - r  otherwise
 
 DV2: weights [6,5,4,3,2,9,8,7,6,5,4,3,2] over chars 1-13 (incl. DV1)
      same rule
 ```
 
+### Backwards compatibility
+
+When the body is all digits, `value(c) = c.charCodeAt(0) - 48` reduces to the digit's numeric value. The weighted sum and resulting DVs are therefore byte-for-byte identical to the legacy algorithm — every CNPJ valid before this change stays valid after it. The library guarantees this via an explicit "every v0.4 fixture still validates" test in `tests/countries/br.test.ts`.
+
 ### Sources
 
-- Receita Federal: <https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/cnpj>
-- IN RFB nº 2.229/2024 (DOU 16-DEZ-2024)
-- Cross-validated against `cpf-cnpj-validator` (npm)
+- Receita Federal — Cadastro CNPJ: <https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/cnpj>
+- Instrução Normativa RFB nº 2.229/2024 (DOU 16-DEZ-2024) — habilita o CNPJ alfanumérico
+- Nota Técnica "CNPJ Alfanumérico" v1.0 — Receita Federal
+- Cross-validated against `cpf-cnpj-validator` for the digit-only branch
+- Alphanumeric cross-validation deferred until a public reference implementation ships (`@brazilian-utils/brazilian-utils@2.3` does not yet support the new format)
 
 ### Recent reforms
 
-- **2024-12** — IN RFB nº 2.229/2024 announced **alphanumeric CNPJ** for new registrations starting **2026-07-01**. Format keeps 14 chars with letters allowed in positions 1-12; check digits remain numeric. The check-digit algorithm operates on ASCII-code-derived numeric values, preserving the existing math.
-- The current `nationid` v0.1 implementation supports the numeric format. Alphanumeric support is tracked in **ADR-001** for v0.2.
+- **2024-12-16** — IN RFB nº 2.229/2024 announces alphanumeric CNPJ.
+- **2026-07-01** — Receita Federal begins issuing alphanumeric CNPJs to new registrations. Existing numeric CNPJs are not migrated.
+- **`nationid` v0.5** — alphanumeric form supported; the regex, mask, normalization (uppercase + strip separators), and DV algorithm all handle the union of both forms.
 
 ### Open questions
 
-- Validate the alphanumeric algorithm against the first batch of real alphanumeric CNPJs once Receita Federal begins issuing them in July 2026.
+- Confirm DV behaviour against the first batch of real alphanumeric CNPJs once Receita Federal begins publishing examples post-2026-07-01.
+- Promote alphanumeric cross-validation from manual hand-traced fixtures to automated agreement with a third-party library once one ships v3 with alphanumeric support.
 
 ---
 
@@ -214,3 +236,32 @@ All-same-digit sequences are rejected by convention.
 - Lei nº 7.998/1990 (Programa de Integração Social — PIS / PASEP)
 - eSocial Manual de Orientação (MOS) S-1.x — leiaute para `nisTrab`
 - Cross-validated against `@brazilian-utils/brazilian-utils@2.x` (`isValidPis`)
+
+---
+
+## `BR_PASAPORTE` — Passaporte
+
+### Overview
+
+Travel document issued by the Polícia Federal under the Ministério das
+Relações Exteriores. Format is 2 uppercase letters + 6 digits (8 chars).
+Common letter prefixes: `FA`..`FZ`, `GA`..
+
+- **Issuer**: Polícia Federal — <https://www.gov.br/pf/pt-br>
+- **Composition**: 2 letters + 6 digits
+- **Visual format**: 8 contiguous chars
+
+### Algorithm
+
+None on the printed number. The MRZ field is the printed 8 chars right-padded
+with one `<` filler; MRZ check digit lives in `algorithms/icao-9303.ts`.
+
+### Confidence
+
+`moderate` — consistent across KYC vendors; PF has not published a public
+format spec.
+
+### Sources
+
+- Wikipedia, *Brazilian passport*: <https://en.wikipedia.org/wiki/Brazilian_passport>
+- Polícia Federal: <https://www.gov.br/pf/pt-br>

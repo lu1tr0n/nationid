@@ -12,14 +12,23 @@
  *   - 1 digit:  dígito de controlo do documento (full 12-char check)
  *
  * Check digit:
- *   - The full 12-char document check uses ISO/IEC 7064 MOD 11-2.
- *   - The official IRN spec is not openly published in a form that lets us
- *     guarantee parity with all field versions.
+ *   - The full 12-char document check uses ISO/IEC 7064 MOD 37,2 over the
+ *     12-char document number with the alphabet `0..9 A..Z` (values 0..35).
+ *     IRN publishes a partial spec at
+ *     <https://www.autenticacao.gov.pt/documents/20126/0/Validação+de+Número+de+Documento+do+Cartão+de+Cidadão+(1).pdf>
+ *     and `AfonsoFGarcia/Portuguese-ID-Validator` is the most-mature
+ *     reference implementation.
+ *   - The audit (`coverage-audit-2026-05-10.md`) flags that the IRN PDF
+ *     itself acknowledges the trailing DV depends on a per-version
+ *     constant we cannot reproduce reliably without an in-country
+ *     contributor cross-checking against current cards.
  *
  * Confidence: low. The library validates **format only** (regex + charset).
  * Callers needing strict checksum verification should use the IRN's
  * authoritative web service. Promotion to moderate/high confidence requires
- * an in-country contributor to confirm the algorithm against current cards.
+ * an in-country contributor to confirm the ISO/IEC 7064 MOD 37,2 application
+ * (and the version-constant handling) against ≥50 real CCs and to record
+ * the cross-validation in `docs/CROSS_VALIDATION.md`.
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";

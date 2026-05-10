@@ -10,18 +10,22 @@
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
 import { cedulaSpec } from "./cedula.ts";
+import { passportSpec } from "./passport.ts";
 import { rucSpec } from "./ruc.ts";
 
-export { cedulaSpec, rucSpec };
+export { cedulaSpec, passportSpec, rucSpec };
 
 const SPECS = {
   EC_CEDULA: cedulaSpec,
   EC_RUC: rucSpec,
+  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
+  // `EC_PASAPORTE` after all v0.5 agents complete.
+  EC_PASAPORTE: passportSpec,
 } as const;
 
 export type ECDocumentType = keyof typeof SPECS;
 
-type ShortCode = "CEDULA" | "RUC";
+type ShortCode = "CEDULA" | "RUC" | "PASAPORTE";
 
 /** Country-scoped validate: pass either `EC_CEDULA` or just `CEDULA`. */
 export function validate(code: ECDocumentType | ShortCode, input: string): boolean {
@@ -43,12 +47,13 @@ export function parse(code: ECDocumentType | ShortCode, input: string): ParseRes
 function resolveSpec(code: ECDocumentType | ShortCode): DocumentSpec {
   if (code === "CEDULA") return cedulaSpec;
   if (code === "RUC") return rucSpec;
+  if (code === "PASAPORTE") return passportSpec;
   return SPECS[code];
 }
 
 export const ecBundle: CountryDocumentBundle = {
   country: "EC",
-  personal: [cedulaSpec],
+  personal: [cedulaSpec, passportSpec],
   // RUC for naturales reuses cédula DV; expose cédula as a tax option too.
   tax: [rucSpec, cedulaSpec],
   defaultPersonal: "EC_CEDULA",

@@ -121,7 +121,7 @@ Personal identification card issued by the Instituto dos Registos e do Notariado
 
 ### Algorithm
 
-The full 12-character document checksum is reportedly an ISO/IEC 7064 MOD 11-2 over the 11 leading characters with letters mapped `A=10..Z=35`, but the IRN does **not** publish a machine-validatable spec, and open-source implementations diverge in detail. The library validates **format only** (regex + charset) and explicitly flags this as low-confidence so callers can choose to layer their own checksum or fall back to the IRN web service.
+The full 12-character document checksum is reportedly **ISO/IEC 7064 MOD 37,2** over the 12-char document number with the alphabet `0..9 A..Z` (values 0..35). IRN publishes a partial spec PDF at <https://www.autenticacao.gov.pt/documents/20126/0/Validação+de+Número+de+Documento+do+Cartão+de+Cidadão+(1).pdf> and `AfonsoFGarcia/Portuguese-ID-Validator` is the most-mature reference implementation. However, the IRN PDF acknowledges that the trailing DV depends on a per-version constant we cannot reproduce reliably without an in-country contributor cross-checking against current cards, and the v0.5 coverage audit (`coverage-audit-2026-05-10.md`) recommended NOT shipping the algorithm yet. The library therefore validates **format only** (regex + charset) and flags this as low-confidence so callers can layer their own checksum or fall back to the IRN web service.
 
 ### Sources
 
@@ -151,3 +151,31 @@ invalid (format):
 ### Recent reforms
 
 - The CC has gone through several version letters (`ZZ`, `AA`, `BC`, etc.) without changing the structural layout.
+
+---
+
+## `PT_PASAPORTE` — Passaporte
+
+### Overview
+
+Travel document issued by the Instituto dos Registos e do Notariado (IRN);
+SEF replaced by AIMA in 2023, IRN issues passports since 2006. Format is 1
+letter + 6 digits (7 chars).
+
+- **Issuer**: IRN
+- **Composition**: 1 letter + 6 digits
+- **Visual format**: 7 contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`moderate` — multiple agreeing secondary sources.
+
+### Sources
+
+- Microsoft Purview, *Portugal passport number*: <https://learn.microsoft.com/en-us/purview/sit-defn-portugal-passport-number>
+- Wikipedia, *Portuguese passport*: <https://en.wikipedia.org/wiki/Portuguese_passport>

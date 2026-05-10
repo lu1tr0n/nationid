@@ -120,3 +120,30 @@ invalid:
 - Naturales: their cédula is the first 10 digits of their RUC; the suffix `001` denotes the matriz.
 - Sociedad pública RUCs always carry `0` at position 10 (1-indexed); position 9 carries the verifier.
 - `confidence: "high"`: SRI publishes the algorithm in its instructive and the formula matches mature libraries (`cedula-ec`, `python-stdnum stdnum.ec.ruc`).
+
+---
+
+## `EC_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Ministerio de Relaciones Exteriores y Movilidad
+Humana. Andean Community design. Numbers reported as 9 chars alphanumeric,
+often with letter prefix `A` or numeric-only.
+
+- **Issuer**: Ministerio de Relaciones Exteriores y Movilidad Humana
+- **Composition**: 8-9 alphanumeric (lenient)
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low`.
+
+### Sources
+
+- Wikipedia, *Ecuadorian passport*: <https://en.wikipedia.org/wiki/Ecuadorian_passport>

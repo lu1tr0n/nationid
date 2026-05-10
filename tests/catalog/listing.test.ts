@@ -21,7 +21,16 @@ describe("listDocuments — country + locale", () => {
     const docs = listDocuments("MX", "es");
     const codes = docs.map((d) => d.code).sort();
     expect(codes).toEqual(
-      (["MX_CLAVE_ELECTOR", "MX_CURP", "MX_RFC_PF", "MX_RFC_PM"] as DocumentTypeCode[]).sort(),
+      (
+        [
+          "MX_CLAVE_ELECTOR",
+          "MX_CURP",
+          "MX_NSS",
+          "MX_PASAPORTE",
+          "MX_RFC_PF",
+          "MX_RFC_PM",
+        ] as DocumentTypeCode[]
+      ).sort(),
     );
 
     const curp = docs.find((d) => d.code === "MX_CURP");
@@ -130,7 +139,7 @@ describe("listDocumentsByPurpose — cross-country filter", () => {
     const docs = listDocumentsByPurpose("social_security", "en");
     const codes = docs.map((d) => d.code).sort();
     expect(codes).toEqual(
-      (["AR_CUIL", "BR_PIS", "CA_SIN", "ES_NUSS", "US_SSN"] as DocumentTypeCode[]).sort(),
+      (["AR_CUIL", "BR_PIS", "CA_SIN", "ES_NUSS", "MX_NSS", "US_SSN"] as DocumentTypeCode[]).sort(),
     );
   });
 

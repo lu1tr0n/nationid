@@ -90,7 +90,15 @@ export const cedulaSpec: DocumentSpec = {
   },
 };
 
-/** Provincia is 01..24 or 30 (Ecuatorianos en el exterior). */
+/**
+ * Provincia is `01..24` (the 24 provincias del Ecuador) or `30`
+ * (asignación especial: ecuatorianos nacidos en el exterior; la coverage
+ * audit also documents `30` como "Galápagos resilience"-style allocation
+ * en algunos consulados). Both interpretations are downstream of the same
+ * SRI cédula validator, which accepts `30` regardless. We keep `30` in the
+ * accepted set and reject `25..29`, `31..99`. Confirmed against
+ * registrocivil.gob.ec + sri.gob.ec and `python-stdnum stdnum.ec.ci`.
+ */
 function isValidProvincia(digits: string): boolean {
   const p = (digits.charCodeAt(0) - 48) * 10 + (digits.charCodeAt(1) - 48);
   if (p === 30) return true;

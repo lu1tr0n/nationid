@@ -340,3 +340,59 @@ describe("US — EIN", () => {
     });
   });
 });
+
+describe("US — Passport (US_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts NGP format (1 letter + 8 digits)", () => {
+      expect(validate("PASAPORTE", "A12345678")).toBe(true);
+      expect(validate("PASAPORTE", "Z99999999")).toBe(true);
+    });
+
+    it("accepts legacy 9-digit format", () => {
+      expect(validate("PASAPORTE", "123456789")).toBe(true);
+      expect(validate("PASAPORTE", "000000001")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "A1234567")).toBe(false); // too short
+      expect(validate("PASAPORTE", "A123456789")).toBe(false); // too long
+      expect(validate("PASAPORTE", "12345678A")).toBe(false); // letter at end
+      expect(validate("PASAPORTE", "AB1234567")).toBe(false); // 2 letters
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "a12345678")).toBe(true);
+    });
+
+    it("accepts both fully-qualified and short codes", () => {
+      expect(validate("US_PASAPORTE", "A12345678")).toBe(true);
+      expect(validate("PASSPORT", "A12345678")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "a12345678");
+      expect(r).toEqual({
+        ok: true,
+        code: "US_PASAPORTE",
+        normalized: "A12345678",
+        formatted: "A12345678",
+        confidence: "moderate",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "12345678");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "A123456789");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

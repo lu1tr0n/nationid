@@ -276,3 +276,55 @@ describe("GT — NIT", () => {
     });
   });
 });
+
+describe("GT — Pasaporte (GT_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (8-9 alphanumeric)", () => {
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "A1234567X")).toBe(true);
+      expect(validate("PASAPORTE", "GT1234567")).toBe(true);
+      expect(validate("PASAPORTE", "00000001")).toBe(true);
+      expect(validate("PASAPORTE", " A1234567X ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "1234567")).toBe(false);
+      expect(validate("PASAPORTE", "1234567890")).toBe(false);
+      expect(validate("PASAPORTE", "@@@@@@@@")).toBe(false);
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "a1234567")).toBe(true);
+    });
+
+    it("accepts the GT_PASAPORTE fully-qualified code", () => {
+      expect(validate("GT_PASAPORTE", "12345678")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "a1234567");
+      expect(r).toEqual({
+        ok: true,
+        code: "GT_PASAPORTE",
+        normalized: "A1234567",
+        formatted: "A1234567",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "1234567");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "1234567890");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

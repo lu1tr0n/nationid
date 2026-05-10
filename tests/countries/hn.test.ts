@@ -232,3 +232,52 @@ describe("HN — RTN", () => {
     });
   });
 });
+
+describe("HN — Pasaporte (HN_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (lenient)", () => {
+      expect(validate("PASAPORTE", "1234567")).toBe(true);
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "123456789")).toBe(true);
+      expect(validate("PASAPORTE", "E1234567")).toBe(true);
+      expect(validate("PASAPORTE", " A1234567 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "123456")).toBe(false); // too short
+      expect(validate("PASAPORTE", "A1234567890")).toBe(false); // too long
+      expect(validate("PASAPORTE", "AB1234567")).toBe(false); // 2 letters
+      expect(validate("PASAPORTE", "@@@@@@@@")).toBe(false);
+    });
+
+    it("accepts the HN_PASAPORTE fully-qualified code", () => {
+      expect(validate("HN_PASAPORTE", "12345678")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "e1234567");
+      expect(r).toEqual({
+        ok: true,
+        code: "HN_PASAPORTE",
+        normalized: "E1234567",
+        formatted: "E1234567",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "12345678901");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

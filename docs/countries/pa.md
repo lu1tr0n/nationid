@@ -93,7 +93,9 @@ form B: \d{1,4}-\d{1,4}-\d{1,6}            (jurídica)
 suffix: optional " DV NN" stripped during normalize
 ```
 
-DGI computes a DV (mod-11 weighted) but the formula is not publicly normalized. Community libraries do not converge on a single algorithm. We strip and ignore the DV during normalization.
+DGI exposes an interactive DV calculator at <https://dgi.mef.gob.pa/Dv> but does **not** publish the underlying mod-11 formula in machine-readable form. Two independent community implementations (`apple314159/panama-dv`, `juancorradine/Panama-RUC-DV-Calculator`) diverge in edge cases — most notably the alphabetic prefixes (`PE`/`E`/`N`) and the padding rules between natural and jurídica forms. The v0.5 coverage audit (`nationid-research/coverage-audit-2026-05-10.md`) explicitly recommended NOT shipping a DV check until the algorithm is normalized.
+
+We therefore strip and ignore the DV during normalization. Promotion to `moderate` requires either DGI publishing the algorithm or cross-validation across two reference impls on ≥100 real RUCs (`docs/CROSS_VALIDATION.md`).
 
 ### Sources
 
@@ -122,3 +124,30 @@ None affecting format.
 ### Open questions
 
 - The mod-11 weight vector for the DV is not publicly documented. Promoting `PA_RUC` to `moderate` requires either an official DGI publication or convergence across two independent mature libraries.
+
+---
+
+## `PA_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Autoridad de Pasaportes de Panamá (Ministerio
+de Relaciones Exteriores). Format is typically 8 digits, occasionally with a
+2-letter prefix such as `PA`.
+
+- **Issuer**: Autoridad de Pasaportes de Panamá — <https://www.pasaportes.gob.pa/>
+- **Composition**: 0-2 letters + 6-8 digits (lenient)
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low`.
+
+### Sources
+
+- Autoridad de Pasaportes: <https://www.pasaportes.gob.pa/>

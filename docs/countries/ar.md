@@ -126,3 +126,30 @@ invalid (checksum):
 ### Open questions
 
 None. The `50` prefix is the documented CDI assignment per RG AFIP 3995/2017; algorithm parity with CUIT is reaffirmed in the same regulation.
+
+---
+
+## `AR_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by RENAPER. Legacy issuances used a 9-digit numeric
+sequential number; post-2012 passports use a pseudo-random alphanumeric of
+similar length (8-9 chars).
+
+- **Issuer**: RENAPER — <https://www.argentina.gob.ar/renaper>
+- **Composition**: 8-9 alphanumeric
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — RENAPER has not published the post-2012 alphanumeric format spec.
+
+### Sources
+
+- Wikipedia, *Argentine passport*: <https://en.wikipedia.org/wiki/Argentine_passport>

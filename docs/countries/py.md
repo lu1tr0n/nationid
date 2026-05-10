@@ -76,3 +76,30 @@ invalid (checksum):
 
 - The DV branch `r <= 1 → 0` (vs `r > 1 → 11 - r`) avoids the `dv ∈ {10, 11}` collision typical of mod-11 schemes.
 - `confidence: "moderate"` because SET does not publish a single canonical algorithm document; the formula is replicated across vendor tools and matches SET-aligned issuers.
+
+---
+
+## `PY_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Departamento de Identificaciones de la Policía
+Nacional. Legacy issues are 6-8 digit numeric; biometric passports may use
+letter + digits.
+
+- **Issuer**: Policía Nacional — <https://www.policianacional.gov.py/>
+- **Composition**: 6-9 alphanumeric (lenient)
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — no first-party publication.
+
+### Sources
+
+- Policía Nacional: <https://www.policianacional.gov.py/>

@@ -180,6 +180,17 @@ describe("VE — RIF", () => {
     it("accepts the VE_RIF fully-qualified code", () => {
       expect(validate("VE_RIF", "J-12345678-4")).toBe(true);
     });
+
+    it("ships the SENIAT mod-11 with confidence moderate (audit decision v0.5)", () => {
+      // The algorithm matches three independent community references
+      // (rif.js, validador-rif, mantrax314/verificador-rif-seniat) but
+      // SENIAT does not publish the formula in writing. Per the project's
+      // confidence policy, `high` requires "official source AND mature
+      // library", so we hold at `moderate`.
+      const r = parse("RIF", "J-12345678-4");
+      expect(r.ok).toBe(true);
+      if (r.ok) expect(r.confidence).toBe("moderate");
+    });
   });
 
   describe("format", () => {
@@ -270,6 +281,55 @@ describe("VE — RIF", () => {
       expect(rifHolderType("")).toBe("unknown");
       expect(rifHolderType("X-12345678-0")).toBe("unknown");
       expect(rifHolderType("J-12345")).toBe("unknown");
+    });
+  });
+});
+
+describe("VE — Pasaporte (VE_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (8-9 digits)", () => {
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "123456789")).toBe(true);
+      expect(validate("PASAPORTE", "00000001")).toBe(true);
+      expect(validate("PASAPORTE", "999999999")).toBe(true);
+      expect(validate("PASAPORTE", " 123456789 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "1234567")).toBe(false); // too short
+      expect(validate("PASAPORTE", "1234567890")).toBe(false); // too long
+      expect(validate("PASAPORTE", "A12345678")).toBe(false); // letter not allowed
+      expect(validate("PASAPORTE", "@@@@@@@@")).toBe(false);
+    });
+
+    it("accepts the VE_PASAPORTE fully-qualified code", () => {
+      expect(validate("VE_PASAPORTE", "12345678")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "12345678");
+      expect(r).toEqual({
+        ok: true,
+        code: "VE_PASAPORTE",
+        normalized: "12345678",
+        formatted: "12345678",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "1234567");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "1234567890");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
     });
   });
 });

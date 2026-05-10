@@ -202,6 +202,17 @@ describe("PT — CC", () => {
     it("accepts the PT_CC fully-qualified code", () => {
       expect(validate("PT_CC", "123456789ZZ4")).toBe(true);
     });
+
+    it("does NOT enforce ISO/IEC 7064 MOD 37,2 DV (format-only, audit decision v0.5)", () => {
+      // The IRN PDF references ISO/IEC 7064 MOD 37,2 but the trailing DV
+      // depends on a per-version constant that cannot be reproduced
+      // reliably without in-country cross-validation. Per
+      // `coverage-audit-2026-05-10.md` we keep confidence `low` and accept
+      // arbitrary trailing-digit DVs as long as the structure matches.
+      expect(validate("CC", "123456789ZZ0")).toBe(true);
+      expect(validate("CC", "123456789ZZ5")).toBe(true);
+      expect(validate("CC", "123456789ZZ9")).toBe(true);
+    });
   });
 
   describe("format", () => {
@@ -268,6 +279,59 @@ describe("PT — CC", () => {
       const r = parse("CC", "123456789ZZA");
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.reason.kind).toBe("invalid_format");
+    });
+  });
+});
+
+describe("PT — Passaporte (PT_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (1 letter + 6 digits)", () => {
+      expect(validate("PASAPORTE", "C123456")).toBe(true);
+      expect(validate("PASAPORTE", "P000001")).toBe(true);
+      expect(validate("PASAPORTE", "Z999999")).toBe(true);
+      expect(validate("PASAPORTE", "A123456")).toBe(true);
+      expect(validate("PASAPORTE", " C123456 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "C12345")).toBe(false); // too short
+      expect(validate("PASAPORTE", "C1234567")).toBe(false); // too long
+      expect(validate("PASAPORTE", "AB12345")).toBe(false); // 2 letters
+      expect(validate("PASAPORTE", "1234567")).toBe(false); // no letter
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "c123456")).toBe(true);
+    });
+
+    it("accepts the PT_PASAPORTE fully-qualified code", () => {
+      expect(validate("PT_PASAPORTE", "C123456")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "c123456");
+      expect(r).toEqual({
+        ok: true,
+        code: "PT_PASAPORTE",
+        normalized: "C123456",
+        formatted: "C123456",
+        confidence: "moderate",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "C12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "C1234567");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
     });
   });
 });

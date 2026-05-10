@@ -29,8 +29,14 @@
  *
  * Confidence: moderate. SENIAT does not publish the algorithm in a
  * machine-readable form; the formula is documented in community libraries
- * (`rif.js`, `validador-rif`) and consistently produces results that match
- * SENIAT's online verification portal.
+ * (`rif.js`, `validador-rif`, `mantrax314/verificador-rif-seniat`) and
+ * consistently produces results that match SENIAT's online verification
+ * portal. The audit (`coverage-audit-2026-05-10.md`) confirmed the
+ * algorithm shipped here matches all three reference implementations on
+ * the regression vectors in `tests/countries/ve.test.ts`. Promotion to
+ * `high` is held until SENIAT publishes the formula in writing, since
+ * the project policy requires "official source AND mature library
+ * agree" for high confidence.
  */
 
 import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
