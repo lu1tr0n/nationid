@@ -9,6 +9,8 @@
 | `CO_TI` | personal (menor) | 10-11 digits | none | low |
 | `CO_PASAPORTE` | personal | 6-12 alphanumeric | none | unconfirmed |
 | `CO_NIT` | tax | 9-10 base + 1 DV | mod-11 (DIAN) | high |
+| `CO_PEP` | personal | 15 digits | none | low |
+| `CO_PPT` | personal | 7-11 alphanumeric | none | low |
 
 ## `CO_CC` — Cédula de Ciudadanía
 
@@ -225,3 +227,88 @@ invalid (checksum):
 ### Open questions
 
 - None. DIAN documents the algorithm, multiple mature libraries implement it identically.
+
+---
+
+## `CO_PEP` — Permiso Especial de Permanencia
+
+### Overview
+
+Documento migratorio emitido por Migración Colombia para nacionales venezolanos (creado por Resolución 5797/2017). Reemplazado progresivamente por el PPT (`CO_PPT`) desde 2021, pero los PEP vigentes siguen presentándose en KYC bancario (Bancolombia, Davivienda, Nequi, Daviplata).
+
+- **Issuer**: Migración Colombia — <https://www.migracioncolombia.gov.co/>
+- **Composition**: 15 dígitos secuenciales, sin separadores
+- **Visual format**: 15 dígitos contiguos
+
+### Algorithm
+
+**Ninguno**. Migración Colombia no publica un algoritmo de verificación. La verificación se hace en línea contra su servicio de consulta.
+
+### Sources
+
+- Migración Colombia: <https://www.migracioncolombia.gov.co/>
+- Resolución 5797/2017 (Ministerio de Relaciones Exteriores).
+- Banco de la República — Circular SEDPE (mandato KYC).
+
+### Synthetic test vectors
+
+```
+valid:
+  - 100200300400500
+  - 999888777666555
+  - 000111222333444    (leading zero permitido)
+  - 123456789012345
+
+invalid (format):
+  - 12345678901234     (14 dígitos — corto)
+  - 1234567890123456   (16 dígitos — largo)
+  - ABCDEFGHIJKLMNO    (no dígitos)
+```
+
+### Open questions
+
+- Migración Colombia no publica el rango de prefijos asignados por lote. Si se documenta en futuras circulares, se podría refinar la spec (ver `nationid-research/document-gaps-2026-05-09.md` § "CO_PEP / CO_PPT").
+
+---
+
+## `CO_PPT` — Permiso por Protección Temporal
+
+### Overview
+
+Documento migratorio creado por el Decreto 216/2021 dentro del Estatuto Temporal de Protección para Migrantes Venezolanos (ETPV); reemplaza progresivamente al PEP. Mandatorio para KYC bancario en CO desde la Circular SEDPE del Banco de la República.
+
+- **Issuer**: Migración Colombia — <https://www.migracioncolombia.gov.co/visas-permisos/permiso-por-proteccion-temporal-ppt>
+- **Composition**: 7-11 caracteres alfanuméricos en mayúsculas. Migración Colombia ha emitido lotes con formatos numéricos puros y lotes con prefijo alfanumérico, sin publicar el catálogo completo.
+- **Visual format**: caracteres contiguos, sin separadores
+
+### Algorithm
+
+**Ninguno**. Migración Colombia no publica un algoritmo de verificación.
+
+### Sources
+
+- Migración Colombia: <https://www.migracioncolombia.gov.co/visas-permisos/permiso-por-proteccion-temporal-ppt>
+- Decreto 216/2021 (Estatuto Temporal de Protección para Migrantes Venezolanos).
+- Banco de la República — Circular SEDPE.
+
+### Synthetic test vectors
+
+```
+valid:
+  - 12345678            (8 dígitos — lote numérico común)
+  - PPT123456           (lote con prefijo alfanumérico)
+  - 1234567890          (10 dígitos)
+  - 12345678901         (11 chars — boundary superior)
+  - 1234567             (7 chars — boundary inferior)
+  - ABC1234XY           (mezcla alfanumérica)
+
+invalid (format):
+  - 123456              (6 chars — corto)
+  - 123456789012        (12 chars — largo)
+  - AB$%                (chars especiales se eliminan, residual corto)
+```
+
+### Open questions
+
+- El catálogo completo de formatos por lote no se publica. La spec valida el superset 7-11 alfanuméricos hasta que Migración Colombia documente reglas más estrictas.
+- Confidence se mantiene en `low` hasta que aparezca un algoritmo o validador oficial.

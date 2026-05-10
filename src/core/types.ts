@@ -35,15 +35,21 @@ export type DocumentTypeCode =
   | "MX_CURP"
   | "MX_RFC_PF"
   | "MX_RFC_PM"
+  | "MX_CLAVE_ELECTOR"
   // Colombia
   | "CO_CC"
   | "CO_CE"
   | "CO_TI"
   | "CO_PASAPORTE"
   | "CO_NIT"
+  | "CO_PEP"
+  | "CO_PPT"
   // Brasil
   | "BR_CPF"
   | "BR_CNPJ"
+  | "BR_CNH"
+  | "BR_TITULO_ELEITOR"
+  | "BR_PIS"
   // Perú
   | "PE_DNI"
   | "PE_CE"
@@ -52,6 +58,7 @@ export type DocumentTypeCode =
   | "AR_DNI"
   | "AR_CUIL"
   | "AR_CUIT"
+  | "AR_CDI"
   // Chile
   | "CL_RUT"
   // República Dominicana
@@ -71,6 +78,7 @@ export type DocumentTypeCode =
   | "ES_DNI"
   | "ES_NIE"
   | "ES_NIF_PJ"
+  | "ES_NUSS"
   // United States
   | "US_SSN"
   | "US_ITIN"

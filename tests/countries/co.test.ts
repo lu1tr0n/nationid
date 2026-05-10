@@ -341,3 +341,183 @@ describe("CO — NIT", () => {
     });
   });
 });
+
+// CO_PEP — Permiso Especial de Permanencia. 15 sequential digits, no
+// checksum. Migración Colombia does not publish a verification algorithm.
+// All vectors are SYNTHETIC.
+//   - 100200300400500
+//   - 999888777666555
+//   - 000111222333444 (leading-zero is valid — PEP allows it)
+//   - 123456789012345 (sequential)
+//   - 555555555555555 (uniform — accepted by spec; no all-same guard)
+
+describe("CO — PEP", () => {
+  describe("validate", () => {
+    it("accepts valid PEP numbers (15 digits, raw and with separators)", () => {
+      expect(validate("PEP", "100200300400500")).toBe(true);
+      expect(validate("PEP", "999888777666555")).toBe(true);
+      expect(validate("PEP", "000111222333444")).toBe(true); // leading zero ok
+      expect(validate("PEP", "123456789012345")).toBe(true);
+      expect(validate("PEP", "555555555555555")).toBe(true);
+      expect(validate("PEP", " 100-200-300-400-500 ")).toBe(true); // separators stripped
+    });
+
+    it("rejects malformed input (length, charset)", () => {
+      expect(validate("PEP", "")).toBe(false);
+      expect(validate("PEP", "12345678901234")).toBe(false); // 14 digits — too short
+      expect(validate("PEP", "1234567890123456")).toBe(false); // 16 digits — too long
+      expect(validate("PEP", "ABCDEFGHIJKLMNO")).toBe(false); // letters strip to empty
+      expect(validate("PEP", "1234567890ABCDE")).toBe(false); // alphanumeric strips to 10
+    });
+
+    it("accepts the CO_PEP fully-qualified code", () => {
+      expect(validate("CO_PEP", "100200300400500")).toBe(true);
+    });
+  });
+
+  describe("format", () => {
+    it("returns 15 contiguous digits when valid", () => {
+      expect(format("PEP", "100200300400500")).toBe("100200300400500");
+      expect(format("PEP", "100-200-300-400-500")).toBe("100200300400500");
+    });
+
+    it("returns input unchanged for invalid length", () => {
+      expect(format("PEP", "1234")).toBe("1234");
+    });
+  });
+
+  describe("normalize", () => {
+    it("strips separators and non-digits", () => {
+      expect(normalize("PEP", "100-200-300-400-500")).toBe("100200300400500");
+      expect(normalize("PEP", "100 200 300 400 500")).toBe("100200300400500");
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok with normalized + formatted on success", () => {
+      const r = parse("PEP", "100200300400500");
+      expect(r).toEqual({
+        ok: true,
+        code: "CO_PEP",
+        normalized: "100200300400500",
+        formatted: "100200300400500",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=empty on empty input", () => {
+      const r = parse("PEP", "");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("empty");
+    });
+
+    it("returns kind=too_short for fewer than 15 digits", () => {
+      const r = parse("PEP", "12345678901234");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for more than 15 digits", () => {
+      const r = parse("PEP", "1234567890123456");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+
+    it("never returns invalid_checksum (no DV in spec)", () => {
+      for (const input of ["", "abc", "1234567890ABCDE"]) {
+        const r = parse("PEP", input);
+        if (!r.ok) {
+          expect(r.reason.kind).not.toBe("invalid_checksum");
+        }
+      }
+    });
+  });
+});
+
+// CO_PPT — Permiso por Protección Temporal. 7-11 alphanumeric uppercase, no
+// checksum. Variable format per Migración Colombia issuance batches.
+// All vectors are SYNTHETIC.
+//   - 12345678         (8 digits — common numeric batch)
+//   - PPT123456        (alphanumeric prefix batch)
+//   - 1234567890       (10 digits — research-doc-cited length)
+//   - 12345678901      (11 digits — max boundary)
+//   - 1234567          (7 digits — min boundary)
+//   - ABC1234XY        (mixed alphanumeric)
+
+describe("CO — PPT", () => {
+  describe("validate", () => {
+    it("accepts valid PPT numbers (7-11 alphanumeric)", () => {
+      expect(validate("PPT", "12345678")).toBe(true);
+      expect(validate("PPT", "PPT123456")).toBe(true);
+      expect(validate("PPT", "1234567890")).toBe(true);
+      expect(validate("PPT", "12345678901")).toBe(true); // max
+      expect(validate("PPT", "1234567")).toBe(true); // min
+      expect(validate("PPT", "ABC1234XY")).toBe(true);
+      expect(validate("PPT", "abc1234xy")).toBe(true); // normalizes upper
+      expect(validate("PPT", " PPT-123-456 ")).toBe(true); // separators stripped
+    });
+
+    it("rejects malformed input (length, charset)", () => {
+      expect(validate("PPT", "")).toBe(false);
+      expect(validate("PPT", "123456")).toBe(false); // too short
+      expect(validate("PPT", "123456789012")).toBe(false); // too long
+      expect(validate("PPT", "AB$%")).toBe(false); // special chars stripped, residual too short
+      expect(validate("PPT", "@@@@@@@@")).toBe(false); // strips to empty
+    });
+
+    it("accepts the CO_PPT fully-qualified code", () => {
+      expect(validate("CO_PPT", "PPT123456")).toBe(true);
+    });
+  });
+
+  describe("format", () => {
+    it("uppercases and strips separators", () => {
+      expect(format("PPT", "ppt123456")).toBe("PPT123456");
+      expect(format("PPT", "PPT-123-456")).toBe("PPT123456");
+    });
+
+    it("returns input unchanged for invalid length", () => {
+      expect(format("PPT", "AB")).toBe("AB");
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok with normalized + formatted on success", () => {
+      const r = parse("PPT", "ppt123456");
+      expect(r).toEqual({
+        ok: true,
+        code: "CO_PPT",
+        normalized: "PPT123456",
+        formatted: "PPT123456",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=empty on empty input", () => {
+      const r = parse("PPT", "");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("empty");
+    });
+
+    it("returns kind=too_short for fewer than 7 chars", () => {
+      const r = parse("PPT", "ABC123");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for more than 11 chars", () => {
+      const r = parse("PPT", "ABCDEFGHIJKL");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+
+    it("never returns invalid_checksum (no DV in spec)", () => {
+      for (const input of ["", "@@@", "AB"]) {
+        const r = parse("PPT", input);
+        if (!r.ok) {
+          expect(r.reason.kind).not.toBe("invalid_checksum");
+        }
+      }
+    });
+  });
+});

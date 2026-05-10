@@ -327,3 +327,148 @@ describe("MX — RFC Persona Moral", () => {
     });
   });
 });
+
+// MX_CLAVE_ELECTOR — 18 chars: 6 letters + YY + entidad numeric (01..32) + MM
+// + DD + sex (H/M) + 3 digits (correlativo). Format-only with structural
+// rules; INE does not publish a check digit. All vectors below are SYNTHETIC.
+// Canonical layout `LLLLLLYYEEMMDDS###`:
+//   - GMRPRZ85091015H123 → 1985, ent 09 (CDMX), 10/15, H, corr 123
+//   - LPZNVR92151225M407 → 1992, ent 15 (Edo. Méx.), 12/25, M, corr 407
+//   - SNCHGL00140628H012 → 2000, ent 14 (Jalisco), 06/28, H, corr 012
+//   - GVRRRZ75320101M999 → 1975, ent 32 (Zacatecas — boundary), 01/01, M
+//   - HRNNDZ05010715H088 → 2005, ent 01 (Aguascalientes — boundary), 07/15
+//   - PRZGRR68071231H501 → 1968, ent 07 (Chiapas), 12/31, H (day boundary)
+
+describe("MX — Clave de Elector", () => {
+  describe("validate", () => {
+    it("accepts valid synthetic Claves de Elector", () => {
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85091015H123")).toBe(true);
+      expect(validate("CLAVE_ELECTOR", "LPZNVR92151225M407")).toBe(true);
+      expect(validate("CLAVE_ELECTOR", "SNCHGL00140628H012")).toBe(true);
+      expect(validate("CLAVE_ELECTOR", "GVRRRZ75320101M999")).toBe(true);
+      expect(validate("CLAVE_ELECTOR", "HRNNDZ05010715H088")).toBe(true);
+      expect(validate("CLAVE_ELECTOR", "PRZGRR68071231H501")).toBe(true);
+    });
+
+    it("accepts the alternate alias `INE`", () => {
+      expect(validate("INE", "GMRPRZ85091015H123")).toBe(true);
+    });
+
+    it("normalizes lowercase and surrounding whitespace", () => {
+      expect(validate("CLAVE_ELECTOR", "  gmrprz85091015h123  ")).toBe(true);
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ 85091015 H123")).toBe(true);
+    });
+
+    it("rejects malformed input (length, charset, layout)", () => {
+      expect(validate("CLAVE_ELECTOR", "")).toBe(false);
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85091015H12")).toBe(false); // 17 chars
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85091015H1234")).toBe(false); // 19 chars
+      expect(validate("CLAVE_ELECTOR", "GMR1RZ85091015H123")).toBe(false); // letter slot has digit
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ8509101AH123")).toBe(false); // digit slot has letter
+      expect(validate("CLAVE_ELECTOR", "gmrprz85091015h123-X")).toBe(false); // non-alnum trailing breaks length
+    });
+
+    it("rejects invalid sex letter", () => {
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85091015X123")).toBe(false); // X not H/M
+    });
+
+    it("rejects entidad federativa numeric out of range (00 / >32)", () => {
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85001015H123")).toBe(false); // EE=00
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85331015H123")).toBe(false); // EE=33
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85991015H123")).toBe(false); // EE=99
+    });
+
+    it("rejects implausible month/day", () => {
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85091315H123")).toBe(false); // MM=13
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85090015H123")).toBe(false); // MM=00
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85091000H123")).toBe(false); // DD=00
+      expect(validate("CLAVE_ELECTOR", "GMRPRZ85091032H123")).toBe(false); // DD=32
+    });
+
+    it("accepts the MX_CLAVE_ELECTOR fully-qualified code", () => {
+      expect(validate("MX_CLAVE_ELECTOR", "GMRPRZ85091015H123")).toBe(true);
+    });
+  });
+
+  describe("format", () => {
+    it("uppercases and strips separators (always 18 contiguous chars)", () => {
+      expect(format("CLAVE_ELECTOR", "gmrprz85091015h123")).toBe("GMRPRZ85091015H123");
+      expect(format("CLAVE_ELECTOR", "GMRPRZ-85091015-H123")).toBe("GMRPRZ85091015H123");
+    });
+
+    it("returns input unchanged for invalid length", () => {
+      expect(format("CLAVE_ELECTOR", "GMRPRZ")).toBe("GMRPRZ");
+    });
+  });
+
+  describe("normalize", () => {
+    it("strips separators and uppercases", () => {
+      expect(normalize("CLAVE_ELECTOR", "gmrprz 85091015 h123")).toBe("GMRPRZ85091015H123");
+      expect(normalize("CLAVE_ELECTOR", "GMRPRZ-85091015-H123")).toBe("GMRPRZ85091015H123");
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok with normalized + formatted on success", () => {
+      const r = parse("CLAVE_ELECTOR", "GMRPRZ85091015H123");
+      expect(r).toEqual({
+        ok: true,
+        code: "MX_CLAVE_ELECTOR",
+        normalized: "GMRPRZ85091015H123",
+        formatted: "GMRPRZ85091015H123",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=empty on empty input", () => {
+      const r = parse("CLAVE_ELECTOR", "");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("empty");
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("CLAVE_ELECTOR", "GMRPRZ85091015H12");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("CLAVE_ELECTOR", "GMRPRZ85091015H1234");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+
+    it("returns kind=invalid_format for bad layout (letter/digit slots)", () => {
+      const r = parse("CLAVE_ELECTOR", "GMR1RZ85091015H123");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("invalid_format");
+    });
+
+    it("returns kind=invalid_format for entidad out of range", () => {
+      const r = parse("CLAVE_ELECTOR", "GMRPRZ85331015H123");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("invalid_format");
+    });
+
+    it("returns kind=invalid_format for implausible month/day", () => {
+      const r1 = parse("CLAVE_ELECTOR", "GMRPRZ85091315H123");
+      expect(r1.ok).toBe(false);
+      if (!r1.ok) expect(r1.reason.kind).toBe("invalid_format");
+      const r2 = parse("CLAVE_ELECTOR", "GMRPRZ85091032H123");
+      expect(r2.ok).toBe(false);
+      if (!r2.ok) expect(r2.reason.kind).toBe("invalid_format");
+    });
+
+    it("never returns invalid_checksum (no DV in the spec)", () => {
+      // Smoke check: even for completely wrong input the result reason.kind
+      // must not be `invalid_checksum`, since `hasCheckDigit: false`.
+      const cases = ["", "ABCDEF", "GMRPRZ85091015X123", "GMRPRZ85331015H123"];
+      for (const input of cases) {
+        const r = parse("CLAVE_ELECTOR", input);
+        if (!r.ok) {
+          expect(r.reason.kind).not.toBe("invalid_checksum");
+        }
+      }
+    });
+  });
+});

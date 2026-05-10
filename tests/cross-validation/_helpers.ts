@@ -175,6 +175,181 @@ export function generateInvalidCnpjs(count: number): string[] {
   return out;
 }
 
+/* ---------- BR CNH (mod-11 dual DV; CONTRAN/DENATRAN) ---------- */
+
+const CNH_W1 = [9, 8, 7, 6, 5, 4, 3, 2, 1] as const;
+const CNH_W2 = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+
+function cnhDVs(body9: string): readonly [number, number] | null {
+  if (body9.length !== 9) return null;
+  let sum1 = 0;
+  for (let i = 0; i < 9; i++) {
+    const w = CNH_W1[i];
+    if (w === undefined) return null;
+    sum1 += (body9.charCodeAt(i) - 48) * w;
+  }
+  const r1 = sum1 % 11;
+  const dv1 = r1 >= 10 ? 0 : r1;
+  const dsc = r1 >= 10 ? 2 : 0;
+  let sum2 = 0;
+  for (let i = 0; i < 9; i++) {
+    const w = CNH_W2[i];
+    if (w === undefined) return null;
+    sum2 += (body9.charCodeAt(i) - 48) * w;
+  }
+  let r2 = (sum2 - dsc) % 11;
+  if (r2 < 0) r2 += 11;
+  const dv2 = r2 >= 10 ? 0 : r2;
+  return [dv1, dv2];
+}
+
+/** Generate `count` valid 11-digit BR CNHs (raw, no separators). */
+export function generateValidCnhs(count: number): string[] {
+  const rng = mulberry32(seedFromString("BR_CNH_VALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body9 = randDigits(rng, 9);
+    if (isAllSame(body9)) continue;
+    const dvs = cnhDVs(body9);
+    if (dvs === null) continue;
+    const [dv1, dv2] = dvs;
+    const full = `${body9}${dv1}${dv2}`;
+    if (isAllSame(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
+/** Generate `count` invalid 11-digit BR CNHs (DV2 flipped by +1 mod 10). */
+export function generateInvalidCnhs(count: number): string[] {
+  const rng = mulberry32(seedFromString("BR_CNH_INVALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body9 = randDigits(rng, 9);
+    if (isAllSame(body9)) continue;
+    const dvs = cnhDVs(body9);
+    if (dvs === null) continue;
+    const [dv1, dv2] = dvs;
+    const badDv2 = (dv2 + 1) % 10;
+    const full = `${body9}${dv1}${badDv2}`;
+    if (isAllSame(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
+/* ---------- BR Título de Eleitor (TSE mod-11 dual DV with SP/MG override) ---------- */
+
+const TITULO_W1 = [2, 3, 4, 5, 6, 7, 8, 9] as const;
+
+/**
+ * Compute Título de Eleitor DVs given an 8-digit body and a 2-digit UF.
+ * Returns null if any input is malformed; the caller guarantees shape.
+ */
+function tituloDVs(body8: string, uf: string): readonly [number, number] | null {
+  if (body8.length !== 8 || uf.length !== 2) return null;
+  let sum1 = 0;
+  for (let i = 0; i < 8; i++) {
+    const w = TITULO_W1[i];
+    if (w === undefined) return null;
+    sum1 += (body8.charCodeAt(i) - 48) * w;
+  }
+  const r1 = sum1 % 11;
+  const dv1 = r1 === 10 ? 0 : r1 === 0 && (uf === "01" || uf === "02") ? 1 : r1;
+  const sum2 = (uf.charCodeAt(0) - 48) * 7 + (uf.charCodeAt(1) - 48) * 8 + dv1 * 9;
+  const r2 = sum2 % 11;
+  const dv2 = r2 === 10 ? 0 : r2 === 0 && (uf === "01" || uf === "02") ? 1 : r2;
+  return [dv1, dv2];
+}
+
+/** Generate `count` valid 12-digit Títulos with UF spread across 01..28. */
+export function generateValidTitulos(count: number): string[] {
+  const rng = mulberry32(seedFromString("BR_TITULO_VALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body8 = randDigits(rng, 8);
+    if (isAllSame(body8)) continue;
+    const ufNum = 1 + randInt(rng, 28);
+    const uf = String(ufNum).padStart(2, "0");
+    const dvs = tituloDVs(body8, uf);
+    if (dvs === null) continue;
+    const [dv1, dv2] = dvs;
+    const full = `${body8}${uf}${dv1}${dv2}`;
+    if (isAllSame(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
+/** Generate `count` invalid 12-digit Títulos (last DV flipped). */
+export function generateInvalidTitulos(count: number): string[] {
+  const rng = mulberry32(seedFromString("BR_TITULO_INVALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body8 = randDigits(rng, 8);
+    if (isAllSame(body8)) continue;
+    const ufNum = 1 + randInt(rng, 28);
+    const uf = String(ufNum).padStart(2, "0");
+    const dvs = tituloDVs(body8, uf);
+    if (dvs === null) continue;
+    const [dv1, dv2] = dvs;
+    const badDv2 = (dv2 + 1) % 10;
+    const full = `${body8}${uf}${dv1}${badDv2}`;
+    if (isAllSame(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
+/* ---------- BR PIS / PASEP / NIT / NIS (single mod-11 DV; Caixa) ---------- */
+
+const PIS_W = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2] as const;
+
+function pisDV(body10: string): number {
+  if (body10.length !== 10) return -1;
+  let sum = 0;
+  for (let i = 0; i < 10; i++) {
+    const w = PIS_W[i];
+    if (w === undefined) return -1;
+    sum += (body10.charCodeAt(i) - 48) * w;
+  }
+  const r = sum % 11;
+  return r < 2 ? 0 : 11 - r;
+}
+
+/** Generate `count` valid 11-digit BR PIS numbers. */
+export function generateValidPis(count: number): string[] {
+  const rng = mulberry32(seedFromString("BR_PIS_VALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body10 = randDigits(rng, 10);
+    if (isAllSame(body10)) continue;
+    const dv = pisDV(body10);
+    if (dv < 0 || dv > 9) continue;
+    const full = `${body10}${dv}`;
+    if (isAllSame(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
+/** Generate `count` invalid 11-digit BR PIS numbers (DV flipped by +1 mod 10). */
+export function generateInvalidPis(count: number): string[] {
+  const rng = mulberry32(seedFromString("BR_PIS_INVALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body10 = randDigits(rng, 10);
+    if (isAllSame(body10)) continue;
+    const dv = pisDV(body10);
+    if (dv < 0 || dv > 9) continue;
+    const badDv = (dv + 1) % 10;
+    const full = `${body10}${badDv}`;
+    if (isAllSame(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
 /* ---------- AR CUIT ---------- */
 
 /**

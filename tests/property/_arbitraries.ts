@@ -397,6 +397,165 @@ function generateValidPeCes(count: number): string[] {
   return out;
 }
 
+/* MX_CLAVE_ELECTOR — 18 chars: 6 letters + YY + entidad(01..32) + MM + DD + sex + 3 digits. */
+function generateValidClaveElectors(count: number): string[] {
+  const rng = mulberry32(seedFromString("PROP_MX_CLAVE_ELECTOR"));
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const out: string[] = [];
+  while (out.length < count) {
+    let prefix = "";
+    for (let i = 0; i < 6; i++) prefix += letters.charAt(randInt(rng, letters.length));
+    const yy = randDigits(rng, 2);
+    // Entidad numeric 01..32.
+    const entidad = String(1 + randInt(rng, 32)).padStart(2, "0");
+    // Month 01..12.
+    const mm = String(1 + randInt(rng, 12)).padStart(2, "0");
+    // Day 01..28 (avoid month-end edge cases — spec only checks <= 31, but 28
+    // is universally valid across all months).
+    const dd = String(1 + randInt(rng, 28)).padStart(2, "0");
+    const sex = rng() < 0.5 ? "H" : "M";
+    const homo = randDigits(rng, 3);
+    out.push(prefix + yy + entidad + mm + dd + sex + homo);
+  }
+  return out;
+}
+
+/* CO_PEP — 15 digits, no checksum. */
+function generateValidCoPeps(count: number): string[] {
+  const rng = mulberry32(seedFromString("PROP_CO_PEP"));
+  const out: string[] = [];
+  while (out.length < count) {
+    out.push(randDigits(rng, 15));
+  }
+  return out;
+}
+
+/* CO_PPT — 7..11 alphanumeric uppercase. */
+function generateValidCoPpts(count: number): string[] {
+  const rng = mulberry32(seedFromString("PROP_CO_PPT"));
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const out: string[] = [];
+  while (out.length < count) {
+    const len = 7 + randInt(rng, 5); // 7..11
+    let s = "";
+    for (let i = 0; i < len; i++) s += alphabet.charAt(randInt(rng, alphabet.length));
+    out.push(s);
+  }
+  return out;
+}
+
+/* BR_CNH — 11 digits with mod-11 dual DV (CONTRAN). */
+function generateValidBrCnhs(count: number): string[] {
+  const rng = mulberry32(seedFromString("PROP_BR_CNH"));
+  const w1 = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+  const w2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const out: string[] = [];
+  while (out.length < count) {
+    const body9 = randDigits(rng, 9);
+    if (/^(\d)\1+$/.test(body9)) continue;
+    let sum1 = 0;
+    for (let i = 0; i < 9; i++) sum1 += (body9.charCodeAt(i) - 48) * (w1[i] ?? 0);
+    const r1 = sum1 % 11;
+    const dv1 = r1 >= 10 ? 0 : r1;
+    const dsc = r1 >= 10 ? 2 : 0;
+    let sum2 = 0;
+    for (let i = 0; i < 9; i++) sum2 += (body9.charCodeAt(i) - 48) * (w2[i] ?? 0);
+    let r2 = (sum2 - dsc) % 11;
+    if (r2 < 0) r2 += 11;
+    const dv2 = r2 >= 10 ? 0 : r2;
+    const full = `${body9}${dv1}${dv2}`;
+    if (/^(\d)\1+$/.test(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
+/* BR_TITULO_ELEITOR — 12 digits with TSE mod-11 dual DV; UF in 01..28. */
+function generateValidBrTitulos(count: number): string[] {
+  const rng = mulberry32(seedFromString("PROP_BR_TITULO_ELEITOR"));
+  const w1 = [2, 3, 4, 5, 6, 7, 8, 9];
+  const out: string[] = [];
+  while (out.length < count) {
+    const body8 = randDigits(rng, 8);
+    if (/^(\d)\1+$/.test(body8)) continue;
+    const ufNum = 1 + randInt(rng, 28); // 01..28
+    const uf = String(ufNum).padStart(2, "0");
+    let sum1 = 0;
+    for (let i = 0; i < 8; i++) sum1 += (body8.charCodeAt(i) - 48) * (w1[i] ?? 0);
+    const r1 = sum1 % 11;
+    const dv1 = r1 === 10 ? 0 : r1 === 0 && (uf === "01" || uf === "02") ? 1 : r1;
+    const sum2 = (uf.charCodeAt(0) - 48) * 7 + (uf.charCodeAt(1) - 48) * 8 + dv1 * 9;
+    const r2 = sum2 % 11;
+    const dv2 = r2 === 10 ? 0 : r2 === 0 && (uf === "01" || uf === "02") ? 1 : r2;
+    const full = `${body8}${uf}${dv1}${dv2}`;
+    if (/^(\d)\1+$/.test(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
+/* BR_PIS — 11 digits with single mod-11 DV (Caixa weights 3,2,9..2). */
+function generateValidBrPis(count: number): string[] {
+  const rng = mulberry32(seedFromString("PROP_BR_PIS"));
+  const W = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const out: string[] = [];
+  while (out.length < count) {
+    const body10 = randDigits(rng, 10);
+    if (/^(\d)\1+$/.test(body10)) continue;
+    let sum = 0;
+    for (let i = 0; i < 10; i++) sum += (body10.charCodeAt(i) - 48) * (W[i] ?? 0);
+    const r = sum % 11;
+    const dv = r < 2 ? 0 : 11 - r;
+    const full = `${body10}${dv}`;
+    if (/^(\d)\1+$/.test(full)) continue;
+    out.push(full);
+  }
+  return out;
+}
+
+/* AR_CDI — same mod-11 algorithm as CUIT/CUIL, restricted to prefix 50. */
+function generateValidArCdis(count: number): string[] {
+  const rng = mulberry32(seedFromString("PROP_AR_CDI"));
+  const weights = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2] as const;
+  const out: string[] = [];
+  while (out.length < count) {
+    const body8 = randDigits(rng, 8);
+    const body10 = `50${body8}`;
+    let sum = 0;
+    for (let i = 0; i < 10; i++) {
+      const w = weights[i];
+      if (w === undefined) {
+        sum = -1;
+        break;
+      }
+      sum += (body10.charCodeAt(i) - 48) * w;
+    }
+    if (sum < 0) continue;
+    const r = sum % 11;
+    const raw = 11 - r;
+    if (raw === 10) continue; // CUIT/CDI skip dv=10 (RG AFIP 10/97 § 4).
+    const dv = raw === 11 ? 0 : raw;
+    out.push(body10 + String(dv));
+  }
+  return out;
+}
+
+/* ES_NUSS — 12 digits: 2 provincia + 8 correlativo + 2 DV (= first10 mod 97). */
+function generateValidEsNusses(count: number): string[] {
+  const rng = mulberry32(seedFromString("PROP_ES_NUSS"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body10 = randDigits(rng, 10);
+    let r = 0;
+    for (let i = 0; i < 10; i++) {
+      r = (r * 10 + (body10.charCodeAt(i) - 48)) % 97;
+    }
+    const dv = String(r).padStart(2, "0");
+    out.push(body10 + dv);
+  }
+  return out;
+}
+
 /* ------------------------------------------------------------------ */
 /* Per-code valid sample registry                                     */
 /* ------------------------------------------------------------------ */
@@ -412,19 +571,26 @@ const VALID_SAMPLES: Readonly<Record<DocumentTypeCode, ReadonlyArray<string>>> =
   MX_CURP: generateValidCurps(VALID_SAMPLES_PER_CODE),
   MX_RFC_PF: generateValidRfcPfs(VALID_SAMPLES_PER_CODE),
   MX_RFC_PM: generateValidRfcPms(VALID_SAMPLES_PER_CODE),
+  MX_CLAVE_ELECTOR: generateValidClaveElectors(VALID_SAMPLES_PER_CODE),
   CO_CC: generateValidCoCcs(VALID_SAMPLES_PER_CODE),
   CO_CE: generateValidCoCes(VALID_SAMPLES_PER_CODE),
   CO_TI: generateValidCoTis(VALID_SAMPLES_PER_CODE),
   CO_PASAPORTE: generateValidCoPasaportes(VALID_SAMPLES_PER_CODE),
   CO_NIT: generateValidCoNits(VALID_SAMPLES_PER_CODE),
+  CO_PEP: generateValidCoPeps(VALID_SAMPLES_PER_CODE),
+  CO_PPT: generateValidCoPpts(VALID_SAMPLES_PER_CODE),
   BR_CPF: generateValidCpfs(VALID_SAMPLES_PER_CODE),
   BR_CNPJ: generateValidCnpjs(VALID_SAMPLES_PER_CODE),
+  BR_CNH: generateValidBrCnhs(VALID_SAMPLES_PER_CODE),
+  BR_TITULO_ELEITOR: generateValidBrTitulos(VALID_SAMPLES_PER_CODE),
+  BR_PIS: generateValidBrPis(VALID_SAMPLES_PER_CODE),
   PE_DNI: generateValidPeDnis(VALID_SAMPLES_PER_CODE),
   PE_CE: generateValidPeCes(VALID_SAMPLES_PER_CODE),
   PE_RUC: generateValidRucs(VALID_SAMPLES_PER_CODE),
   AR_DNI: generateValidArDnis(VALID_SAMPLES_PER_CODE),
   AR_CUIL: generateValidArCuils(VALID_SAMPLES_PER_CODE),
   AR_CUIT: generateValidCuits(VALID_SAMPLES_PER_CODE),
+  AR_CDI: generateValidArCdis(VALID_SAMPLES_PER_CODE),
   CL_RUT: generateValidRuts(VALID_SAMPLES_PER_CODE),
   DO_CEDULA: generateValidDoCedulas(VALID_SAMPLES_PER_CODE),
   DO_RNC: generateValidDoRncs(VALID_SAMPLES_PER_CODE),
@@ -438,6 +604,7 @@ const VALID_SAMPLES: Readonly<Record<DocumentTypeCode, ReadonlyArray<string>>> =
   ES_DNI: generateValidEsDnis(VALID_SAMPLES_PER_CODE),
   ES_NIE: generateValidNies(VALID_SAMPLES_PER_CODE),
   ES_NIF_PJ: generateValidNifPjs(VALID_SAMPLES_PER_CODE),
+  ES_NUSS: generateValidEsNusses(VALID_SAMPLES_PER_CODE),
   US_SSN: generateValidSsns(VALID_SAMPLES_PER_CODE),
   US_ITIN: generateValidItins(VALID_SAMPLES_PER_CODE),
   US_EIN: generateValidEins(VALID_SAMPLES_PER_CODE),
