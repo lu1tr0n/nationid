@@ -8,6 +8,7 @@
 [![license](https://img.shields.io/npm/l/nationid)](./LICENSE)
 [![CI](https://github.com/lu1tr0n/nationid/actions/workflows/ci.yml/badge.svg)](https://github.com/lu1tr0n/nationid/actions)
 
+🎮 **Live playground**: https://lu1tr0n.github.io/nationid_example/ — try every country, every helper, in 3 locales.
 📖 **API Reference**: https://lu1tr0n.github.io/nationid/
 📊 **Benchmarks**: see [BENCHMARKS.md](./BENCHMARKS.md)
 
@@ -59,6 +60,21 @@ public API. On failure it carries a typed `reason.kind`:
 const r = parse("SV_DUI", "");
 if (!r.ok) r.reason.kind; // "empty" | "too_short" | "too_long" | "invalid_format" | "invalid_checksum"
 ```
+
+## Live playground
+
+Try every country and every helper without installing anything: **https://lu1tr0n.github.io/nationid_example/**
+
+The playground covers:
+
+- ✅ `validate / parse / format / normalize` for all 22 countries
+- 🎯 `extract` (DOB, sex, region) where the document encodes it
+- 🔒 `pii` masking + SHA-256 hashing for safe display and storage
+- 🌍 `i18n` error messages in `es`, `en`, `pt`
+- 📚 `catalog` — queryable document metadata for UI dropdowns
+- 6 best-practice code examples (React forms, server validation, KYC display, etc.)
+
+Source code for the showcase site: https://github.com/lu1tr0n/nationid_example
 
 ## Tree-shakable subpath imports
 
