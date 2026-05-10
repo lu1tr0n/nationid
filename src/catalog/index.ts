@@ -1,0 +1,113 @@
+/**
+ * Catalog sub-feature.
+ *
+ * Queryable, locale-aware metadata for every document type. UIs use this to
+ * build "select your document" dropdowns showing the correct local name.
+ *
+ * @example
+ * ```ts
+ * import { listDocuments } from "nationid/catalog";
+ *
+ * const options = listDocuments("MX", "es");
+ * // → [{ code: "MX_CURP", displayName: "CURP", … }, …]
+ * ```
+ */
+
+import type { CountryCode, DocumentSpec, DocumentTypeCode } from "../core/types.ts";
+import { getSpec, listSupportedCodes } from "../index.ts";
+import { catalogCommon } from "./data/common.ts";
+import { catalogEn } from "./data/en.ts";
+import { catalogEs } from "./data/es.ts";
+import { catalogPt } from "./data/pt.ts";
+import type { DocumentInfo, Locale, LocaleStrings } from "./types.ts";
+
+export type { DocumentInfo, DocumentPurpose, Locale, LocaleStrings } from "./types.ts";
+
+const DEFAULT_LOCALE: Locale = "en";
+
+/**
+ * Locale → strings table lookup. Centralized here so the public API never
+ * dispatches on locale via long if/else chains.
+ */
+const LOCALE_TABLES: Readonly<Record<Locale, Record<DocumentTypeCode, LocaleStrings>>> = {
+  es: catalogEs,
+  en: catalogEn,
+  pt: catalogPt,
+};
+
+/**
+ * Resolve a single `DocumentTypeCode` into a fully-populated `DocumentInfo`.
+ *
+ * Returns `null` if the code is unknown (defensive: callers may pass strings
+ * widened beyond the union at runtime).
+ */
+function resolveInfo(code: DocumentTypeCode, locale: Locale): DocumentInfo | null {
+  const common = catalogCommon[code];
+  const strings = LOCALE_TABLES[locale][code];
+  if (!common || !strings) return null;
+
+  let spec: DocumentSpec;
+  try {
+    spec = getSpec(code);
+  } catch {
+    return null;
+  }
+
+  return {
+    code,
+    country: spec.country,
+    displayName: strings.displayName,
+    longName: strings.longName,
+    knownAs: common.knownAs,
+    description: strings.description,
+    purpose: common.purpose,
+    confidence: spec.confidence,
+  };
+}
+
+/**
+ * List every registered document type for `country` in `locale` order.
+ *
+ * Returns an empty array for an unknown country. Specs that lack a catalog
+ * entry are silently skipped — the coverage test guarantees they exist.
+ */
+export function listDocuments(
+  country: CountryCode,
+  locale: Locale = DEFAULT_LOCALE,
+): readonly DocumentInfo[] {
+  const out: DocumentInfo[] = [];
+  for (const code of listSupportedCodes()) {
+    if (!code.startsWith(`${country}_`)) continue;
+    const info = resolveInfo(code, locale);
+    if (info && info.country === country) out.push(info);
+  }
+  return out;
+}
+
+/**
+ * Resolve one document's catalog info. Returns `null` if `code` is not registered.
+ */
+export function getDocumentInfo(
+  code: DocumentTypeCode,
+  locale: Locale = DEFAULT_LOCALE,
+): DocumentInfo | null {
+  return resolveInfo(code, locale);
+}
+
+/**
+ * List every registered document of `purpose`, across all countries, in `locale`.
+ *
+ * Useful for global "show me all tax IDs" filters.
+ */
+export function listDocumentsByPurpose(
+  purpose: import("./types.ts").DocumentPurpose,
+  locale: Locale = DEFAULT_LOCALE,
+): readonly DocumentInfo[] {
+  const out: DocumentInfo[] = [];
+  for (const code of listSupportedCodes()) {
+    if (catalogCommon[code].purpose !== purpose) continue;
+    const info = resolveInfo(code, locale);
+    if (info) out.push(info);
+  }
+  return out;
+}

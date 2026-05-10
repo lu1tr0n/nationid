@@ -75,6 +75,35 @@ Algorithm primitives:
 import { luhnValid, mod11WeightedSum } from "nationid/algorithms";
 ```
 
+## v0.3 — Developer Experience helpers
+
+Four new tree-shakable modules for common app needs:
+
+```ts
+// Extract structured data from valid documents
+import { extractDOB, extractSex, extractRegion } from "nationid/extract";
+extractDOB("MX_CURP", "GOMC850315HDFRRR07");  // { year: 1985, month: 3, day: 15 }
+extractSex("AR_CUIT", "20-12345678-3");        // "M"
+
+// Mask + hash for safe display and storage
+import { mask, hash, lastN } from "nationid/pii";
+mask("BR_CPF", "12345678901");                          // "***.***.**9-01"
+await hash("BR_CPF", "12345678901", { salt: "tenant" }); // hex SHA-256
+
+// Localized error messages (es, en, pt)
+import { getErrorMessage } from "nationid/i18n";
+getErrorMessage({ kind: "too_short" }, "es", "DUI");  // "El DUI es demasiado corto."
+
+// Document catalog with localized names — for UI dropdowns
+import { listDocuments } from "nationid/catalog";
+listDocuments("MX", "es");
+// [{ code: "MX_CURP", displayName: "CURP",
+//    longName: "Clave Única de Registro de Población",
+//    purpose: "identity", confidence: "high", ... }, ...]
+```
+
+Each subpath is independently tree-shakable. Single locales (`nationid/i18n/es`, `/en`, `/pt`) ship as <200B bundles.
+
 ## Coverage (v0.1)
 
 | Country | Personal | Tax |

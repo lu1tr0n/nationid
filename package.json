@@ -117,6 +117,41 @@
       "import": "./dist/countries/us/index.js",
       "require": "./dist/countries/us/index.cjs"
     },
+    "./extract": {
+      "types": "./dist/extract/index.d.ts",
+      "import": "./dist/extract/index.js",
+      "require": "./dist/extract/index.cjs"
+    },
+    "./pii": {
+      "types": "./dist/pii/index.d.ts",
+      "import": "./dist/pii/index.js",
+      "require": "./dist/pii/index.cjs"
+    },
+    "./i18n": {
+      "types": "./dist/i18n/index.d.ts",
+      "import": "./dist/i18n/index.js",
+      "require": "./dist/i18n/index.cjs"
+    },
+    "./i18n/es": {
+      "types": "./dist/i18n/locales/es.d.ts",
+      "import": "./dist/i18n/locales/es.js",
+      "require": "./dist/i18n/locales/es.cjs"
+    },
+    "./i18n/en": {
+      "types": "./dist/i18n/locales/en.d.ts",
+      "import": "./dist/i18n/locales/en.js",
+      "require": "./dist/i18n/locales/en.cjs"
+    },
+    "./i18n/pt": {
+      "types": "./dist/i18n/locales/pt.d.ts",
+      "import": "./dist/i18n/locales/pt.js",
+      "require": "./dist/i18n/locales/pt.cjs"
+    },
+    "./catalog": {
+      "types": "./dist/catalog/index.d.ts",
+      "import": "./dist/catalog/index.js",
+      "require": "./dist/catalog/index.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -208,6 +243,31 @@
       "name": "algorithms primitives subpath",
       "path": "dist/algorithms/index.js",
       "limit": "1 KB"
+    },
+    {
+      "name": "v0.3 — extract helpers subpath (includes full registry for getSpec)",
+      "path": "dist/extract/index.js",
+      "limit": "10 KB"
+    },
+    {
+      "name": "v0.3 — pii helpers subpath (includes full registry for getSpec)",
+      "path": "dist/pii/index.js",
+      "limit": "10 KB"
+    },
+    {
+      "name": "v0.3 — i18n core subpath",
+      "path": "dist/i18n/index.js",
+      "limit": "2 KB"
+    },
+    {
+      "name": "v0.3 — i18n single locale (es)",
+      "path": "dist/i18n/locales/es.js",
+      "limit": "1 KB"
+    },
+    {
+      "name": "v0.3 — catalog subpath (all 3 locales)",
+      "path": "dist/catalog/index.js",
+      "limit": "20 KB"
     }
   ]
 }
