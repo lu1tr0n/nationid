@@ -16,3 +16,4 @@ coverage/
 
 # Benchmark result snapshots (per-run JSON, not source of truth).
 /benchmarks/results/
+nationid-*.tgz

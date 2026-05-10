@@ -14,23 +14,35 @@ import type {
 } from "./core/types.ts";
 
 import { arBundle } from "./countries/ar/index.ts";
+import { beBundle } from "./countries/be/index.ts";
 import { boBundle } from "./countries/bo/index.ts";
 import { brBundle } from "./countries/br/index.ts";
 import { caBundle } from "./countries/ca/index.ts";
+import { chBundle } from "./countries/ch/index.ts";
 import { clBundle } from "./countries/cl/index.ts";
 import { coBundle } from "./countries/co/index.ts";
 import { crBundle } from "./countries/cr/index.ts";
+import { deBundle } from "./countries/de/index.ts";
+import { dkBundle } from "./countries/dk/index.ts";
 import { doBundle } from "./countries/do/index.ts";
 import { ecBundle } from "./countries/ec/index.ts";
 import { esBundle } from "./countries/es/index.ts";
+import { fiBundle } from "./countries/fi/index.ts";
+import { frBundle } from "./countries/fr/index.ts";
+import { gbBundle } from "./countries/gb/index.ts";
 import { gtBundle } from "./countries/gt/index.ts";
 import { hnBundle } from "./countries/hn/index.ts";
+import { itBundle } from "./countries/it/index.ts";
 import { mxBundle } from "./countries/mx/index.ts";
 import { niBundle } from "./countries/ni/index.ts";
+import { nlBundle } from "./countries/nl/index.ts";
+import { noBundle } from "./countries/no/index.ts";
 import { paBundle } from "./countries/pa/index.ts";
 import { peBundle } from "./countries/pe/index.ts";
+import { plBundle } from "./countries/pl/index.ts";
 import { ptBundle } from "./countries/pt/index.ts";
 import { pyBundle } from "./countries/py/index.ts";
+import { seBundle } from "./countries/se/index.ts";
 import { svBundle } from "./countries/sv/index.ts";
 import { usBundle } from "./countries/us/index.ts";
 import { uyBundle } from "./countries/uy/index.ts";
@@ -82,6 +94,19 @@ const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
   caBundle,
   ptBundle,
   veBundle,
+  // v0.6.0 — 12 European countries
+  gbBundle,
+  frBundle,
+  deBundle,
+  itBundle,
+  nlBundle,
+  beBundle,
+  chBundle,
+  plBundle,
+  seBundle,
+  noBundle,
+  dkBundle,
+  fiBundle,
 ];
 
 /**

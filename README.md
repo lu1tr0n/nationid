@@ -18,7 +18,7 @@
 
 Existing tools cover a fraction of the world. `validator.js` only validates 6 LATAM tax IDs. `cpf-cnpj-validator` covers Brazil. `rut.js` covers Chile. None ship El Salvador, Guatemala, Honduras, Dominican Republic, or Costa Rica with checksum verification.
 
-`nationid` fills that gap. As of v0.4 it ships **22 countries with ~58 document codes**, all with proper algorithms documented from official sources.
+`nationid` fills that gap. As of v0.6 it ships **34 countries with ~120 document codes**, all with proper algorithms documented from official sources.
 
 ## Install
 
@@ -146,6 +146,18 @@ Each subpath is independently tree-shakable. Single locales (`nationid/i18n/es`,
 | 🇨🇦 Canadá *(v0.4)* | SIN | BN |
 | 🇵🇹 Portugal *(v0.4)* | CC | NIF |
 | 🇻🇪 Venezuela *(v0.4)* | Cédula | RIF |
+| 🇬🇧 United Kingdom *(v0.6)* | NINO, NHS Number | UTR, VAT |
+| 🇫🇷 France *(v0.6)* | NIR | SIREN, SIRET, TVA |
+| 🇩🇪 Germany *(v0.6)* | Steuer-ID | Steuernummer, USt-IdNr |
+| 🇮🇹 Italy *(v0.6)* | Codice Fiscale | Partita IVA |
+| 🇳🇱 Netherlands *(v0.6)* | BSN | BTW |
+| 🇧🇪 Belgium *(v0.6)* | NRN | BTW |
+| 🇨🇭 Switzerland *(v0.6)* | AHV | UID, MWST |
+| 🇵🇱 Poland *(v0.6)* | PESEL | NIP, REGON |
+| 🇸🇪 Sweden *(v0.6)* | Personnummer | Organisationsnummer, Moms |
+| 🇳🇴 Norway *(v0.6)* | Fødselsnummer, D-nummer | Organisasjonsnummer, MVA |
+| 🇩🇰 Denmark *(v0.6)* | CPR | CVR, Moms |
+| 🇫🇮 Finland *(v0.6)* | HETU | Y-tunnus, ALV |
 
 Full per-country docs with algorithms and sources cited live in [`docs/countries/`](./docs/countries).
 
@@ -181,9 +193,9 @@ UIs can choose to surface a warning when a low-confidence document validates onl
 - **v0.3** — `extract` (DOB, sex, region) + `pii` (mask, hash, lastN) + `i18n` (es/en/pt error messages) + `catalog` (queryable document metadata) ✅
 - **v0.4** — 9 new countries: UY, VE, PA, EC, BO, PY, NI, CA, PT ✅
 - **v0.5** — Passport family (22 countries) + ICAO 9303 algorithm + BR_CNPJ alphanum rollout (IN RFB 2.229/2024) + MX_NSS + audit fixes ✅
-- **v0.6** — Europe principal: GB, FR, DE, IT, NL, BE, CH, SE, NO, DK, FI, PL + additional i18n locales
+- **v0.6** — Europe principal: GB, FR, DE, IT, NL, BE, CH, PL, SE, NO, DK, FI ✅
 - **v0.7** — Asia: IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL
-- **v0.8** — `@nationid/react` companion with `<DocumentInput>`
+- **v0.8** — `@nationid/react` companion with `<DocumentInput>` + additional i18n locales
 - **v1.0** — API stability, all current countries at High confidence
 
 ## Contributing
