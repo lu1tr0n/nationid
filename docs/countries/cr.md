@@ -163,3 +163,31 @@ None known affecting format.
 ### Open questions
 
 - `CR_NITE` (entidades sin cédula jurídica, prefix `5`) is a separate document type used by Hacienda for sucesiones, condominios, fideicomisos, etc. It is **not** included in this initial release; track as future addition.
+
+---
+
+## `CR_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Dirección General de Migración y Extranjería
+(DGME CR). Biometric ePassport (G+D, since 2021). Numbers are 9 chars
+alphanumeric, often letter-prefixed.
+
+- **Issuer**: DGME CR
+- **Composition**: 9 alphanumeric
+- **Visual format**: 9 contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — no first-party publication of the format spec.
+
+### Sources
+
+- Wikipedia, *Costa Rican passport*: <https://en.wikipedia.org/wiki/Costa_Rican_passport>
+- G+D ePassport spotlight: <https://www.gi-de.com/en/spotlight/digital-security/costa-rica-the-art-of-passport-security>

@@ -472,3 +472,202 @@ describe("MX — Clave de Elector", () => {
     });
   });
 });
+
+// MX_NSS — IMSS-issued Número de Seguridad Social. 11 digits with a Luhn /
+// mod-10 check digit on the trailing position. Vectors below are SYNTHETIC
+// and computed against the standard Luhn algorithm used by the IMSS portal.
+//
+// Valid Luhn cases (body + DV):
+//   - 12345678903  body 1234567890, sum 50, DV 3
+//   - 01234567897  body 0123456789, sum 50, DV 7
+//   - 09876543217  body 0987654321, sum 50, DV 7
+//
+// Invalid (bad DV): same bodies with any other final digit fail.
+
+describe("MX — NSS", () => {
+  describe("validate", () => {
+    it("accepts valid NSSs (synthetic, Luhn-checked)", () => {
+      expect(validate("NSS", "12345678903")).toBe(true);
+      expect(validate("NSS", "01234567897")).toBe(true);
+      expect(validate("NSS", "09876543217")).toBe(true);
+    });
+
+    it("strips IMSS-printed grouping separators (`XX-XX-XX-XXXX-X`)", () => {
+      expect(validate("NSS", "12-34-56-7890-3")).toBe(true);
+      expect(validate("NSS", "12 34 56 7890 3")).toBe(true);
+      expect(validate("NSS", "  01234567897  ")).toBe(true);
+    });
+
+    it("rejects invalid Luhn check digits", () => {
+      // body 1234567890 — only DV=3 passes.
+      for (const dv of ["0", "1", "2", "4", "5", "6", "7", "8", "9"]) {
+        expect(validate("NSS", `1234567890${dv}`)).toBe(false);
+      }
+      // body 0987654321 — only DV=7 passes.
+      for (const dv of ["0", "1", "2", "3", "4", "5", "6", "8", "9"]) {
+        expect(validate("NSS", `0987654321${dv}`)).toBe(false);
+      }
+    });
+
+    it("rejects all-same-digit placeholders", () => {
+      // Some all-same-digit values are coincidentally Luhn-valid (e.g.
+      // 00000000000), but they are universally treated as placeholders.
+      expect(validate("NSS", "00000000000")).toBe(false);
+      expect(validate("NSS", "11111111111")).toBe(false);
+      expect(validate("NSS", "99999999999")).toBe(false);
+    });
+
+    it("rejects malformed input (length, charset)", () => {
+      expect(validate("NSS", "")).toBe(false);
+      expect(validate("NSS", "1234567890")).toBe(false); // 10 digits
+      expect(validate("NSS", "123456789034")).toBe(false); // 12 digits
+      expect(validate("NSS", "ABCDEFGHIJK")).toBe(false);
+      expect(validate("NSS", "12345A67903")).toBe(false);
+    });
+
+    it("accepts the MX_NSS fully-qualified code", () => {
+      expect(validate("MX_NSS", "12345678903")).toBe(true);
+    });
+  });
+
+  describe("format", () => {
+    it("returns the canonical contiguous 11-digit form", () => {
+      expect(format("NSS", "12345678903")).toBe("12345678903");
+      expect(format("NSS", "12-34-56-7890-3")).toBe("12345678903");
+      expect(format("NSS", "12 34 56 7890 3")).toBe("12345678903");
+    });
+
+    it("returns input unchanged for invalid length", () => {
+      expect(format("NSS", "1234")).toBe("1234");
+    });
+  });
+
+  describe("normalize", () => {
+    it("strips separators", () => {
+      expect(normalize("NSS", "12-34-56-7890-3")).toBe("12345678903");
+      expect(normalize("NSS", "12 34 56 7890 3")).toBe("12345678903");
+    });
+
+    it("is idempotent", () => {
+      const n1 = normalize("NSS", "12-34-56-7890-3");
+      expect(normalize("NSS", n1)).toBe(n1);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok with normalized + formatted on success", () => {
+      const r = parse("NSS", "12-34-56-7890-3");
+      expect(r.ok).toBe(true);
+      if (r.ok) {
+        expect(r.normalized).toBe("12345678903");
+        expect(r.formatted).toBe("12345678903");
+        expect(r.confidence).toBe("high");
+      }
+    });
+
+    it("returns kind=empty on empty input", () => {
+      const r = parse("NSS", "");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("empty");
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("NSS", "1234567890");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("NSS", "123456789034");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+
+    it("returns kind=invalid_format for all-same-digit placeholder", () => {
+      const r = parse("NSS", "00000000000");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("invalid_format");
+    });
+
+    it("returns kind=invalid_checksum for bad DV", () => {
+      const r = parse("NSS", "12345678900");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("invalid_checksum");
+    });
+  });
+});
+
+describe("MX — Pasaporte (MX_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (1 letter + 8 digits)", () => {
+      expect(validate("PASAPORTE", "G12345678")).toBe(true);
+      expect(validate("PASAPORTE", "N98765432")).toBe(true);
+      expect(validate("PASAPORTE", "A00000001")).toBe(true);
+      expect(validate("PASAPORTE", "Z99999999")).toBe(true);
+      expect(validate("PASAPORTE", " G12345678 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "G1234567")).toBe(false); // too short
+      expect(validate("PASAPORTE", "G123456789")).toBe(false); // too long
+      expect(validate("PASAPORTE", "12345678G")).toBe(false); // letter at end
+      expect(validate("PASAPORTE", "GG1234567")).toBe(false); // 2 letters
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "g12345678")).toBe(true);
+    });
+
+    it("accepts the MX_PASAPORTE fully-qualified code", () => {
+      expect(validate("MX_PASAPORTE", "G12345678")).toBe(true);
+    });
+  });
+
+  describe("normalize", () => {
+    it("is idempotent", () => {
+      const a = normalize("PASAPORTE", "g12345678");
+      expect(normalize("PASAPORTE", a)).toBe(a);
+      expect(a).toBe("G12345678");
+    });
+  });
+
+  describe("format", () => {
+    it("round-trips through normalize → format", () => {
+      const raw = "g12345678";
+      const n = normalize("PASAPORTE", raw);
+      expect(format("PASAPORTE", n)).toBe(n);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "g12345678");
+      expect(r).toEqual({
+        ok: true,
+        code: "MX_PASAPORTE",
+        normalized: "G12345678",
+        formatted: "G12345678",
+        confidence: "moderate",
+      });
+    });
+
+    it("returns kind=empty on empty input", () => {
+      const r = parse("PASAPORTE", "");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("empty");
+    });
+
+    it("returns kind=too_short for fewer than 9 chars", () => {
+      const r = parse("PASAPORTE", "G1234");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for more than 9 chars", () => {
+      const r = parse("PASAPORTE", "G123456789");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

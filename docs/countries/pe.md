@@ -171,3 +171,31 @@ invalid (checksum):
 ### Open questions
 
 - None on the algorithm. Prefix list is derived from SUNAT's published Tabla de Tipos de Contribuyentes.
+
+---
+
+## `PE_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Superintendencia Nacional de Migraciones.
+Most current sources report 1 uppercase letter + 8 digits (9 chars); legacy
+9-digit numeric and 8-char alphanumeric variants also circulate.
+
+- **Issuer**: Migraciones — <https://sel.migraciones.gob.pe/servmig-valreg/VerificarPAS>
+- **Composition**: optional 1 letter + 8-9 digits (lenient union)
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — sources contradict on the letter prefix.
+
+### Sources
+
+- Wikipedia, *Pasaporte peruano*: <https://es.wikipedia.org/wiki/Pasaporte_peruano>
+- Migraciones (verificación): <https://sel.migraciones.gob.pe/servmig-valreg/VerificarPAS>

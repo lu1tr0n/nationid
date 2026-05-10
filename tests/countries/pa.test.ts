@@ -120,6 +120,18 @@ describe("PA — RUC", () => {
       expect(validate("RUC", "8-123-456 DV 5")).toBe(true);
     });
 
+    it("does NOT enforce DV consistency (format-only, audit decision v0.5)", () => {
+      // The audit flagged DGI's DV calculator at dgi.mef.gob.pa/Dv but no
+      // first-party algorithm is published; community reference impls
+      // diverge in edge cases. We deliberately keep format-only validation
+      // so an incorrect DV in the suffix is silently stripped rather than
+      // raising a false-positive `invalid_checksum`. If/when DGI publishes
+      // the formula, this test should be updated to expect `false` for
+      // mismatched DVs and `confidence: "moderate"`.
+      expect(validate("RUC", "1234-5678-901234 DV 99")).toBe(true);
+      expect(validate("RUC", "1234-5678-901234 DV 00")).toBe(true);
+    });
+
     it("accepts PA_RUC fully-qualified code", () => {
       expect(validate("PA_RUC", "1234-5678-901234")).toBe(true);
     });
@@ -170,6 +182,58 @@ describe("PA — RUC", () => {
       const r = parse("RUC", "ABC-DEF-GHI");
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.reason.kind).toBe("invalid_format");
+    });
+  });
+});
+
+describe("PA — Pasaporte (PA_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (0-2 letters + 6-8 digits)", () => {
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "PA123456")).toBe(true);
+      expect(validate("PASAPORTE", "123456")).toBe(true);
+      expect(validate("PASAPORTE", "PA12345678")).toBe(true);
+      expect(validate("PASAPORTE", " PA123456 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "12345")).toBe(false); // too short
+      expect(validate("PASAPORTE", "PAB12345678")).toBe(false); // 3 letters
+      expect(validate("PASAPORTE", "PA123456789")).toBe(false); // too many digits
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "pa123456")).toBe(true);
+    });
+
+    it("accepts the PA_PASAPORTE fully-qualified code", () => {
+      expect(validate("PA_PASAPORTE", "12345678")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "pa123456");
+      expect(r).toEqual({
+        ok: true,
+        code: "PA_PASAPORTE",
+        normalized: "PA123456",
+        formatted: "PA123456",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "PA123456789");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
     });
   });
 });

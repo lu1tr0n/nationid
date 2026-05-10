@@ -3,12 +3,23 @@ import { format, normalize, parse, validate } from "../../src/countries/ni/index
 
 describe("NI — Cédula", () => {
   describe("validate", () => {
-    it("accepts valid cédulas (raw 14-char form, A-Z DV)", () => {
-      // 3 muni + 6 DDMMYY + 4 corr + 1 letra
+    it("accepts valid cédulas (raw 14-char form, [A-Y]\\{I,O,Z} DV)", () => {
+      // 3 muni + 6 DDMMYY + 4 corr + 1 letra (excludes I, O, Z per CSE)
       expect(validate("CEDULA", "0011301800008X")).toBe(true);
       expect(validate("CEDULA", "0010101800001A")).toBe(true);
-      expect(validate("CEDULA", "1232812900099Z")).toBe(true);
+      expect(validate("CEDULA", "1232812900099Y")).toBe(true);
       expect(validate("CEDULA", "5550712850500K")).toBe(true);
+    });
+
+    it("rejects DV letters I, O, Z (visually ambiguous with 1, 0, 2)", () => {
+      // These would be valid under the legacy [A-Z] regex; the CSE
+      // explicitly excludes I/O/Z to avoid confusion with 1/0/2.
+      expect(validate("CEDULA", "0011301800008I")).toBe(false);
+      expect(validate("CEDULA", "0011301800008O")).toBe(false);
+      expect(validate("CEDULA", "0011301800008Z")).toBe(false);
+      expect(validate("CEDULA", "001-130180-0008I")).toBe(false);
+      expect(validate("CEDULA", "001-130180-0008O")).toBe(false);
+      expect(validate("CEDULA", "001-130180-0008Z")).toBe(false);
     });
 
     it("accepts the formatted form `000-DDMMYY-0000A`", () => {
@@ -204,6 +215,58 @@ describe("NI — RUC", () => {
 
     it("returns kind=too_long on long input", () => {
       const r = parse("RUC", "001130180000008X");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});
+
+describe("NI — Pasaporte (NI_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (lenient: optional letter + 7-8 digits)", () => {
+      expect(validate("PASAPORTE", "1234567")).toBe(true);
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "C1234567")).toBe(true);
+      expect(validate("PASAPORTE", "C12345678")).toBe(true);
+      expect(validate("PASAPORTE", " C1234567 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "123456")).toBe(false); // too short
+      expect(validate("PASAPORTE", "C123456789")).toBe(false); // too long
+      expect(validate("PASAPORTE", "AB1234567")).toBe(false); // 2 letters
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "c1234567")).toBe(true);
+    });
+
+    it("accepts the NI_PASAPORTE fully-qualified code", () => {
+      expect(validate("NI_PASAPORTE", "1234567")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "c1234567");
+      expect(r).toEqual({
+        ok: true,
+        code: "NI_PASAPORTE",
+        normalized: "C1234567",
+        formatted: "C1234567",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "123456");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "1234567890");
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.reason.kind).toBe("too_long");
     });

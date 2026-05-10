@@ -119,4 +119,30 @@ export const catalogCommon: Record<DocumentTypeCode, CommonEntry> = {
   // v0.4.0 — Venezuela
   VE_CEDULA: { purpose: "identity", knownAs: ["Cédula", "CI"] },
   VE_RIF: { purpose: "tax", knownAs: ["RIF"] },
+
+  // v0.5.0 — México (IMSS social security)
+  MX_NSS: { purpose: "social_security", knownAs: ["NSS", "Número de Afiliación"] },
+
+  // v0.5.0 — Passport family (CO_PASAPORTE already in v0.1)
+  SV_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  MX_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  BR_PASAPORTE: { purpose: "identity", knownAs: ["Passaporte", "Passport"] },
+  PE_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  AR_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  CL_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  DO_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  GT_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  HN_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  CR_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  ES_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  US_PASAPORTE: { purpose: "identity", knownAs: ["Passport", "Pasaporte"] },
+  BO_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  EC_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  PY_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  NI_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  PA_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  UY_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+  CA_PASAPORTE: { purpose: "identity", knownAs: ["Passport", "Passeport", "Pasaporte"] },
+  PT_PASAPORTE: { purpose: "identity", knownAs: ["Passaporte", "Passport"] },
+  VE_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
 };

@@ -11,19 +11,23 @@
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
 import { einSpec } from "./ein.ts";
 import { itinSpec } from "./itin.ts";
+import { passportSpec } from "./passport.ts";
 import { ssnSpec } from "./ssn.ts";
 
-export { einSpec, itinSpec, ssnSpec };
+export { einSpec, itinSpec, passportSpec, ssnSpec };
 
 const SPECS = {
   US_SSN: ssnSpec,
   US_ITIN: itinSpec,
   US_EIN: einSpec,
+  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
+  // `US_PASAPORTE` after all v0.5 agents complete.
+  US_PASAPORTE: passportSpec,
 } as const;
 
 export type USDocumentType = keyof typeof SPECS;
 
-type ShortCode = "SSN" | "ITIN" | "EIN";
+type ShortCode = "SSN" | "ITIN" | "EIN" | "PASAPORTE" | "PASSPORT";
 
 /** Country-scoped validate: pass either `US_SSN` or just `SSN` / `ITIN` / `EIN`. */
 export function validate(code: USDocumentType | ShortCode, input: string): boolean {
@@ -46,12 +50,14 @@ function resolveSpec(code: USDocumentType | ShortCode): DocumentSpec {
   if (code === "SSN") return ssnSpec;
   if (code === "ITIN") return itinSpec;
   if (code === "EIN") return einSpec;
+  // English-language alias `PASSPORT` is convenient for the US bundle.
+  if (code === "PASAPORTE" || code === "PASSPORT") return passportSpec;
   return SPECS[code];
 }
 
 export const usBundle: CountryDocumentBundle = {
   country: "US",
-  personal: [ssnSpec, itinSpec],
+  personal: [ssnSpec, itinSpec, passportSpec],
   tax: [einSpec, itinSpec, ssnSpec],
   defaultPersonal: "US_SSN",
   defaultTax: "US_EIN",

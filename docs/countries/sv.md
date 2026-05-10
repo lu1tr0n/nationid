@@ -120,3 +120,31 @@ invalid (checksum):
 ### Open questions
 
 - Hacienda does not publish the mod-11 weight vector publicly. Algorithm matches DGII validators in production use; confidence remains `moderate`.
+
+---
+
+## `SV_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Dirección General de Migración y Extranjería
+(DGME). DGME has not published the issuance format; community samples on
+current biometric passports show 9-digit numeric numbers, with legacy
+issuances occasionally carrying a single uppercase-letter prefix.
+
+- **Issuer**: DGME — <https://en.wikipedia.org/wiki/Salvadoran_passport>
+- **Composition**: optional 1 letter + 7-9 digits (lenient union)
+- **Visual format**: contiguous chars, no separators
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts` (`mrzCheckDigit`, `validateMrzNumber`).
+
+### Confidence
+
+`low` — no first-party publication.
+
+### Sources
+
+- Wikipedia, *Salvadoran passport*: <https://en.wikipedia.org/wiki/Salvadoran_passport>

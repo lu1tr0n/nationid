@@ -364,4 +364,128 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
     description:
       "Venezuelan tax identifier issued by SENIAT; the V/E/J/P/G/C prefix indicates the taxpayer type.",
   },
+
+  // v0.5.0 — Mexico (IMSS social security)
+  MX_NSS: {
+    displayName: "NSS",
+    longName: "Mexican Social Security Number",
+    description: "IMSS affiliation number for Mexican workers and beneficiaries.",
+  },
+
+  // v0.5.0 — Passport family
+  SV_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Salvadoran Passport",
+    description: "International travel document issued by El Salvador's DGME.",
+  },
+  MX_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Mexican Passport",
+    description: "International travel document issued by Mexico's SRE.",
+  },
+  BR_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Brazilian Passport",
+    description: "International travel document issued by Brazil's Federal Police.",
+  },
+  PE_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Peruvian Passport",
+    description:
+      "International travel document issued by Peru's National Superintendence of Migration.",
+  },
+  AR_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Argentine Passport",
+    description: "International travel document issued by Argentina's RENAPER.",
+  },
+  CL_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Chilean Passport",
+    description:
+      "International travel document issued by Chile's Civil Registry and Identification Service.",
+  },
+  DO_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Dominican Passport",
+    description:
+      "International travel document issued by the Dominican Republic's Passport Directorate.",
+  },
+  GT_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Guatemalan Passport",
+    description: "International travel document issued by Guatemala's Migration Institute (IGM).",
+  },
+  HN_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Honduran Passport",
+    description:
+      "International travel document issued by Honduras's National Migration Institute (INM).",
+  },
+  CR_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Costa Rican Passport",
+    description: "International travel document issued by Costa Rica's DGME.",
+  },
+  ES_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Spanish Passport",
+    description:
+      "International travel document issued by Spain's National Police / Ministry of the Interior.",
+  },
+  US_PASAPORTE: {
+    displayName: "Passport",
+    longName: "United States Passport",
+    description:
+      "International travel document issued by the U.S. Department of State's Bureau of Consular Affairs.",
+  },
+  BO_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Bolivian Passport",
+    description: "International travel document issued by Bolivia's DIGEMIG.",
+  },
+  EC_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Ecuadorian Passport",
+    description:
+      "International travel document issued by Ecuador's Ministry of Foreign Affairs and Human Mobility.",
+  },
+  PY_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Paraguayan Passport",
+    description:
+      "International travel document issued by Paraguay's National Directorate of Migration.",
+  },
+  NI_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Nicaraguan Passport",
+    description: "International travel document issued by Nicaragua's DGME.",
+  },
+  PA_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Panamanian Passport",
+    description:
+      "International travel document issued by Panama's National Migration Service (SNM).",
+  },
+  UY_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Uruguayan Passport",
+    description: "International travel document issued by Uruguay's DNIC.",
+  },
+  CA_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Canadian Passport",
+    description:
+      "International travel document issued by Immigration, Refugees and Citizenship Canada (IRCC).",
+  },
+  PT_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Portuguese Passport",
+    description: "International travel document issued by Portugal's IRN.",
+  },
+  VE_PASAPORTE: {
+    displayName: "Passport",
+    longName: "Venezuelan Passport",
+    description: "International travel document issued by Venezuela's SAIME.",
+  },
 };

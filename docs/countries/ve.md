@@ -145,3 +145,30 @@ invalid (checksum):
 ### Synthetic-vector note
 
 The original research file cites `J-12345678-9` as a synthetic-valid example. That value does **not** satisfy the algorithm specified in the same research entry — the algorithmically correct DV for body `12345678` with prefix `J` is `4`, producing `J-12345678-4`. The library follows the algorithm; the synthetic vectors above replace the inconsistent example with algorithm-derived ones.
+
+---
+
+## `VE_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by SAIME (Servicio Administrativo de Identificación,
+Migración y Extranjería). Legacy issues are 9-digit numeric; current
+biometric series add no documented letter prefix.
+
+- **Issuer**: SAIME — <http://www.saime.gob.ve/>
+- **Composition**: 8-9 digits
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — no first-party publication.
+
+### Sources
+
+- SAIME: <http://www.saime.gob.ve/>

@@ -366,4 +366,129 @@ export const catalogEs: Record<DocumentTypeCode, LocaleStrings> = {
     description:
       "Identificador tributario venezolano emitido por el SENIAT; el prefijo V/E/J/P/G/C indica el tipo de contribuyente.",
   },
+
+  // v0.5.0 — México (IMSS social security)
+  MX_NSS: {
+    displayName: "NSS",
+    longName: "Número de Seguridad Social",
+    description: "Número de afiliación al IMSS para trabajadores y derechohabientes en México.",
+  },
+
+  // v0.5.0 — Passport family
+  SV_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte salvadoreño",
+    description: "Documento de viaje internacional emitido por la DGME de El Salvador.",
+  },
+  MX_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte mexicano",
+    description: "Documento de viaje internacional emitido por la SRE de México.",
+  },
+  BR_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte brasileño",
+    description: "Documento de viaje internacional emitido por la Policía Federal de Brasil.",
+  },
+  PE_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte peruano",
+    description:
+      "Documento de viaje internacional emitido por la Superintendencia Nacional de Migraciones del Perú.",
+  },
+  AR_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte argentino",
+    description: "Documento de viaje internacional emitido por el RENAPER de Argentina.",
+  },
+  CL_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte chileno",
+    description:
+      "Documento de viaje internacional emitido por el Servicio de Registro Civil e Identificación de Chile.",
+  },
+  DO_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte dominicano",
+    description:
+      "Documento de viaje internacional emitido por la Dirección General de Pasaportes de la República Dominicana.",
+  },
+  GT_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte guatemalteco",
+    description:
+      "Documento de viaje internacional emitido por el Instituto Guatemalteco de Migración (IGM).",
+  },
+  HN_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte hondureño",
+    description:
+      "Documento de viaje internacional emitido por el Instituto Nacional de Migración (INM) de Honduras.",
+  },
+  CR_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte costarricense",
+    description: "Documento de viaje internacional emitido por la DGME de Costa Rica.",
+  },
+  ES_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte español",
+    description:
+      "Documento de viaje internacional emitido por la Policía Nacional / Ministerio del Interior de España.",
+  },
+  US_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte estadounidense",
+    description:
+      "Documento de viaje internacional emitido por el Bureau of Consular Affairs del Departamento de Estado de EE. UU.",
+  },
+  BO_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte boliviano",
+    description: "Documento de viaje internacional emitido por la DIGEMIG de Bolivia.",
+  },
+  EC_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte ecuatoriano",
+    description:
+      "Documento de viaje internacional emitido por el Ministerio de Relaciones Exteriores y Movilidad Humana de Ecuador.",
+  },
+  PY_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte paraguayo",
+    description:
+      "Documento de viaje internacional emitido por la Dirección Nacional de Migraciones de Paraguay.",
+  },
+  NI_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte nicaragüense",
+    description: "Documento de viaje internacional emitido por la DGME de Nicaragua.",
+  },
+  PA_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte panameño",
+    description:
+      "Documento de viaje internacional emitido por el Servicio Nacional de Migración (SNM) de Panamá.",
+  },
+  UY_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte uruguayo",
+    description: "Documento de viaje internacional emitido por la DNIC de Uruguay.",
+  },
+  CA_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte canadiense",
+    description:
+      "Documento de viaje internacional emitido por Immigration, Refugees and Citizenship Canada (IRCC).",
+  },
+  PT_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte portugués",
+    description: "Documento de viaje internacional emitido por el IRN de Portugal.",
+  },
+  VE_PASAPORTE: {
+    displayName: "Pasaporte",
+    longName: "Pasaporte venezolano",
+    description: "Documento de viaje internacional emitido por el SAIME de Venezuela.",
+  },
 };

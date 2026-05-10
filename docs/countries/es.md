@@ -303,3 +303,32 @@ None affecting the algorithm. The NUSS pre-dates the 2008 NIF unification and wa
 
 - TGSS does not publish the provincia code allocation as a stable open dataset; provincias appear to follow INE provincial codes (01..52) but the library does NOT enforce a provincia whitelist. Adding one would require monitoring INE updates and risks rejecting legitimate edge cases (e.g. transferred files).
 - A handful of legacy materials describe a "Número de Afiliación" (NAF) variant for empresas (12 digits) using the same algorithm. The library's `ES_NUSS` validates the personal NUSS form; empresas affiliation numbers are out of scope until demand surfaces.
+
+---
+
+## `ES_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Dirección General de la Policía (Cuerpo
+Nacional de Policía). Modern biometric passports use 3 uppercase letters + 6
+digits (9 chars). Microsoft Purview documents a looser variant covering
+historical 8-or-9 char shapes; the regex adopts the union.
+
+- **Issuer**: DGP — Cuerpo Nacional de Policía
+- **Composition**: 2-3 alphanumeric chars + 6 digits
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`high` — multiple agreeing community sources + Microsoft Purview SIT entity.
+
+### Sources
+
+- Microsoft Purview, *Spain passport number*: <https://learn.microsoft.com/en-us/purview/sit-defn-spain-passport-number>
+- Wikipedia, *Spanish passport*: <https://en.wikipedia.org/wiki/Spanish_passport>

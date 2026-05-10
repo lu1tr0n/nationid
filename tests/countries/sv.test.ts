@@ -141,3 +141,91 @@ describe("SV — NIT", () => {
     });
   });
 });
+
+describe("SV — Pasaporte (SV_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (8-9 digits, optional letter prefix)", () => {
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "123456789")).toBe(true);
+      expect(validate("PASAPORTE", "A1234567")).toBe(true);
+      expect(validate("PASAPORTE", "B12345678")).toBe(true);
+      expect(validate("PASAPORTE", " 12345678 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "123456")).toBe(false); // too short
+      expect(validate("PASAPORTE", "1234567890A")).toBe(false); // too long
+      expect(validate("PASAPORTE", "AB12345")).toBe(false); // 2 letters not allowed
+      expect(validate("PASAPORTE", "@@@@@@@")).toBe(false); // strips to empty
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "a1234567")).toBe(true);
+    });
+
+    it("accepts the SV_PASAPORTE fully-qualified code", () => {
+      expect(validate("SV_PASAPORTE", "12345678")).toBe(true);
+    });
+  });
+
+  describe("normalize", () => {
+    it("is idempotent", () => {
+      const a = normalize("PASAPORTE", "a1234567");
+      expect(normalize("PASAPORTE", a)).toBe(a);
+      expect(a).toBe("A1234567");
+    });
+  });
+
+  describe("format", () => {
+    it("round-trips through normalize → format", () => {
+      const raw = "a1234567";
+      const n = normalize("PASAPORTE", raw);
+      expect(format("PASAPORTE", n)).toBe(n);
+    });
+
+    it("returns input unchanged for invalid input", () => {
+      expect(format("PASAPORTE", "1")).toBe("1");
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok with normalized + formatted on success", () => {
+      const r = parse("PASAPORTE", "a1234567");
+      expect(r).toEqual({
+        ok: true,
+        code: "SV_PASAPORTE",
+        normalized: "A1234567",
+        formatted: "A1234567",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=empty on empty input", () => {
+      const r = parse("PASAPORTE", "");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("empty");
+    });
+
+    it("returns kind=too_short for fewer than 7 chars", () => {
+      const r = parse("PASAPORTE", "12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for more than 10 chars", () => {
+      const r = parse("PASAPORTE", "12345678901");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+
+    it("never returns invalid_checksum (no DV in spec)", () => {
+      for (const input of ["", "AB", "@@@@@@@@"]) {
+        const r = parse("PASAPORTE", input);
+        if (!r.ok) {
+          expect(r.reason.kind).not.toBe("invalid_checksum");
+        }
+      }
+    });
+  });
+});

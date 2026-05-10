@@ -128,3 +128,32 @@ invalid (checksum):
 ### Open questions
 
 - SAT publishes the FEL XML schema but no numbered article spelling out the verifier formula. The algorithm matches `python-stdnum` and SAT-certified billing providers in production. Confidence remains `moderate`.
+
+---
+
+## `GT_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Instituto Guatemalteco de Migración (IGM), with
+civil-registry inputs from RENAP. The IGM 2024 numbering update (per Copa Air
+carrier notice) is documented but the exact regex was not extractable from
+the published PDF.
+
+- **Issuer**: IGM — <https://igm.gob.gt/requisitos-para-tramite-de-pasaporte-guatemalteco/>
+- **Composition**: 8-9 alphanumeric (lenient)
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — IGM has not published the 2024 numbering spec in machine-readable form.
+
+### Sources
+
+- IGM: <https://igm.gob.gt/requisitos-para-tramite-de-pasaporte-guatemalteco/>
+- Copa Air notice (Jul 2024 PDF): <https://www.copaair.com/assets/Update-in-the-numbering-of-Guatemalan-passports.pdf>

@@ -10,18 +10,22 @@
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
 import { ciSpec } from "./ci.ts";
+import { passportSpec } from "./passport.ts";
 import { rucSpec } from "./ruc.ts";
 
-export { ciSpec, rucSpec };
+export { ciSpec, passportSpec, rucSpec };
 
 const SPECS = {
   PY_CI: ciSpec,
   PY_RUC: rucSpec,
+  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
+  // `PY_PASAPORTE` after all v0.5 agents complete.
+  PY_PASAPORTE: passportSpec,
 } as const;
 
 export type PYDocumentType = keyof typeof SPECS;
 
-type ShortCode = "CI" | "RUC";
+type ShortCode = "CI" | "RUC" | "PASAPORTE";
 
 /** Country-scoped validate: pass either `PY_CI` or just `CI`. */
 export function validate(code: PYDocumentType | ShortCode, input: string): boolean {
@@ -43,12 +47,13 @@ export function parse(code: PYDocumentType | ShortCode, input: string): ParseRes
 function resolveSpec(code: PYDocumentType | ShortCode): DocumentSpec {
   if (code === "CI") return ciSpec;
   if (code === "RUC") return rucSpec;
+  if (code === "PASAPORTE") return passportSpec;
   return SPECS[code];
 }
 
 export const pyBundle: CountryDocumentBundle = {
   country: "PY",
-  personal: [ciSpec],
+  personal: [ciSpec, passportSpec],
   tax: [rucSpec],
   defaultPersonal: "PY_CI",
   defaultTax: "PY_RUC",

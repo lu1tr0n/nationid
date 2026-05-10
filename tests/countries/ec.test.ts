@@ -21,6 +21,14 @@ describe("EC — Cédula", () => {
       expect(validate("CEDULA", "3012345678")).toBe(true);
     });
 
+    it("accepts provincia 30 (asignación especial — ecuatorianos en el exterior / Galápagos)", () => {
+      // 3012345678 is the canonical 30-province synthetic vector (DV=8).
+      // Boundary cases on either side of 30 must NOT pass: 25..29 and 31..99.
+      expect(validate("CEDULA", "3012345678")).toBe(true);
+      expect(validate("CEDULA", "2912345670")).toBe(false); // provincia 29 invalid
+      expect(validate("CEDULA", "3112345670")).toBe(false); // provincia 31 invalid
+    });
+
     it("rejects cédulas with invalid check digit", () => {
       expect(validate("CEDULA", "1710034066")).toBe(false);
       expect(validate("CEDULA", "1710034064")).toBe(false);
@@ -297,6 +305,58 @@ describe("EC — RUC", () => {
       const r = parse("RUC", "1791000004001");
       expect(r.ok).toBe(false);
       if (!r.ok) expect(r.reason.kind).toBe("invalid_checksum");
+    });
+  });
+});
+
+describe("EC — Pasaporte (EC_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (8-9 alphanumeric)", () => {
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "A12345678")).toBe(true);
+      expect(validate("PASAPORTE", "123456789")).toBe(true);
+      expect(validate("PASAPORTE", "AB1234567")).toBe(true);
+      expect(validate("PASAPORTE", " A12345678 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "1234567")).toBe(false);
+      expect(validate("PASAPORTE", "1234567890")).toBe(false);
+      expect(validate("PASAPORTE", "@@@@@@@@")).toBe(false);
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "a12345678")).toBe(true);
+    });
+
+    it("accepts the EC_PASAPORTE fully-qualified code", () => {
+      expect(validate("EC_PASAPORTE", "12345678")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "a12345678");
+      expect(r).toEqual({
+        ok: true,
+        code: "EC_PASAPORTE",
+        normalized: "A12345678",
+        formatted: "A12345678",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "1234567");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "1234567890");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
     });
   });
 });

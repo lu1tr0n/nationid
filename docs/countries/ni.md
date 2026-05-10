@@ -23,13 +23,13 @@ The CSE does not publish the DV algorithm. Community libraries do not converge o
 
 ```
 length == 14
-charset == [digits 0-9] x 13 + [A-Z] x 1
+charset == [digits 0-9] x 13 + [ABCDEFGHJKLMNPQRSTUVWXY] x 1
 municipio != "000"
 01 <= DD <= 31
 01 <= MM <= 12
 ```
 
-The trailing letter is accepted as `[A-Z]` without checksum verification.
+The trailing DV letter is accepted as A-Z **excluding `I`, `O` and `Z`** (CSE excludes those to avoid visual confusion with `1`, `0` and `2`). No checksum verification is performed.
 
 ### Sources
 
@@ -42,7 +42,7 @@ The trailing letter is accepted as `[A-Z]` without checksum verification.
 valid:
   - 0011301800008X
   - 001-130180-0008X
-  - 1232812900099Z
+  - 1232812900099Y
   - 555-071285-0500K
 
 invalid (format):
@@ -50,6 +50,9 @@ invalid (format):
   - 1234 (too short)
   - 0011301800008XYZ (too long)
   - 0011301800008Ñ (non-A-Z letter)
+  - 0011301800008I (DV letter I excluded)
+  - 0011301800008O (DV letter O excluded)
+  - 0011301800008Z (DV letter Z excluded)
   - ABCDEFGHIJKLMN (all letters)
 
 invalid (structure):
@@ -116,3 +119,29 @@ None known affecting the format.
 
 - Field-level breakdown of the 14-digit jurídica RUC is not publicly documented.
 - DGI may compute an internal verifier for jurídicas; if confirmed, this should be promoted from `low` to `moderate`.
+
+---
+
+## `NI_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Dirección General de Migración y Extranjería
+(DGME NI). Format is typically 1 letter + 7 digits or 8 digits.
+
+- **Issuer**: DGME NI — <https://www.migob.gob.ni/migracion/>
+- **Composition**: optional 1 letter + 7-8 digits (lenient)
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — no first-party publication.
+
+### Sources
+
+- DGME NI: <https://www.migob.gob.ni/migracion/>

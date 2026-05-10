@@ -77,3 +77,30 @@ invalid:
 
 - Both legacy and post-2021 NIT formats coexist on the same identifier space.
 - `confidence: "low"` because there is no enforced check digit.
+
+---
+
+## `BO_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by SEGIP / Dirección General de Migración. Andean
+Community common design since 2005. Numbers are typically 6-8 digits, with
+optional single-letter prefix.
+
+- **Issuer**: SEGIP / DGM
+- **Composition**: 6-9 alphanumeric (lenient)
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — no first-party spec located.
+
+### Sources
+
+- Wikipedia, *Visa requirements for Bolivian citizens*: <https://en.wikipedia.org/wiki/Visa_requirements_for_Bolivian_citizens>

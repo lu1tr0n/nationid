@@ -119,3 +119,30 @@ invalid (format):
 
 - The SAR does not publish a verifier algorithm and several commercial billing platforms implement private internal heuristics. Confidence remains `unconfirmed` until either SAR publishes documentation or in-country reverse-engineering converges.
 - For persona natural, the RTN body matches the DNI; consumers can cross-validate the first 13 digits as `HN_DNI`. This spec keeps the documents independent for clarity.
+
+---
+
+## `HN_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Instituto Nacional de Migración and consulates.
+Most-cited modern format is 1 uppercase letter + 7 digits (often `E` or `A`),
+with legacy 9-digit numeric issues still circulating.
+
+- **Issuer**: INM
+- **Composition**: optional 1 letter + 7-9 digits (lenient)
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — no first-party publication.
+
+### Sources
+
+- Passport Index: <https://www.passportindex.org/passport/honduras/>

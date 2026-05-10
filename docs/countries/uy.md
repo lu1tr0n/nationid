@@ -126,3 +126,29 @@ None known affecting format or algorithm.
 ### Open questions
 
 - DGI does not publish the formula in a normative text; the algorithm is documented administratively. Confidence remains `moderate` until the formula is reconfirmed against an authoritative DGI publication.
+
+---
+
+## `UY_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Dirección Nacional de Identificación Civil
+(DNIC). Format is 1 letter + 6 digits, total 7 chars (e.g., `B123456`).
+
+- **Issuer**: DNIC
+- **Composition**: 1 letter + 6 digits
+- **Visual format**: 7 contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low`.
+
+### Sources
+
+- Ministerio del Interior: <https://www.gub.uy/ministerio-interior/>

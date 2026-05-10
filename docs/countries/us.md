@@ -183,3 +183,32 @@ The IRS occasionally adds new valid prefixes when opening additional service cen
 ### Open questions
 
 - IRS publishes the prefix-to-campus mapping as well (e.g. `01,02,03,04,05,06 -> Andover`). The library does not currently expose campus information; track as future enhancement.
+
+---
+
+## `US_PASAPORTE` — Passport
+
+### Overview
+
+Travel document issued by the U.S. Department of State, Bureau of Consular
+Affairs. Legacy passports use 9 digits; Next Generation Passport (NGP, since
+2021) uses 1 letter + 8 digits. Both circulate concurrently.
+
+- **Issuer**: Department of State
+- **Composition**: legacy `[0-9]{9}` or NGP `[A-Z][0-9]{8}`
+- **Visual format**: 9 contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`moderate` — State Dept FAQ confirms the NGP letter prefix; no single
+canonical regex published.
+
+### Sources
+
+- State Dept NGP page: <https://travel.state.gov/content/travel/en/passports/passport-help/next-generation-passport.html>
+- Wikipedia, *United States passport*: <https://en.wikipedia.org/wiki/United_States_passport>

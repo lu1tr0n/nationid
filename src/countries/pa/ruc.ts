@@ -2,16 +2,30 @@
  * Panamá — RUC (Registro Único de Contribuyentes).
  *
  * Issuer: DGI Panamá (Dirección General de Ingresos, MEF).
- * Source: https://dgi.mef.gob.pa/
+ * Source: https://dgi.mef.gob.pa/ — DV calculator: https://dgi.mef.gob.pa/Dv
  *
  * Format:
  *   - Naturales: same shape as `PA_CEDULA` (`[Tipo]-[Tomo]-[Asiento]`).
- *   - Jurídicas: `[Tomo]-[Folio]-[Asiento]` plus an optional DV suffix
- *     printed on the certificate as `DV NN`.
+ *   - Jurídicas: `[Tomo]-[Folio]-[Asiento]` plus an optional 2-digit DV
+ *     suffix printed on the certificate as `DV NN`.
  *
- * Check digit (DV): mod-11 weighted, but the formula is not publicly
- * normalized by DGI and community libraries do not converge on a single
- * algorithm. We therefore validate **format only**.
+ * Check digit (DV): DGI exposes an interactive DV calculator at
+ * https://dgi.mef.gob.pa/Dv but does NOT publish the underlying formula
+ * in machine-readable form. Reference community implementations
+ * (`apple314159/panama-dv`, `juancorradine/Panama-RUC-DV-Calculator`)
+ * use a mod-11 weighted scheme that diverges in edge cases (alphabetic
+ * prefixes `PE`/`E`/`N`, jurídica vs natural padding rules) and the
+ * audit (`coverage-audit-2026-05-10.md`) flagged that the two reference
+ * impls do not byte-match the DGI portal across all classes of input.
+ *
+ * For v0.5 we **deliberately keep format-only validation** (`confidence:
+ * "low"`). The DV suffix is recognized in normalize/format and stripped
+ * before validation, so round-tripping a DGI-printed `1234-5678-901234
+ * DV 32` works. Promotion to `moderate` requires either:
+ *   (a) DGI publishing the algorithm in writing, or
+ *   (b) cross-validation across two independent reference implementations
+ *       on at least 100 real-world RUCs, recorded in
+ *       `docs/CROSS_VALIDATION.md`.
  *
  * Confidence: `low` — format only.
  */

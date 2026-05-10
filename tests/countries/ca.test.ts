@@ -245,3 +245,59 @@ describe("CA — BN", () => {
     });
   });
 });
+
+describe("CA — Passport (CA_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (verified: 2 letters + 6 digits)", () => {
+      // Microsoft Purview SIT-validated shape for Canadian ePassport.
+      expect(validate("PASAPORTE", "AB123456")).toBe(true);
+      expect(validate("PASAPORTE", "GA000001")).toBe(true);
+      expect(validate("PASAPORTE", "ZZ999999")).toBe(true);
+      expect(validate("PASAPORTE", "QC123456")).toBe(true);
+      expect(validate("PASAPORTE", " AB123456 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "A123456")).toBe(false); // 1 letter
+      expect(validate("PASAPORTE", "ABC123456")).toBe(false); // 3 letters
+      expect(validate("PASAPORTE", "AB12345")).toBe(false); // too short
+      expect(validate("PASAPORTE", "AB1234567")).toBe(false); // too long
+      expect(validate("PASAPORTE", "12345678")).toBe(false); // no letters
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "ab123456")).toBe(true);
+    });
+
+    it("accepts both fully-qualified and short codes", () => {
+      expect(validate("CA_PASAPORTE", "AB123456")).toBe(true);
+      expect(validate("PASSPORT", "AB123456")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success with high confidence (verified)", () => {
+      const r = parse("PASAPORTE", "ab123456");
+      expect(r).toEqual({
+        ok: true,
+        code: "CA_PASAPORTE",
+        normalized: "AB123456",
+        formatted: "AB123456",
+        confidence: "high",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "AB12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "AB1234567");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

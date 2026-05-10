@@ -180,9 +180,10 @@ UIs can choose to surface a warning when a low-confidence document validates onl
 - **v0.2** — 8 additional codes in covered countries: `BR_CNH`, `BR_TITULO_ELEITOR`, `BR_PIS`, `AR_CDI`, `ES_NUSS`, `MX_CLAVE_ELECTOR`, `CO_PEP`, `CO_PPT` ✅
 - **v0.3** — `extract` (DOB, sex, region) + `pii` (mask, hash, lastN) + `i18n` (es/en/pt error messages) + `catalog` (queryable document metadata) ✅
 - **v0.4** — 9 new countries: UY, VE, PA, EC, BO, PY, NI, CA, PT ✅
-- **v0.5** — Europe principal: GB, FR, DE, IT, NL, BE, CH, SE, NO, DK, FI, PL + additional i18n locales
-- **v0.6** — Asia: IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL
-- **v0.7** — `@nationid/react` companion with `<DocumentInput>`
+- **v0.5** — Passport family (22 countries) + ICAO 9303 algorithm + BR_CNPJ alphanum rollout (IN RFB 2.229/2024) + MX_NSS + audit fixes ✅
+- **v0.6** — Europe principal: GB, FR, DE, IT, NL, BE, CH, SE, NO, DK, FI, PL + additional i18n locales
+- **v0.7** — Asia: IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL
+- **v0.8** — `@nationid/react` companion with `<DocumentInput>`
 - **v1.0** — API stability, all current countries at High confidence
 
 ## Contributing

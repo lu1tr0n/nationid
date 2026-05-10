@@ -226,3 +226,57 @@ describe("DO — RNC", () => {
     });
   });
 });
+
+describe("DO — Pasaporte (DO_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (2-letter office prefix + 7 digits)", () => {
+      expect(validate("PASAPORTE", "SD1234567")).toBe(true);
+      expect(validate("PASAPORTE", "PP1234567")).toBe(true);
+      expect(validate("PASAPORTE", "AB0000001")).toBe(true);
+      expect(validate("PASAPORTE", "ZZ9999999")).toBe(true);
+      expect(validate("PASAPORTE", " SD1234567 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "S1234567")).toBe(false); // 1 letter
+      expect(validate("PASAPORTE", "SDD1234567")).toBe(false); // 3 letters
+      expect(validate("PASAPORTE", "SD123456")).toBe(false); // 6 digits — too short
+      expect(validate("PASAPORTE", "SD12345678")).toBe(false); // 8 digits — too long
+      expect(validate("PASAPORTE", "1SD234567")).toBe(false); // digit before letters
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "sd1234567")).toBe(true);
+    });
+
+    it("accepts the DO_PASAPORTE fully-qualified code", () => {
+      expect(validate("DO_PASAPORTE", "SD1234567")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "sd1234567");
+      expect(r).toEqual({
+        ok: true,
+        code: "DO_PASAPORTE",
+        normalized: "SD1234567",
+        formatted: "SD1234567",
+        confidence: "moderate",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "SD12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "SD12345678");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

@@ -268,3 +268,55 @@ describe("CR — Cédula Jurídica", () => {
     });
   });
 });
+
+describe("CR — Pasaporte (CR_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (9 alphanumeric)", () => {
+      expect(validate("PASAPORTE", "C12345678")).toBe(true);
+      expect(validate("PASAPORTE", "123456789")).toBe(true);
+      expect(validate("PASAPORTE", "ABCDEF123")).toBe(true);
+      expect(validate("PASAPORTE", "AAA000001")).toBe(true);
+      expect(validate("PASAPORTE", " C12345678 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "C1234567")).toBe(false); // too short
+      expect(validate("PASAPORTE", "C123456789")).toBe(false); // too long
+      expect(validate("PASAPORTE", "@@@@@@@@@")).toBe(false);
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "c12345678")).toBe(true);
+    });
+
+    it("accepts the CR_PASAPORTE fully-qualified code", () => {
+      expect(validate("CR_PASAPORTE", "C12345678")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "c12345678");
+      expect(r).toEqual({
+        ok: true,
+        code: "CR_PASAPORTE",
+        normalized: "C12345678",
+        formatted: "C12345678",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "C1234567");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "C123456789");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

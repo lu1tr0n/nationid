@@ -60,3 +60,31 @@ invalid (checksum):
 
 - The DV `K` is **case-insensitive** in input but normalized to uppercase `K` in output
 - All-same-digit sequences pass the checksum but are accepted by SII without restriction (different from BR CPF convention)
+
+---
+
+## `CL_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Servicio de Registro Civil e Identificación
+(SRCeI). Until Aug 2013 the passport number equaled the holder's RUN; since
+then numbers are unique and independent of RUN. Current samples are 8-9
+alphanumeric chars.
+
+- **Issuer**: SRCeI — <https://www.registrocivil.cl/>
+- **Composition**: 8-9 alphanumeric
+- **Visual format**: contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`low` — no SRCeI public format spec.
+
+### Sources
+
+- Wikipedia, *Chilean passport*: <https://en.wikipedia.org/wiki/Chilean_passport>

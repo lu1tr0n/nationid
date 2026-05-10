@@ -246,3 +246,55 @@ describe("BO — NIT", () => {
     });
   });
 });
+
+describe("BO — Pasaporte (BO_PASAPORTE)", () => {
+  describe("validate", () => {
+    it("accepts valid passport numbers (6-9 alphanumeric)", () => {
+      expect(validate("PASAPORTE", "123456")).toBe(true);
+      expect(validate("PASAPORTE", "1234567")).toBe(true);
+      expect(validate("PASAPORTE", "12345678")).toBe(true);
+      expect(validate("PASAPORTE", "B1234567")).toBe(true);
+      expect(validate("PASAPORTE", " 123456 ")).toBe(true);
+    });
+
+    it("rejects malformed input", () => {
+      expect(validate("PASAPORTE", "")).toBe(false);
+      expect(validate("PASAPORTE", "12345")).toBe(false); // too short
+      expect(validate("PASAPORTE", "1234567890")).toBe(false); // too long
+      expect(validate("PASAPORTE", "@@@@@@")).toBe(false);
+    });
+
+    it("normalizes lowercase to uppercase", () => {
+      expect(validate("PASAPORTE", "b1234567")).toBe(true);
+    });
+
+    it("accepts the BO_PASAPORTE fully-qualified code", () => {
+      expect(validate("BO_PASAPORTE", "123456")).toBe(true);
+    });
+  });
+
+  describe("parse", () => {
+    it("returns ok on success", () => {
+      const r = parse("PASAPORTE", "b1234567");
+      expect(r).toEqual({
+        ok: true,
+        code: "BO_PASAPORTE",
+        normalized: "B1234567",
+        formatted: "B1234567",
+        confidence: "low",
+      });
+    });
+
+    it("returns kind=too_short for shorter input", () => {
+      const r = parse("PASAPORTE", "12345");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_short");
+    });
+
+    it("returns kind=too_long for longer input", () => {
+      const r = parse("PASAPORTE", "1234567890");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.reason.kind).toBe("too_long");
+    });
+  });
+});

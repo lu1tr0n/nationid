@@ -123,3 +123,32 @@ invalid (checksum):
 ### Open questions
 
 - The DGII publishes the e-CF XML schema with the verifier rule but does not publish a numbered article spelling out the algorithm. Confidence stays `moderate` pending official documentation.
+
+---
+
+## `DO_PASAPORTE` — Pasaporte
+
+### Overview
+
+Travel document issued by the Dirección General de Pasaportes (DGP). Format
+is a 2-letter office prefix + 7 digits (9 chars). The 2-letter prefix encodes
+the issuing office: `SD` (Santo Domingo), `PP` (Puerto Plata), etc.
+
+- **Issuer**: DGP
+- **Composition**: 2 letters + 7 digits
+- **Visual format**: 9 contiguous chars
+
+### Algorithm
+
+None on the printed number. MRZ check digit lives in
+`algorithms/icao-9303.ts`.
+
+### Confidence
+
+`moderate` — consistent reports across PRADO catalog and community sources;
+DGP has not published a format spec.
+
+### Sources
+
+- Council of the EU PRADO catalog: <https://www.consilium.europa.eu/prado/en/prado-documents/dom/a/docs-per-category.html>
+- DR1 forum: <https://dr1.com/forums/threads/dominican-passport-numbers.396022/>
