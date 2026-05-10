@@ -130,7 +130,7 @@ describe("listDocumentsByPurpose — cross-country filter", () => {
     const docs = listDocumentsByPurpose("social_security", "en");
     const codes = docs.map((d) => d.code).sort();
     expect(codes).toEqual(
-      (["AR_CUIL", "BR_PIS", "ES_NUSS", "US_SSN"] as DocumentTypeCode[]).sort(),
+      (["AR_CUIL", "BR_PIS", "CA_SIN", "ES_NUSS", "US_SSN"] as DocumentTypeCode[]).sort(),
     );
   });
 

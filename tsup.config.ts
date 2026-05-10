@@ -2,10 +2,11 @@ import { existsSync } from "node:fs";
 import { defineConfig } from "tsup";
 
 /**
- * Countries shipping in v0.1.0. We filter to those whose `index.ts` exists,
+ * Countries shipped through v0.4.0. We filter to those whose `index.ts` exists,
  * so partial drafts during development still build green.
  */
 const ALL_COUNTRIES = [
+  // v0.1.0
   "sv",
   "mx",
   "co",
@@ -19,6 +20,16 @@ const ALL_COUNTRIES = [
   "cr",
   "es",
   "us",
+  // v0.4.0
+  "bo",
+  "ec",
+  "py",
+  "ni",
+  "pa",
+  "uy",
+  "ca",
+  "pt",
+  "ve",
 ] as const;
 
 const COUNTRIES = ALL_COUNTRIES.filter((cc) => existsSync(`src/countries/${cc}/index.ts`));

@@ -26,7 +26,7 @@
     "i18n",
     "validator"
   ],
-  "homepage": "https://github.com/lu1tr0n/nationid",
+  "homepage": "https://lu1tr0n.github.io/nationid_example/",
   "bugs": {
     "url": "https://github.com/lu1tr0n/nationid/issues"
   },
@@ -116,6 +116,51 @@
       "types": "./dist/countries/us/index.d.ts",
       "import": "./dist/countries/us/index.js",
       "require": "./dist/countries/us/index.cjs"
+    },
+    "./bo": {
+      "types": "./dist/countries/bo/index.d.ts",
+      "import": "./dist/countries/bo/index.js",
+      "require": "./dist/countries/bo/index.cjs"
+    },
+    "./ec": {
+      "types": "./dist/countries/ec/index.d.ts",
+      "import": "./dist/countries/ec/index.js",
+      "require": "./dist/countries/ec/index.cjs"
+    },
+    "./py": {
+      "types": "./dist/countries/py/index.d.ts",
+      "import": "./dist/countries/py/index.js",
+      "require": "./dist/countries/py/index.cjs"
+    },
+    "./ni": {
+      "types": "./dist/countries/ni/index.d.ts",
+      "import": "./dist/countries/ni/index.js",
+      "require": "./dist/countries/ni/index.cjs"
+    },
+    "./pa": {
+      "types": "./dist/countries/pa/index.d.ts",
+      "import": "./dist/countries/pa/index.js",
+      "require": "./dist/countries/pa/index.cjs"
+    },
+    "./uy": {
+      "types": "./dist/countries/uy/index.d.ts",
+      "import": "./dist/countries/uy/index.js",
+      "require": "./dist/countries/uy/index.cjs"
+    },
+    "./ca": {
+      "types": "./dist/countries/ca/index.d.ts",
+      "import": "./dist/countries/ca/index.js",
+      "require": "./dist/countries/ca/index.cjs"
+    },
+    "./pt": {
+      "types": "./dist/countries/pt/index.d.ts",
+      "import": "./dist/countries/pt/index.js",
+      "require": "./dist/countries/pt/index.cjs"
+    },
+    "./ve": {
+      "types": "./dist/countries/ve/index.d.ts",
+      "import": "./dist/countries/ve/index.js",
+      "require": "./dist/countries/ve/index.cjs"
     },
     "./extract": {
       "types": "./dist/extract/index.d.ts",
@@ -215,9 +260,9 @@
   },
   "size-limit": [
     {
-      "name": "full registry (root, all 13 countries v0.1)",
+      "name": "full registry (root, all 22 countries through v0.4)",
       "path": "dist/index.js",
-      "limit": "20 KB"
+      "limit": "30 KB"
     },
     {
       "name": "single country — sv (smallest, format+1 mod-10 + 1 mod-11)",
@@ -247,12 +292,12 @@
     {
       "name": "v0.3 — extract helpers subpath (includes full registry for getSpec)",
       "path": "dist/extract/index.js",
-      "limit": "10 KB"
+      "limit": "12 KB"
     },
     {
       "name": "v0.3 — pii helpers subpath (includes full registry for getSpec)",
       "path": "dist/pii/index.js",
-      "limit": "10 KB"
+      "limit": "12 KB"
     },
     {
       "name": "v0.3 — i18n core subpath",

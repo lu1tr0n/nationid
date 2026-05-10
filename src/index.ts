@@ -14,18 +14,27 @@ import type {
 } from "./core/types.ts";
 
 import { arBundle } from "./countries/ar/index.ts";
+import { boBundle } from "./countries/bo/index.ts";
 import { brBundle } from "./countries/br/index.ts";
+import { caBundle } from "./countries/ca/index.ts";
 import { clBundle } from "./countries/cl/index.ts";
 import { coBundle } from "./countries/co/index.ts";
 import { crBundle } from "./countries/cr/index.ts";
 import { doBundle } from "./countries/do/index.ts";
+import { ecBundle } from "./countries/ec/index.ts";
 import { esBundle } from "./countries/es/index.ts";
 import { gtBundle } from "./countries/gt/index.ts";
 import { hnBundle } from "./countries/hn/index.ts";
 import { mxBundle } from "./countries/mx/index.ts";
+import { niBundle } from "./countries/ni/index.ts";
+import { paBundle } from "./countries/pa/index.ts";
 import { peBundle } from "./countries/pe/index.ts";
+import { ptBundle } from "./countries/pt/index.ts";
+import { pyBundle } from "./countries/py/index.ts";
 import { svBundle } from "./countries/sv/index.ts";
 import { usBundle } from "./countries/us/index.ts";
+import { uyBundle } from "./countries/uy/index.ts";
+import { veBundle } from "./countries/ve/index.ts";
 
 // Public types
 export type {
@@ -49,6 +58,7 @@ export type {
  *   4. Add a subpath export entry in `package.json` and an entry in `tsup.config.ts`.
  */
 const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
+  // v0.1.0
   svBundle,
   mxBundle,
   coBundle,
@@ -62,6 +72,16 @@ const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
   crBundle,
   esBundle,
   usBundle,
+  // v0.4.0 — 9 new countries
+  boBundle,
+  ecBundle,
+  pyBundle,
+  niBundle,
+  paBundle,
+  uyBundle,
+  caBundle,
+  ptBundle,
+  veBundle,
 ];
 
 /**

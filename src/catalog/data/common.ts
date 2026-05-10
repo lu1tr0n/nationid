@@ -83,4 +83,40 @@ export const catalogCommon: Record<DocumentTypeCode, CommonEntry> = {
   US_SSN: { purpose: "social_security", knownAs: ["SSN"] },
   US_ITIN: { purpose: "tax", knownAs: ["ITIN"] },
   US_EIN: { purpose: "tax", knownAs: ["EIN"] },
+
+  // v0.4.0 — Bolivia
+  BO_CI: { purpose: "identity", knownAs: ["CI", "Cédula"] },
+  BO_NIT: { purpose: "tax", knownAs: ["NIT"] },
+
+  // v0.4.0 — Ecuador
+  EC_CEDULA: { purpose: "identity", knownAs: ["Cédula", "CI"] },
+  EC_RUC: { purpose: "tax", knownAs: ["RUC"] },
+
+  // v0.4.0 — Paraguay
+  PY_CI: { purpose: "identity", knownAs: ["CI", "Cédula"] },
+  PY_RUC: { purpose: "tax", knownAs: ["RUC"] },
+
+  // v0.4.0 — Nicaragua
+  NI_CEDULA: { purpose: "identity", knownAs: ["Cédula"] },
+  NI_RUC: { purpose: "tax", knownAs: ["RUC"] },
+
+  // v0.4.0 — Panamá
+  PA_CEDULA: { purpose: "identity", knownAs: ["Cédula", "CIP"] },
+  PA_RUC: { purpose: "tax", knownAs: ["RUC"] },
+
+  // v0.4.0 — Uruguay
+  UY_CI: { purpose: "identity", knownAs: ["CI", "Cédula"] },
+  UY_RUT: { purpose: "tax", knownAs: ["RUT"] },
+
+  // v0.4.0 — Canadá
+  CA_SIN: { purpose: "social_security", knownAs: ["SIN", "NAS", "Numéro d'assurance sociale"] },
+  CA_BN: { purpose: "tax", knownAs: ["BN", "Numéro d'entreprise"] },
+
+  // v0.4.0 — Portugal
+  PT_NIF: { purpose: "tax", knownAs: ["NIF", "NIPC", "Contribuinte"] },
+  PT_CC: { purpose: "identity", knownAs: ["CC", "BI"] },
+
+  // v0.4.0 — Venezuela
+  VE_CEDULA: { purpose: "identity", knownAs: ["Cédula", "CI"] },
+  VE_RIF: { purpose: "tax", knownAs: ["RIF"] },
 };
