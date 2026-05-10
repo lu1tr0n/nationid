@@ -122,12 +122,14 @@ UIs can choose to surface a warning when a low-confidence document validates onl
 
 ## Roadmap
 
-- **v0.1** — 13 countries (current)
-- **v0.2** — UY, VE, PA, EC, BO, PY, NI, CA, PT + `extract` (DOB, sex) + `pii` (mask, hash) helpers
-- **v0.3** — Europe principal: GB, FR, DE, IT, NL, BE, CH, SE, NO, DK, FI, PL + i18n bundles
-- **v0.4** — Asia: IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL
-- **v0.5** — `@nationid/react` companion with `<DocumentInput>`
-- **v1.0** — API stability, all current countries High confidence
+- **v0.1** — 13 countries: SV, MX, CO, BR, PE, AR, CL, DO, GT, HN, CR, ES, US ✅
+- **v0.2** — 8 additional codes in covered countries: `BR_CNH`, `BR_TITULO_ELEITOR`, `BR_PIS`, `AR_CDI`, `ES_NUSS`, `MX_CLAVE_ELECTOR` (alias `MX_INE`), `CO_PEP`, `CO_PPT` ✅
+- **v0.3** — `extract` (DOB, sex from CURP/CPF/etc.) + `pii` (mask, hash) helpers
+- **v0.4** — 9 new countries: UY, VE, PA, EC, BO, PY, NI, CA, PT
+- **v0.5** — Europe principal: GB, FR, DE, IT, NL, BE, CH, SE, NO, DK, FI, PL + i18n bundles
+- **v0.6** — Asia: IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL
+- **v0.7** — `@nationid/react` companion with `<DocumentInput>`
+- **v1.0** — API stability, all current countries at High confidence
 
 ## Contributing
 
