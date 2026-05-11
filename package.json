@@ -162,6 +162,66 @@
       "import": "./dist/countries/ve/index.js",
       "require": "./dist/countries/ve/index.cjs"
     },
+    "./gb": {
+      "types": "./dist/countries/gb/index.d.ts",
+      "import": "./dist/countries/gb/index.js",
+      "require": "./dist/countries/gb/index.cjs"
+    },
+    "./fr": {
+      "types": "./dist/countries/fr/index.d.ts",
+      "import": "./dist/countries/fr/index.js",
+      "require": "./dist/countries/fr/index.cjs"
+    },
+    "./de": {
+      "types": "./dist/countries/de/index.d.ts",
+      "import": "./dist/countries/de/index.js",
+      "require": "./dist/countries/de/index.cjs"
+    },
+    "./it": {
+      "types": "./dist/countries/it/index.d.ts",
+      "import": "./dist/countries/it/index.js",
+      "require": "./dist/countries/it/index.cjs"
+    },
+    "./nl": {
+      "types": "./dist/countries/nl/index.d.ts",
+      "import": "./dist/countries/nl/index.js",
+      "require": "./dist/countries/nl/index.cjs"
+    },
+    "./be": {
+      "types": "./dist/countries/be/index.d.ts",
+      "import": "./dist/countries/be/index.js",
+      "require": "./dist/countries/be/index.cjs"
+    },
+    "./ch": {
+      "types": "./dist/countries/ch/index.d.ts",
+      "import": "./dist/countries/ch/index.js",
+      "require": "./dist/countries/ch/index.cjs"
+    },
+    "./pl": {
+      "types": "./dist/countries/pl/index.d.ts",
+      "import": "./dist/countries/pl/index.js",
+      "require": "./dist/countries/pl/index.cjs"
+    },
+    "./se": {
+      "types": "./dist/countries/se/index.d.ts",
+      "import": "./dist/countries/se/index.js",
+      "require": "./dist/countries/se/index.cjs"
+    },
+    "./no": {
+      "types": "./dist/countries/no/index.d.ts",
+      "import": "./dist/countries/no/index.js",
+      "require": "./dist/countries/no/index.cjs"
+    },
+    "./dk": {
+      "types": "./dist/countries/dk/index.d.ts",
+      "import": "./dist/countries/dk/index.js",
+      "require": "./dist/countries/dk/index.cjs"
+    },
+    "./fi": {
+      "types": "./dist/countries/fi/index.d.ts",
+      "import": "./dist/countries/fi/index.js",
+      "require": "./dist/countries/fi/index.cjs"
+    },
     "./extract": {
       "types": "./dist/extract/index.d.ts",
       "import": "./dist/extract/index.js",
@@ -260,9 +320,9 @@
   },
   "size-limit": [
     {
-      "name": "full registry (root, all 22 countries through v0.4)",
+      "name": "full registry (root, all 34 countries through v0.6)",
       "path": "dist/index.js",
-      "limit": "30 KB"
+      "limit": "45 KB"
     },
     {
       "name": "single country — sv (smallest, format+1 mod-10 + 1 mod-11)",
@@ -292,12 +352,12 @@
     {
       "name": "v0.3 — extract helpers subpath (includes full registry for getSpec)",
       "path": "dist/extract/index.js",
-      "limit": "12 KB"
+      "limit": "20 KB"
     },
     {
       "name": "v0.3 — pii helpers subpath (includes full registry for getSpec)",
       "path": "dist/pii/index.js",
-      "limit": "12 KB"
+      "limit": "20 KB"
     },
     {
       "name": "v0.3 — i18n core subpath",
@@ -310,9 +370,9 @@
       "limit": "1 KB"
     },
     {
-      "name": "v0.3 — catalog subpath (all 3 locales)",
+      "name": "v0.3 — catalog subpath (all 3 locales, 34 countries)",
       "path": "dist/catalog/index.js",
-      "limit": "20 KB"
+      "limit": "30 KB"
     }
   ]
 }

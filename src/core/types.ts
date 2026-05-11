@@ -5,7 +5,7 @@
  * breaking change. New countries / document codes are additive.
  */
 
-/** ISO 3166-1 alpha-2 — 13 countries from v0.1.0 + 9 added in v0.4.0 */
+/** ISO 3166-1 alpha-2 — 22 countries through v0.5 + 12 European countries added in v0.6.0 */
 export type CountryCode =
   // v0.1.0
   | "SV"
@@ -30,7 +30,20 @@ export type CountryCode =
   | "UY"
   | "CA"
   | "PT"
-  | "VE";
+  | "VE"
+  // v0.6.0 — 12 European countries
+  | "GB"
+  | "FR"
+  | "DE"
+  | "IT"
+  | "NL"
+  | "BE"
+  | "CH"
+  | "PL"
+  | "SE"
+  | "NO"
+  | "DK"
+  | "FI";
 
 /**
  * Stable code persisted in DB. Format: `{ISO-2}_{TYPE}`.
@@ -144,7 +157,55 @@ export type DocumentTypeCode =
   | "UY_PASAPORTE"
   | "CA_PASAPORTE"
   | "PT_PASAPORTE"
-  | "VE_PASAPORTE";
+  | "VE_PASAPORTE"
+  // v0.6.0 — United Kingdom
+  | "GB_NINO"
+  | "GB_UTR"
+  | "GB_VAT"
+  | "GB_NHS"
+  // v0.6.0 — France
+  | "FR_NIR"
+  | "FR_SIREN"
+  | "FR_SIRET"
+  | "FR_TVA"
+  // v0.6.0 — Germany
+  | "DE_STEUER_ID"
+  | "DE_STEUERNUMMER"
+  | "DE_USTID"
+  // v0.6.0 — Italy
+  | "IT_CF"
+  | "IT_PIVA"
+  // v0.6.0 — Netherlands
+  | "NL_BSN"
+  | "NL_BTW"
+  // v0.6.0 — Belgium
+  | "BE_NRN"
+  | "BE_BTW"
+  // v0.6.0 — Switzerland
+  | "CH_AHV"
+  | "CH_UID"
+  | "CH_MWST"
+  // v0.6.0 — Poland
+  | "PL_PESEL"
+  | "PL_NIP"
+  | "PL_REGON"
+  // v0.6.0 — Sweden
+  | "SE_PERSONNUMMER"
+  | "SE_ORGNR"
+  | "SE_VAT"
+  // v0.6.0 — Norway
+  | "NO_FNR"
+  | "NO_DNR"
+  | "NO_ORGNR"
+  | "NO_MVA"
+  // v0.6.0 — Denmark
+  | "DK_CPR"
+  | "DK_CVR"
+  | "DK_VAT"
+  // v0.6.0 — Finland
+  | "FI_HETU"
+  | "FI_YTUNNUS"
+  | "FI_VAT";
 
 /** Whether the document identifies a natural person, a tax entity, or both. */
 export type DocumentScope = "personal" | "tax" | "both";

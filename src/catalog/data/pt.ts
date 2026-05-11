@@ -490,4 +490,225 @@ export const catalogPt: Record<DocumentTypeCode, LocaleStrings> = {
     longName: "Passaporte venezuelano",
     description: "Documento de viagem internacional emitido pelo SAIME da Venezuela.",
   },
+
+  // v0.6.0 — United Kingdom
+  GB_NINO: {
+    displayName: "NINO",
+    longName: "Número de Seguro Nacional do Reino Unido",
+    description:
+      "Identificador permanente do sistema de segurança social britânico, emitido pela HMRC.",
+  },
+  GB_UTR: {
+    displayName: "UTR",
+    longName: "Referência Única do Contribuinte",
+    description: "Número de 10 dígitos atribuído pela HMRC para Self Assessment e Corporation Tax.",
+  },
+  GB_VAT: {
+    displayName: "VAT",
+    longName: "Número de IVA do Reino Unido",
+    description:
+      "Identificador de IVA emitido pela HMRC, formato GB + 9 dígitos (ou 12 com sucursal).",
+  },
+  GB_NHS: {
+    displayName: "NHS Number",
+    longName: "Número do Serviço Nacional de Saúde",
+    description: "Identificador sanitário de 10 dígitos para a Inglaterra e o País de Gales.",
+  },
+
+  // v0.6.0 — France
+  FR_NIR: {
+    displayName: "NIR",
+    longName: "Número da Segurança Social francês",
+    description: "Identificador permanente do INSEE que codifica sexo, data e local de nascimento.",
+  },
+  FR_SIREN: {
+    displayName: "SIREN",
+    longName: "Identificador de Empresa francesa",
+    description: "Número de 9 dígitos do INSEE que identifica a pessoa jurídica.",
+  },
+  FR_SIRET: {
+    displayName: "SIRET",
+    longName: "Identificador de Estabelecimento francês",
+    description:
+      "Número de 14 dígitos: SIREN (9) + NIC (5) que identifica um estabelecimento concreto.",
+  },
+  FR_TVA: {
+    displayName: "TVA",
+    longName: "Número de IVA Intracomunitário francês",
+    description: "Identificador VIES com chave derivada do SIREN.",
+  },
+
+  // v0.6.0 — Germany
+  DE_STEUER_ID: {
+    displayName: "IdNr",
+    longName: "Número de Identificação Fiscal Pessoal alemão",
+    description:
+      "Identificador fiscal vitalício de 11 dígitos emitido pelo Bundeszentralamt für Steuern.",
+  },
+  DE_STEUERNUMMER: {
+    displayName: "Steuernummer",
+    longName: "Número Fiscal alemão por Bundesland",
+    description: "Número fiscal emitido pela repartição do Land; o formato varia entre estados.",
+  },
+  DE_USTID: {
+    displayName: "USt-IdNr",
+    longName: "Número de Identificação de IVA alemão",
+    description: "Identificador de IVA intracomunitário, formato DE + 9 dígitos.",
+  },
+
+  // v0.6.0 — Italy
+  IT_CF: {
+    displayName: "Codice Fiscale",
+    longName: "Código Fiscal italiano",
+    description:
+      "Identificador alfanumérico de 16 caracteres derivado do nome, data de nascimento e comune.",
+  },
+  IT_PIVA: {
+    displayName: "Partita IVA",
+    longName: "Número de IVA italiano",
+    description:
+      "Identificador de 11 dígitos da Agenzia delle Entrate; coincide com o CF de pessoas jurídicas.",
+  },
+
+  // v0.6.0 — Netherlands
+  NL_BSN: {
+    displayName: "BSN",
+    longName: "Número de Serviço ao Cidadão neerlandês",
+    description: "Identificador pessoal único emitido pelo governo dos Países Baixos.",
+  },
+  NL_BTW: {
+    displayName: "BTW-id",
+    longName: "Número de IVA neerlandês",
+    description:
+      "Identificador de IVA emitido pela Belastingdienst, formato NL + 9 dígitos + B + 2 dígitos.",
+  },
+
+  // v0.6.0 — Belgium
+  BE_NRN: {
+    displayName: "NRN",
+    longName: "Número de Registo Nacional belga",
+    description:
+      "Identificador pessoal emitido pelo Registo Nacional; codifica data de nascimento e sexo.",
+  },
+  BE_BTW: {
+    displayName: "BTW",
+    longName: "Número de Empresa / IVA belga",
+    description:
+      "Identificador unificado de empresa e IVA, formato BE0 + 9 dígitos com verificação mod-97.",
+  },
+
+  // v0.6.0 — Switzerland
+  CH_AHV: {
+    displayName: "AHV",
+    longName: "Número de Segurança Social suíço",
+    description:
+      "Identificador permanente do sistema AHV/AVS, formato 756.xxxx.xxxx.xx com dígito EAN-13.",
+  },
+  CH_UID: {
+    displayName: "UID",
+    longName: "Identificador de Empresa suíço",
+    description:
+      "Número único de empresa emitido pela Confederação, formato CHE-xxx.xxx.xxx com mod-11.",
+  },
+  CH_MWST: {
+    displayName: "MWST",
+    longName: "Registo de IVA suíço",
+    description: "UID + sufixo MWST/TVA/IVA conforme o idioma cantonal do contribuinte.",
+  },
+
+  // v0.6.0 — Poland
+  PL_PESEL: {
+    displayName: "PESEL",
+    longName: "Número de Identificação Pessoal polaco",
+    description:
+      "Identificador pessoal de 11 dígitos que codifica data de nascimento, sexo e dígito de controlo.",
+  },
+  PL_NIP: {
+    displayName: "NIP",
+    longName: "Número de Identificação Fiscal polaco",
+    description: "Identificador tributário de 10 dígitos com verificação mod-11.",
+  },
+  PL_REGON: {
+    displayName: "REGON",
+    longName: "Número do Registo Estatístico polaco",
+    description: "Identificador estatístico de 9 ou 14 dígitos emitido pela GUS.",
+  },
+
+  // v0.6.0 — Sweden
+  SE_PERSONNUMMER: {
+    displayName: "Personnummer",
+    longName: "Número Pessoal sueco",
+    description:
+      "Identificador pessoal de 10 ou 12 dígitos com verificação Luhn; codifica data de nascimento.",
+  },
+  SE_ORGNR: {
+    displayName: "Organisationsnummer",
+    longName: "Número de Organização sueco",
+    description: "Identificador de pessoa jurídica de 10 dígitos com verificação Luhn.",
+  },
+  SE_VAT: {
+    displayName: "Moms",
+    longName: "Número de IVA sueco",
+    description: "Formato SE + organisationsnummer + 01.",
+  },
+
+  // v0.6.0 — Norway
+  NO_FNR: {
+    displayName: "Fødselsnummer",
+    longName: "Número de Identidade norueguês",
+    description: "Identificador pessoal de 11 dígitos com dupla verificação mod-11.",
+  },
+  NO_DNR: {
+    displayName: "D-nummer",
+    longName: "D-nummer (Noruega)",
+    description:
+      "Identificador para residentes estrangeiros; mesmo formato que FNR mas com dia deslocado +40.",
+  },
+  NO_ORGNR: {
+    displayName: "Organisasjonsnummer",
+    longName: "Número de Organização norueguês",
+    description: "Identificador de pessoa jurídica de 9 dígitos com verificação mod-11.",
+  },
+  NO_MVA: {
+    displayName: "MVA",
+    longName: "Número de IVA norueguês",
+    description: "Formato NO + organisasjonsnummer + MVA.",
+  },
+
+  // v0.6.0 — Denmark
+  DK_CPR: {
+    displayName: "CPR",
+    longName: "Número Pessoal dinamarquês",
+    description:
+      "Identificador pessoal de 10 dígitos com data de nascimento; verificação mod-11 abolida em 2007.",
+  },
+  DK_CVR: {
+    displayName: "CVR",
+    longName: "Número de Empresa dinamarquês",
+    description:
+      "Identificador de empresa de 8 dígitos emitido pela Erhvervsstyrelsen, com verificação mod-11.",
+  },
+  DK_VAT: {
+    displayName: "Moms",
+    longName: "Número de IVA dinamarquês",
+    description: "Formato DK + CVR.",
+  },
+
+  // v0.6.0 — Finland
+  FI_HETU: {
+    displayName: "HETU",
+    longName: "Número Pessoal finlandês",
+    description:
+      "Identificador pessoal com data de nascimento, separador de século e dígito de controlo mod-31.",
+  },
+  FI_YTUNNUS: {
+    displayName: "Y-tunnus",
+    longName: "Identificador de Empresa finlandês",
+    description: "Identificador de empresa de 7+1 dígitos com verificação mod-11.",
+  },
+  FI_VAT: {
+    displayName: "ALV",
+    longName: "Número de IVA finlandês",
+    description: "Formato FI + Y-tunnus sem hífen.",
+  },
 };

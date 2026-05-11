@@ -145,4 +145,64 @@ export const catalogCommon: Record<DocumentTypeCode, CommonEntry> = {
   CA_PASAPORTE: { purpose: "identity", knownAs: ["Passport", "Passeport", "Pasaporte"] },
   PT_PASAPORTE: { purpose: "identity", knownAs: ["Passaporte", "Passport"] },
   VE_PASAPORTE: { purpose: "identity", knownAs: ["Pasaporte", "Passport"] },
+
+  // v0.6.0 — United Kingdom
+  GB_NINO: { purpose: "social_security", knownAs: ["NINO", "NI Number"] },
+  GB_UTR: { purpose: "tax", knownAs: ["UTR"] },
+  GB_VAT: { purpose: "tax", knownAs: ["VAT", "VRN"] },
+  GB_NHS: { purpose: "identity", knownAs: ["NHS Number"] },
+
+  // v0.6.0 — France
+  FR_NIR: { purpose: "social_security", knownAs: ["NIR", "Sécu", "INSEE"] },
+  FR_SIREN: { purpose: "tax", knownAs: ["SIREN"] },
+  FR_SIRET: { purpose: "tax", knownAs: ["SIRET"] },
+  FR_TVA: { purpose: "tax", knownAs: ["TVA", "VAT"] },
+
+  // v0.6.0 — Germany
+  DE_STEUER_ID: { purpose: "tax", knownAs: ["IdNr", "Steuer-ID", "Tax ID"] },
+  DE_STEUERNUMMER: { purpose: "tax", knownAs: ["Steuernummer", "St-Nr"] },
+  DE_USTID: { purpose: "tax", knownAs: ["USt-IdNr", "VAT"] },
+
+  // v0.6.0 — Italy
+  IT_CF: { purpose: "tax", knownAs: ["Codice Fiscale", "CF"] },
+  IT_PIVA: { purpose: "tax", knownAs: ["P.IVA", "Partita IVA", "VAT"] },
+
+  // v0.6.0 — Netherlands
+  NL_BSN: { purpose: "identity", knownAs: ["BSN"] },
+  NL_BTW: { purpose: "tax", knownAs: ["BTW", "BTW-id", "VAT"] },
+
+  // v0.6.0 — Belgium
+  BE_NRN: { purpose: "identity", knownAs: ["NRN", "Rijksregisternummer", "Registre National"] },
+  BE_BTW: { purpose: "tax", knownAs: ["BTW", "TVA", "VAT"] },
+
+  // v0.6.0 — Switzerland
+  CH_AHV: { purpose: "social_security", knownAs: ["AHV", "AVS"] },
+  CH_UID: { purpose: "tax", knownAs: ["UID"] },
+  CH_MWST: { purpose: "tax", knownAs: ["MWST", "TVA", "IVA", "VAT"] },
+
+  // v0.6.0 — Poland
+  PL_PESEL: { purpose: "identity", knownAs: ["PESEL"] },
+  PL_NIP: { purpose: "tax", knownAs: ["NIP"] },
+  PL_REGON: { purpose: "tax", knownAs: ["REGON"] },
+
+  // v0.6.0 — Sweden
+  SE_PERSONNUMMER: { purpose: "identity", knownAs: ["Personnummer"] },
+  SE_ORGNR: { purpose: "tax", knownAs: ["Organisationsnummer", "Orgnr"] },
+  SE_VAT: { purpose: "tax", knownAs: ["Moms", "VAT"] },
+
+  // v0.6.0 — Norway
+  NO_FNR: { purpose: "identity", knownAs: ["Fødselsnummer", "FNR"] },
+  NO_DNR: { purpose: "identity", knownAs: ["D-nummer", "DNR"] },
+  NO_ORGNR: { purpose: "tax", knownAs: ["Organisasjonsnummer", "Orgnr"] },
+  NO_MVA: { purpose: "tax", knownAs: ["MVA", "VAT"] },
+
+  // v0.6.0 — Denmark
+  DK_CPR: { purpose: "identity", knownAs: ["CPR-nummer", "CPR"] },
+  DK_CVR: { purpose: "tax", knownAs: ["CVR"] },
+  DK_VAT: { purpose: "tax", knownAs: ["Moms", "VAT"] },
+
+  // v0.6.0 — Finland
+  FI_HETU: { purpose: "identity", knownAs: ["HETU", "Henkilötunnus"] },
+  FI_YTUNNUS: { purpose: "tax", knownAs: ["Y-tunnus"] },
+  FI_VAT: { purpose: "tax", knownAs: ["ALV", "VAT"] },
 };
