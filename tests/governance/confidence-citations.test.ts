@@ -17,15 +17,35 @@
  * `getSpec("X").confidence === "high"` can rely on an issuer-grade source.
  */
 
-import { globSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
 const ROOT = join(__dirname, "..", "..");
-const COUNTRY_FILES = globSync("src/countries/*/*.ts", { cwd: ROOT })
-  .filter((p) => !p.endsWith("/index.ts"))
-  .map((p) => join(ROOT, p));
+const COUNTRIES_DIR = join(ROOT, "src", "countries");
+
+/**
+ * Portable directory walk for `src/countries/<cc>/*.ts` (excluding `index.ts`).
+ * Avoids `globSync` from `node:fs` because that was only added in Node 22 and
+ * CI exercises Node 20, 22, and 24.
+ */
+function discoverCountrySpecFiles(): string[] {
+  const out: string[] = [];
+  for (const cc of readdirSync(COUNTRIES_DIR, { withFileTypes: true })) {
+    if (!cc.isDirectory()) continue;
+    const dir = join(COUNTRIES_DIR, cc.name);
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isFile()) continue;
+      if (!entry.name.endsWith(".ts")) continue;
+      if (entry.name === "index.ts") continue;
+      out.push(join(dir, entry.name));
+    }
+  }
+  return out;
+}
+
+const COUNTRY_FILES = discoverCountrySpecFiles();
 
 /**
  * First-party domain matcher. We parse each URL with `new URL()` and check
