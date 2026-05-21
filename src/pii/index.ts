@@ -33,12 +33,12 @@ const EMPTY_PLACEHOLDER = "***";
  * Stars only fall on placeholder positions; separators are preserved verbatim
  * so the masked form is visually consistent with the formatted form.
  *
- * Returns `"***"` for empty/whitespace-only input. Returns `input` unchanged
- * if the spec is unknown (soft fallback so render code never throws).
+ * Returns `"***"` for empty/whitespace-only input.
  *
  * @param code - Document type whose mask pattern applies.
  * @param input - Raw or normalized document body.
  * @returns A masked, display-safe string with separators preserved.
+ * @throws {Error} if `code` is not registered. Symmetric with `hash`/`lastN`.
  * @example
  * ```ts
  * import { mask } from "nationid/pii";
@@ -58,8 +58,7 @@ export function mask(code: DocumentTypeCode, input: string): string {
 
   const spec = getPiiSpec(code);
   if (spec === undefined) {
-    // Unknown code — soft fallback per the documented contract.
-    return input;
+    throw new Error(`nationid/pii.mask: no spec registered for "${code}"`);
   }
 
   const normalized = spec.normalize(input);

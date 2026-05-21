@@ -555,7 +555,7 @@ describe("ES — Pasaporte (ES_PASAPORTE)", () => {
         code: "ES_PASAPORTE",
         normalized: "AAB123456",
         formatted: "AAB123456",
-        confidence: "high",
+        confidence: "moderate",
       });
     });
 

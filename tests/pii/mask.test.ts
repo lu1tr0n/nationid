@@ -94,9 +94,9 @@ describe("pii.mask — edge cases", () => {
     expect(stars).toBe(14);
   });
 
-  it("returns input unchanged for an unknown code (soft fallback)", () => {
+  it("throws on an unknown code (symmetric with hash/lastN)", () => {
     // @ts-expect-error — intentionally outside the union to test runtime guard
-    expect(mask("XX_UNKNOWN", "12345")).toBe("12345");
+    expect(() => mask("XX_UNKNOWN", "12345")).toThrow(/no spec registered/);
   });
 
   it("masks every registered spec without throwing", () => {

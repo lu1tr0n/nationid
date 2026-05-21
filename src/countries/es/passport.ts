@@ -13,8 +13,9 @@
  * Check digit: none on the printed number. MRZ validation via
  * `algorithms/icao-9303.ts`.
  *
- * Confidence: high (multiple agreeing community sources + Microsoft Purview
- * SIT entity).
+ * Confidence: moderate. Microsoft Purview SIT entity + community sources
+ * agree, but no first-party DGP spec is publicly cited; demoted from `high`
+ * in v1.0.
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
@@ -31,7 +32,7 @@ export const passportSpec: DocumentSpec = {
   rawRegex: RAW_REGEX,
   mask: "AAA000000",
   hasCheckDigit: false,
-  confidence: "high",
+  confidence: "moderate",
 
   normalize(input: string): string {
     return stripAndUpper(input);
@@ -67,7 +68,7 @@ export const passportSpec: DocumentSpec = {
       code: CODE,
       normalized: cleaned,
       formatted: cleaned,
-      confidence: "high",
+      confidence: "moderate",
     };
   },
 };
