@@ -70,9 +70,13 @@ describe("extract — AR_CUIT", () => {
   });
 
   describe("extractDOB / extractRegion", () => {
-    it("returns null for unsupported kinds", () => {
+    it("rejects unsupported kinds at compile time", () => {
       const cuit = withDV("20", "12345678");
+      // AR_CUIT only encodes sex; the typed signatures now reject it for
+      // DOB / region. Runtime safety net still returns null.
+      // @ts-expect-error AR_CUIT does not encode DOB
       expect(extractDOB("AR_CUIT", cuit)).toBeNull();
+      // @ts-expect-error AR_CUIT does not encode region
       expect(extractRegion("AR_CUIT", cuit)).toBeNull();
     });
   });

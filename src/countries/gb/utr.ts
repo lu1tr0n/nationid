@@ -21,14 +21,13 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{10}$/;
 const WEIGHTS = [6, 7, 8, 9, 10, 5, 4, 3, 2] as const;
 
-const COUNTRY = "GB" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `GB_UTR`.
-const CODE = "GB_UTR" as DocumentTypeCode;
+const COUNTRY = "GB";
+const CODE = "GB_UTR";
 
 export const utrSpec: DocumentSpec = {
   code: CODE,

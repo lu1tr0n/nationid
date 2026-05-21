@@ -22,14 +22,13 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
-
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 // 9-digit root, with an optional space + program letters + 4-digit reference.
 const RAW_REGEX = /^\d{9}(?:(?:RT|RP|RC|RM|RR|RZ)\d{4})?$/;
 const FORMATTED_REGEX = /^\d{9}(?: (?:RT|RP|RC|RM|RR|RZ)\d{4})?$/;
 
-const COUNTRY = "CA" as CountryCode;
-const CODE = "CA_BN" as DocumentTypeCode;
+const COUNTRY = "CA";
+const CODE = "CA_BN";
 
 export const bnSpec: DocumentSpec = {
   code: CODE,

@@ -4,13 +4,7 @@
  * Tree-shakable subpath: `import { validate } from 'nationid/de'`.
  */
 
-import type {
-  CountryCode,
-  CountryDocumentBundle,
-  DocumentSpec,
-  DocumentTypeCode,
-  ParseResult,
-} from "../../core/types.ts";
+import type { CountryDocumentBundle, DocumentSpec, ParseResult, } from "../../core/types.ts";
 import { steuerIdSpec } from "./steuer-id.ts";
 import { steuernummerSpec } from "./steuernummer.ts";
 import { ustidSpec } from "./ustid.ts";
@@ -18,7 +12,6 @@ import { ustidSpec } from "./ustid.ts";
 export { steuerIdSpec, steuernummerSpec, ustidSpec };
 
 const SPECS = {
-  // TODO(v0.6-integration): orchestrator extends `DocumentTypeCode`.
   DE_STEUER_ID: steuerIdSpec,
   DE_STEUERNUMMER: steuernummerSpec,
   DE_USTID: ustidSpec,
@@ -69,15 +62,14 @@ function resolveSpec(code: DEDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Germany (DE) document bundle for orchestrator registration. */
-export const deBundle: CountryDocumentBundle = {
-  country: "DE" as CountryCode,
+export const deBundle = {
+  country: "DE",
   // Steuer-ID is the lifelong personal tax ID; it is the only personal-scope
   // document we ship for Germany.
   personal: [steuerIdSpec],
   // Tax: USt-IdNr for VAT, Steuernummer for the Land-issued tax number,
   // Steuer-ID also doubles as a tax ID for individuals.
   tax: [ustidSpec, steuernummerSpec, steuerIdSpec],
-  // TODO(v0.6-integration): orchestrator extends `DocumentTypeCode`.
-  defaultPersonal: "DE_STEUER_ID" as DocumentTypeCode,
-  defaultTax: "DE_USTID" as DocumentTypeCode,
-};
+  defaultPersonal: "DE_STEUER_ID",
+  defaultTax: "DE_USTID",
+} as const satisfies CountryDocumentBundle;

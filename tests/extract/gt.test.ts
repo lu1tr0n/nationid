@@ -57,9 +57,14 @@ describe("extract — GT_DPI", () => {
   });
 
   describe("extractDOB / extractSex", () => {
-    it("returns null for unsupported kinds", () => {
+    it("rejects unsupported kinds at compile time", () => {
       const dpi = buildDpi("12345678", "01", "01");
+      // GT_DPI is not in CodesSupporting<"dob"> | CodesSupporting<"sex">, so
+      // these calls must be type errors. The runtime fallback still returns
+      // null defensively, but the contract is now enforced by `tsc`.
+      // @ts-expect-error GT_DPI does not encode DOB
       expect(extractDOB("GT_DPI", dpi as string)).toBeNull();
+      // @ts-expect-error GT_DPI does not encode sex
       expect(extractSex("GT_DPI", dpi as string)).toBeNull();
     });
   });

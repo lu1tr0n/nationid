@@ -14,8 +14,6 @@ export { cedulaSpec, passportSpec, rucSpec };
 const SPECS = {
   PA_CEDULA: cedulaSpec,
   PA_RUC: rucSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `PA_PASAPORTE` after all v0.5 agents complete.
   PA_PASAPORTE: passportSpec,
 } as const;
 
@@ -81,10 +79,10 @@ function resolveSpec(code: PADocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const paBundle: CountryDocumentBundle = {
+export const paBundle = {
   country: "PA",
   personal: [cedulaSpec, passportSpec],
   tax: [rucSpec, cedulaSpec],
   defaultPersonal: "PA_CEDULA",
   defaultTax: "PA_RUC",
-};
+} as const satisfies CountryDocumentBundle;

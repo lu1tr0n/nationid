@@ -16,11 +16,11 @@
  * concatenate the two into a single `Region.code` to keep the payload self-describing.
  */
 
-import { getSpec } from "../../index.ts";
+import { dpiSpec } from "../../countries/gt/dpi.ts";
 import type { Region } from "../types.ts";
 
 export function extractDpiRegion(input: string): Region | null {
-  const result = getSpec("GT_DPI").parse(input);
+  const result = dpiSpec.parse(input);
   if (!result.ok) return null;
   const digits = result.normalized;
   if (digits.length !== 13) return null;

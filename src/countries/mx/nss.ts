@@ -53,19 +53,14 @@
 
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { allSameDigit, stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{11}$/;
 // Common IMSS-printed grouping: `XX-XX-XX-XXXX-X` or `XX XX XX XXXX X`.
 const FORMATTED_REGEX = /^\d{2}[-\s]\d{2}[-\s]\d{2}[-\s]\d{4}[-\s]\d$/;
 
-const COUNTRY = "MX" as CountryCode;
-// MX_NSS is not yet a member of the DocumentTypeCode union (added by the
-// orchestrator). Using a type assertion here keeps the spec self-contained
-// for v0.5; when the union is extended this assertion becomes a no-op.
-// TODO(v0.5-integration): drop the assertion once `MX_NSS` lands in
-// `src/core/types.ts` `DocumentTypeCode`.
-const CODE = "MX_NSS" as DocumentTypeCode;
+const COUNTRY = "MX";
+const CODE = "MX_NSS";
 
 export const nssSpec: DocumentSpec = {
   code: CODE,

@@ -11,15 +11,14 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { checkYtunnus } from "./ytunnus.ts";
 
 const RAW_REGEX = /^FI\d{8}$/;
 const FORMATTED_REGEX = /^FI\d{8}$/;
 
-const COUNTRY = "FI" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with FI_VAT.
-const CODE = "FI_VAT" as DocumentTypeCode;
+const COUNTRY = "FI";
+const CODE = "FI_VAT";
 
 export const vatSpec: DocumentSpec = {
   code: CODE,

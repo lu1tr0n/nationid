@@ -2,10 +2,6 @@
  * Bolivia document validators.
  *
  * Tree-shakable subpath: `import { validate } from 'nationid/bo'`.
- *
- * TODO(v0.4-integration): orchestrator will register `BO_CI` and `BO_NIT`
- * codes in src/core/types.ts and root barrel src/index.ts after all v0.4
- * agents complete.
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
@@ -18,8 +14,6 @@ export { ciSpec, nitSpec, passportSpec };
 const SPECS = {
   BO_CI: ciSpec,
   BO_NIT: nitSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `BO_PASAPORTE` after all v0.5 agents complete.
   BO_PASAPORTE: passportSpec,
 } as const;
 
@@ -68,10 +62,10 @@ function resolveSpec(code: BODocumentType | ShortCode): DocumentSpec {
 }
 
 /** Bolivia (BO) document bundle for orchestrator registration. */
-export const boBundle: CountryDocumentBundle = {
+export const boBundle = {
   country: "BO",
   personal: [ciSpec, passportSpec],
   tax: [nitSpec],
   defaultPersonal: "BO_CI",
   defaultTax: "BO_NIT",
-};
+} as const satisfies CountryDocumentBundle;

@@ -12,8 +12,6 @@ export { passportSpec, rutSpec };
 
 const SPECS = {
   CL_RUT: rutSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `CL_PASAPORTE` after all v0.5 agents complete.
   CL_PASAPORTE: passportSpec,
 } as const;
 
@@ -61,10 +59,10 @@ function resolveSpec(code: CLDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Chile (CL) document bundle for orchestrator registration. */
-export const clBundle: CountryDocumentBundle = {
+export const clBundle = {
   country: "CL",
   personal: [rutSpec, passportSpec],
   tax: [rutSpec],
   defaultPersonal: "CL_RUT",
   defaultTax: "CL_RUT",
-};
+} as const satisfies CountryDocumentBundle;

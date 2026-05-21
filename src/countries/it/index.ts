@@ -4,20 +4,13 @@
  * Tree-shakable subpath: `import { validate } from 'nationid/it'`.
  */
 
-import type {
-  CountryCode,
-  CountryDocumentBundle,
-  DocumentSpec,
-  DocumentTypeCode,
-  ParseResult,
-} from "../../core/types.ts";
+import type { CountryDocumentBundle, DocumentSpec, ParseResult, } from "../../core/types.ts";
 import { cfSpec } from "./cf.ts";
 import { pivaSpec } from "./piva.ts";
 
 export { cfSpec, pivaSpec };
 
 const SPECS = {
-  // TODO(v0.6-integration): orchestrator extends `DocumentTypeCode`.
   IT_CF: cfSpec,
   IT_PIVA: pivaSpec,
 } as const;
@@ -83,13 +76,12 @@ function resolveSpec(code: ITDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const itBundle: CountryDocumentBundle = {
-  country: "IT" as CountryCode,
+export const itBundle = {
+  country: "IT",
   // CF for naturali; the entity 11-digit CF coincides with PIVA.
   personal: [cfSpec],
   // PIVA is the intra-EU VAT identifier; CF doubles as a tax ID for individuals.
   tax: [pivaSpec, cfSpec],
-  // TODO(v0.6-integration): orchestrator extends `DocumentTypeCode`.
-  defaultPersonal: "IT_CF" as DocumentTypeCode,
-  defaultTax: "IT_PIVA" as DocumentTypeCode,
-};
+  defaultPersonal: "IT_CF",
+  defaultTax: "IT_PIVA",
+} as const satisfies CountryDocumentBundle;

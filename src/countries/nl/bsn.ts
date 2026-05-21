@@ -21,12 +21,11 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{9}$/;
-const COUNTRY = "NL" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `NL_BSN`.
-const CODE = "NL_BSN" as DocumentTypeCode;
+const COUNTRY = "NL";
+const CODE = "NL_BSN";
 
 export const bsnSpec: DocumentSpec = {
   code: CODE,

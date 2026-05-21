@@ -2,10 +2,6 @@
  * Paraguay document validators.
  *
  * Tree-shakable subpath: `import { validate } from 'nationid/py'`.
- *
- * TODO(v0.4-integration): orchestrator will register `PY_CI` and `PY_RUC`
- * codes in src/core/types.ts and root barrel src/index.ts after all v0.4
- * agents complete.
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
@@ -18,8 +14,6 @@ export { ciSpec, passportSpec, rucSpec };
 const SPECS = {
   PY_CI: ciSpec,
   PY_RUC: rucSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `PY_PASAPORTE` after all v0.5 agents complete.
   PY_PASAPORTE: passportSpec,
 } as const;
 
@@ -85,10 +79,10 @@ function resolveSpec(code: PYDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const pyBundle: CountryDocumentBundle = {
+export const pyBundle = {
   country: "PY",
   personal: [ciSpec, passportSpec],
   tax: [rucSpec],
   defaultPersonal: "PY_CI",
   defaultTax: "PY_RUC",
-};
+} as const satisfies CountryDocumentBundle;

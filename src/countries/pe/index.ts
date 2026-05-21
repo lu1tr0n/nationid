@@ -16,8 +16,6 @@ const SPECS = {
   PE_DNI: dniSpec,
   PE_CE: ceSpec,
   PE_RUC: rucSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `PE_PASAPORTE` after all v0.5 agents complete.
   PE_PASAPORTE: passportSpec,
 } as const;
 
@@ -84,10 +82,10 @@ function resolveSpec(code: PEDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const peBundle: CountryDocumentBundle = {
+export const peBundle = {
   country: "PE",
   personal: [dniSpec, ceSpec, passportSpec],
   tax: [rucSpec],
   defaultPersonal: "PE_DNI",
   defaultTax: "PE_RUC",
-};
+} as const satisfies CountryDocumentBundle;

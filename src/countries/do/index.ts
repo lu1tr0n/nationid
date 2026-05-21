@@ -14,8 +14,6 @@ export { cedulaSpec, passportSpec, rncSpec };
 const SPECS = {
   DO_CEDULA: cedulaSpec,
   DO_RNC: rncSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `DO_PASAPORTE` after all v0.5 agents complete.
   DO_PASAPORTE: passportSpec,
 } as const;
 
@@ -64,10 +62,10 @@ function resolveSpec(code: DODocumentType | ShortCode): DocumentSpec {
 }
 
 /** República Dominicana (DO) document bundle for orchestrator registration. */
-export const doBundle: CountryDocumentBundle = {
+export const doBundle = {
   country: "DO",
   personal: [cedulaSpec, passportSpec],
   tax: [rncSpec, cedulaSpec],
   defaultPersonal: "DO_CEDULA",
   defaultTax: "DO_RNC",
-};
+} as const satisfies CountryDocumentBundle;

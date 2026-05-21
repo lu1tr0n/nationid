@@ -2,9 +2,6 @@
  * Netherlands document validators.
  *
  * Tree-shakable subpath: `import { validate } from 'nationid/nl'`.
- *
- * Country code `NL` and document codes `NL_BSN`, `NL_BTW` are added to
- * `CountryCode` / `DocumentTypeCode` by the orchestrator at integration time.
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
@@ -79,10 +76,10 @@ function resolveSpec(code: NLDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const nlBundle: CountryDocumentBundle = {
-  country: "NL" as CountryDocumentBundle["country"],
+export const nlBundle = {
+  country: "NL",
   personal: [bsnSpec],
   tax: [btwSpec, bsnSpec],
-  defaultPersonal: "NL_BSN" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "NL_BTW" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "NL_BSN",
+  defaultTax: "NL_BTW",
+} as const satisfies CountryDocumentBundle;

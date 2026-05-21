@@ -4,13 +4,7 @@
  * Tree-shakable subpath: `import { validate } from 'nationid/fr'`.
  */
 
-import type {
-  CountryCode,
-  CountryDocumentBundle,
-  DocumentSpec,
-  DocumentTypeCode,
-  ParseResult,
-} from "../../core/types.ts";
+import type { CountryDocumentBundle, DocumentSpec, ParseResult, } from "../../core/types.ts";
 import { nirSpec } from "./nir.ts";
 import { sirenSpec } from "./siren.ts";
 import { siretSpec } from "./siret.ts";
@@ -19,7 +13,6 @@ import { tvaSpec } from "./tva.ts";
 export { nirSpec, sirenSpec, siretSpec, tvaSpec };
 
 const SPECS = {
-  // TODO(v0.6-integration): orchestrator extends `DocumentTypeCode`.
   FR_NIR: nirSpec,
   FR_SIREN: sirenSpec,
   FR_SIRET: siretSpec,
@@ -72,13 +65,12 @@ function resolveSpec(code: FRDocumentType | ShortCode): DocumentSpec {
 }
 
 /** France (FR) document bundle for orchestrator registration. */
-export const frBundle: CountryDocumentBundle = {
-  country: "FR" as CountryCode,
+export const frBundle = {
+  country: "FR",
   personal: [nirSpec],
   // SIREN identifies the legal entity; SIRET the establishment; TVA the
   // intra-EU VAT registration. NIR doubles as a tax ID for self-employed.
   tax: [sirenSpec, siretSpec, tvaSpec, nirSpec],
-  // TODO(v0.6-integration): orchestrator extends `DocumentTypeCode`.
-  defaultPersonal: "FR_NIR" as DocumentTypeCode,
-  defaultTax: "FR_SIREN" as DocumentTypeCode,
-};
+  defaultPersonal: "FR_NIR",
+  defaultTax: "FR_SIREN",
+} as const satisfies CountryDocumentBundle;

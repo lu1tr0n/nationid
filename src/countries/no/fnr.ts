@@ -25,16 +25,15 @@
 
 import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{11}$/;
 
 const W1 = [3, 7, 6, 1, 8, 9, 4, 5, 2] as const;
 const W2 = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2] as const;
 
-const COUNTRY = "NO" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with NO_FNR.
-const CODE = "NO_FNR" as DocumentTypeCode;
+const COUNTRY = "NO";
+const CODE = "NO_FNR";
 
 export const fnrSpec: DocumentSpec = {
   code: CODE,
@@ -113,12 +112,12 @@ function hasValidFnrDate(digits: string): boolean {
 /** Validates DV1 and DV2 per Skatteetaten's published mod-11 spec. */
 export function checkFnrDigits(digits: string): boolean {
   if (digits.length !== 11) return false;
-  const sum1 = mod11WeightedSum(digits.slice(0, 9), W1 as unknown as number[]);
+  const sum1 = mod11WeightedSum(digits.slice(0, 9), W1);
   let dv1 = 11 - (sum1 % 11);
   if (dv1 === 11) dv1 = 0;
   if (dv1 === 10) return false;
   if (dv1 !== digits.charCodeAt(9) - 48) return false;
-  const sum2 = mod11WeightedSum(digits.slice(0, 10), W2 as unknown as number[]);
+  const sum2 = mod11WeightedSum(digits.slice(0, 10), W2);
   let dv2 = 11 - (sum2 % 11);
   if (dv2 === 11) dv2 = 0;
   if (dv2 === 10) return false;

@@ -16,15 +16,14 @@
  * Confidence: low (format-only).
  */
 
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
-
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 // Normalized form: letter prefix `V` or `E` followed by 7-8 digits, no separator.
 const RAW_REGEX = /^[VE]\d{7,8}$/;
 // Accepted formatted forms: with optional hyphen and surrounding whitespace.
 const FORMATTED_REGEX = /^[VE]-\d{7,8}$/;
 
-const COUNTRY = "VE" as CountryCode;
-const CODE = "VE_CEDULA" as DocumentTypeCode;
+const COUNTRY = "VE";
+const CODE = "VE_CEDULA";
 
 function normalizeCedula(input: string): string {
   // Strip everything except digits and the letter prefix; uppercase.

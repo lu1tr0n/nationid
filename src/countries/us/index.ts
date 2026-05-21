@@ -20,8 +20,6 @@ const SPECS = {
   US_SSN: ssnSpec,
   US_ITIN: itinSpec,
   US_EIN: einSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `US_PASAPORTE` after all v0.5 agents complete.
   US_PASAPORTE: passportSpec,
 } as const;
 
@@ -89,10 +87,10 @@ function resolveSpec(code: USDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const usBundle: CountryDocumentBundle = {
+export const usBundle = {
   country: "US",
   personal: [ssnSpec, itinSpec, passportSpec],
   tax: [einSpec, itinSpec, ssnSpec],
   defaultPersonal: "US_SSN",
   defaultTax: "US_EIN",
-};
+} as const satisfies CountryDocumentBundle;

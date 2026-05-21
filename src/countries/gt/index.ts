@@ -14,8 +14,6 @@ export { dpiSpec, nitSpec, passportSpec };
 const SPECS = {
   GT_DPI: dpiSpec,
   GT_NIT: nitSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `GT_PASAPORTE` after all v0.5 agents complete.
   GT_PASAPORTE: passportSpec,
 } as const;
 
@@ -82,10 +80,10 @@ function resolveSpec(code: GTDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const gtBundle: CountryDocumentBundle = {
+export const gtBundle = {
   country: "GT",
   personal: [dpiSpec, passportSpec],
   tax: [nitSpec, dpiSpec],
   defaultPersonal: "GT_DPI",
   defaultTax: "GT_NIT",
-};
+} as const satisfies CountryDocumentBundle;

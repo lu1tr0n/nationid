@@ -69,10 +69,10 @@ function resolveSpec(code: CHDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Switzerland (CH) document bundle for orchestrator registration. */
-export const chBundle: CountryDocumentBundle = {
-  country: "CH" as CountryDocumentBundle["country"],
+export const chBundle = {
+  country: "CH",
   personal: [ahvSpec],
   tax: [uidSpec, mwstSpec],
-  defaultPersonal: "CH_AHV" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "CH_UID" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "CH_AHV",
+  defaultTax: "CH_UID",
+} as const satisfies CountryDocumentBundle;

@@ -30,18 +30,29 @@ export type { DateOfBirth, ExtractKind, Region, Sex } from "./types.ts";
  * Compile-time-checked support matrix. Each entry lists which extract kinds a
  * spec can answer. Specs not listed here support nothing (the default).
  *
- * Using `Partial<Record<...>>` lets TypeScript flag typos in the keys without
- * forcing every `DocumentTypeCode` to declare an empty entry.
+ * The shape is `as const` so the value-literal tuples are visible to the type
+ * system, which lets us derive per-kind code unions (see `CodesSupporting`
+ * below) and narrow the public signatures of `extractDOB / extractSex /
+ * extractRegion`. The `satisfies` clause keeps key/value typo protection.
  */
-const SUPPORT_TABLE: Partial<Record<DocumentTypeCode, ReadonlySet<ExtractKind>>> = {
-  MX_CURP: new Set<ExtractKind>(["dob", "sex", "region"]),
-  MX_RFC_PF: new Set<ExtractKind>(["dob"]),
-  AR_CUIT: new Set<ExtractKind>(["sex"]),
-  AR_CUIL: new Set<ExtractKind>(["sex"]),
-  AR_CDI: new Set<ExtractKind>(["sex"]),
-  GT_DPI: new Set<ExtractKind>(["region"]),
-  PE_RUC: new Set<ExtractKind>(["region"]),
-};
+const SUPPORT_TABLE = {
+  MX_CURP: ["dob", "sex", "region"],
+  MX_RFC_PF: ["dob"],
+  AR_CUIT: ["sex"],
+  AR_CUIL: ["sex"],
+  AR_CDI: ["sex"],
+  GT_DPI: ["region"],
+  PE_RUC: ["region"],
+} as const satisfies Partial<Record<DocumentTypeCode, ReadonlyArray<ExtractKind>>>;
+
+/**
+ * Codes that declare support for a specific extract kind. Derived from
+ * `SUPPORT_TABLE` via a distributive mapped type so the extractor signatures
+ * stay in sync with the runtime support matrix automatically.
+ */
+type CodesSupporting<K extends ExtractKind> = {
+  [C in keyof typeof SUPPORT_TABLE]: K extends (typeof SUPPORT_TABLE)[C][number] ? C : never;
+}[keyof typeof SUPPORT_TABLE];
 
 /**
  * Returns whether `code` exposes the requested extract kind.
@@ -62,9 +73,14 @@ const SUPPORT_TABLE: Partial<Record<DocumentTypeCode, ReadonlySet<ExtractKind>>>
  * ```
  */
 export function supports(code: DocumentTypeCode, kind: ExtractKind): boolean {
-  const kinds = SUPPORT_TABLE[code];
+  // Localized cast: this helper accepts the wider `DocumentTypeCode` on
+  // purpose (it's a runtime predicate used to gate UI affordances), so we
+  // narrow the lookup at the table boundary only.
+  const kinds = SUPPORT_TABLE[code as keyof typeof SUPPORT_TABLE] as
+    | ReadonlyArray<ExtractKind>
+    | undefined;
   if (kinds === undefined) return false;
-  return kinds.has(kind);
+  return kinds.includes(kind);
 }
 
 /**
@@ -86,7 +102,7 @@ export function supports(code: DocumentTypeCode, kind: ExtractKind): boolean {
  * extractDOB("SV_DUI", "045678903"); // null  (DUI does not encode DOB)
  * ```
  */
-export function extractDOB(code: DocumentTypeCode, input: string): DateOfBirth | null {
+export function extractDOB(code: CodesSupporting<"dob">, input: string): DateOfBirth | null {
   if (!supports(code, "dob")) return null;
   switch (code) {
     case "MX_CURP":
@@ -116,7 +132,7 @@ export function extractDOB(code: DocumentTypeCode, input: string): DateOfBirth |
  * extractSex("AR_CUIT", "30709653543");        // "X"  (persona jurídica)
  * ```
  */
-export function extractSex(code: DocumentTypeCode, input: string): Sex | null {
+export function extractSex(code: CodesSupporting<"sex">, input: string): Sex | null {
   if (!supports(code, "sex")) return null;
   switch (code) {
     case "MX_CURP":
@@ -152,7 +168,7 @@ export function extractSex(code: DocumentTypeCode, input: string): Sex | null {
  * // { code: "01", kind: "department" }
  * ```
  */
-export function extractRegion(code: DocumentTypeCode, input: string): Region | null {
+export function extractRegion(code: CodesSupporting<"region">, input: string): Region | null {
   if (!supports(code, "region")) return null;
   switch (code) {
     case "MX_CURP":

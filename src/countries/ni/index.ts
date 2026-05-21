@@ -14,8 +14,6 @@ export { cedulaSpec, passportSpec, rucSpec };
 const SPECS = {
   NI_CEDULA: cedulaSpec,
   NI_RUC: rucSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `NI_PASAPORTE` after all v0.5 agents complete.
   NI_PASAPORTE: passportSpec,
 } as const;
 
@@ -81,10 +79,10 @@ function resolveSpec(code: NIDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const niBundle: CountryDocumentBundle = {
+export const niBundle = {
   country: "NI",
   personal: [cedulaSpec, passportSpec],
   tax: [rucSpec, cedulaSpec],
   defaultPersonal: "NI_CEDULA",
   defaultTax: "NI_RUC",
-};
+} as const satisfies CountryDocumentBundle;

@@ -18,13 +18,12 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^756\d{10}$/;
 const FORMATTED_REGEX = /^756\.\d{4}\.\d{4}\.\d{2}$/;
-const COUNTRY = "CH" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `CH_AHV`.
-const CODE = "CH_AHV" as DocumentTypeCode;
+const COUNTRY = "CH";
+const CODE = "CH_AHV";
 
 export const ahvSpec: DocumentSpec = {
   code: CODE,

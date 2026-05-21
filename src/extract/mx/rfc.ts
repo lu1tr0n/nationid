@@ -19,7 +19,7 @@
  * who treat that as a real DOB are responsible for filtering generics out.
  */
 
-import { getSpec } from "../../index.ts";
+import { rfcPfSpec } from "../../countries/mx/rfc-pf.ts";
 import type { DateOfBirth } from "../types.ts";
 
 /**
@@ -52,7 +52,7 @@ function validateCalendar(year: number, month: number, day: number): DateOfBirth
 }
 
 export function extractRfcDOB(input: string): DateOfBirth | null {
-  const result = getSpec("MX_RFC_PF").parse(input);
+  const result = rfcPfSpec.parse(input);
   if (!result.ok) return null;
   const cleaned = result.normalized;
   if (cleaned.length !== 13) return null;

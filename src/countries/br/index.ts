@@ -20,8 +20,6 @@ const SPECS = {
   BR_CNH: cnhSpec,
   BR_TITULO_ELEITOR: tituloEleitorSpec,
   BR_PIS: pisSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `BR_PASAPORTE` after all v0.5 agents complete.
   BR_PASAPORTE: passportSpec,
 } as const;
 
@@ -74,10 +72,10 @@ function resolveSpec(code: BRDocumentType | BRShortCode): DocumentSpec {
 }
 
 /** Brasil (BR) document bundle for orchestrator registration. */
-export const brBundle: CountryDocumentBundle = {
+export const brBundle = {
   country: "BR",
   personal: [cpfSpec, cnhSpec, tituloEleitorSpec, pisSpec, passportSpec],
   tax: [cnpjSpec, cpfSpec, pisSpec],
   defaultPersonal: "BR_CPF",
   defaultTax: "BR_CNPJ",
-};
+} as const satisfies CountryDocumentBundle;

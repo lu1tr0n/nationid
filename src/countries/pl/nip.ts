@@ -21,14 +21,13 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{10}$/;
 const FORMATTED_REGEX = /^\d{3}-\d{3}-\d{2}-\d{2}$/;
 const WEIGHTS = [6, 5, 7, 2, 3, 4, 5, 6, 7] as const;
-const COUNTRY = "PL" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `PL_NIP`.
-const CODE = "PL_NIP" as DocumentTypeCode;
+const COUNTRY = "PL";
+const CODE = "PL_NIP";
 
 export const nipSpec: DocumentSpec = {
   code: CODE,

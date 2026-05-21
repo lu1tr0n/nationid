@@ -20,14 +20,14 @@
  * Cross-validated 2026-05-09 against SUNAT "Tipos de RUC" public page.
  */
 
-import { getSpec } from "../../index.ts";
+import { rucSpec } from "../../countries/pe/ruc.ts";
 import type { Region } from "../types.ts";
 
 const NATURAL_PREFIXES: ReadonlySet<string> = new Set(["10", "15", "16", "17"]);
 const JURIDICAL_PREFIXES: ReadonlySet<string> = new Set(["20"]);
 
 export function extractRucRegion(input: string): Region | null {
-  const result = getSpec("PE_RUC").parse(input);
+  const result = rucSpec.parse(input);
   if (!result.ok) return null;
   const prefix = result.normalized.slice(0, 2);
   if (NATURAL_PREFIXES.has(prefix)) return { code: "natural", kind: "tax_region" };

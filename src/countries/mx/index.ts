@@ -19,12 +19,9 @@ const SPECS = {
   MX_RFC_PF: rfcPfSpec,
   MX_RFC_PM: rfcPmSpec,
   MX_CLAVE_ELECTOR: claveElectorSpec,
-  // TODO(v0.5-integration): drop the cast once `MX_NSS` lands in
   // `src/core/types.ts` `DocumentTypeCode`. Keying the SPECS map by the
   // string literal keeps the lookup table tree-shakable.
   MX_NSS: nssSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `MX_PASAPORTE` after all v0.5 agents complete.
   MX_PASAPORTE: passportSpec,
 } as const;
 
@@ -95,7 +92,7 @@ function resolveSpec(code: MXDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const mxBundle: CountryDocumentBundle = {
+export const mxBundle = {
   country: "MX",
   // NSS sits in `personal` (purpose: social_security) alongside CURP and the
   // Clave de Elector. RFC remains the only tax-scope MX doc family.
@@ -103,4 +100,4 @@ export const mxBundle: CountryDocumentBundle = {
   tax: [rfcPfSpec, rfcPmSpec],
   defaultPersonal: "MX_CURP",
   defaultTax: "MX_RFC_PF",
-};
+} as const satisfies CountryDocumentBundle;

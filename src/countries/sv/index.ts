@@ -80,10 +80,10 @@ function resolveSpec(code: SVDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const svBundle: CountryDocumentBundle = {
+export const svBundle = {
   country: "SV",
   personal: [duiSpec, passportSpec],
   tax: [nitSpec, duiSpec],
   defaultPersonal: "SV_DUI",
   defaultTax: "SV_NIT",
-};
+} as const satisfies CountryDocumentBundle;

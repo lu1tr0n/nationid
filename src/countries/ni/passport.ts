@@ -14,14 +14,14 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^[A-Z]?[0-9]{7,8}$/;
-const CODE = "NI_PASAPORTE" as DocumentTypeCode;
+const CODE = "NI_PASAPORTE";
 
 export const passportSpec: DocumentSpec = {
   code: CODE,
-  country: "NI" as DocumentSpec["country"],
+  country: "NI",
   scope: "personal",
   labelKey: "documents.NI_PASAPORTE.label",
   rawRegex: RAW_REGEX,

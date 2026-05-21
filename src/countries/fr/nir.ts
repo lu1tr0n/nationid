@@ -29,8 +29,7 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
-
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 /**
  * Normalized form: 15 chars, uppercase, digits except positions 6-7 which may
  * be `2A` or `2B` (Corsica). All-digit form is enforced for everywhere else.
@@ -44,9 +43,8 @@ const RAW_REGEX = /^[12378]\d{2}(0[1-9]|1[0-2]|20|30|40|50|99)(\d{2}|2[AB])\d{6}
 const FORMATTED_REGEX =
   /^[12378] \d{2} (?:0[1-9]|1[0-2]|20|30|40|50|99) (?:\d{2}|2[AB]) \d{3} \d{3} \d{2}$/;
 
-const COUNTRY = "FR" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `FR_NIR`.
-const CODE = "FR_NIR" as DocumentTypeCode;
+const COUNTRY = "FR";
+const CODE = "FR_NIR";
 
 export const nirSpec: DocumentSpec = {
   code: CODE,

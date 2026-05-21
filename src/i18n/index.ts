@@ -142,7 +142,7 @@ export function getErrorMessage(error: ParseError, locale?: Locale, documentName
 
   // `error.kind` is typed by `ParseError`, but the function may be called
   // from JS or with a future kind not yet represented in TS. Guard at runtime.
-  const kind: string = (error as { kind: string }).kind;
+  const kind = error.kind;
   const template = isKnownKind(kind) ? bundle.errors[kind] : GENERIC_FALLBACK[lang];
 
   const trimmed = documentName?.trim();

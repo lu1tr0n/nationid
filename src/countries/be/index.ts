@@ -2,9 +2,6 @@
  * Belgium document validators.
  *
  * Tree-shakable subpath: `import { validate } from 'nationid/be'`.
- *
- * Country code `BE` and document codes `BE_NRN`, `BE_BTW` are added to
- * `CountryCode` / `DocumentTypeCode` by the orchestrator at integration time.
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
@@ -62,10 +59,10 @@ function resolveSpec(code: BEDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Belgium (BE) document bundle for orchestrator registration. */
-export const beBundle: CountryDocumentBundle = {
-  country: "BE" as CountryDocumentBundle["country"],
+export const beBundle = {
+  country: "BE",
   personal: [nrnSpec],
   tax: [btwSpec, nrnSpec],
-  defaultPersonal: "BE_NRN" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "BE_BTW" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "BE_NRN",
+  defaultTax: "BE_BTW",
+} as const satisfies CountryDocumentBundle;

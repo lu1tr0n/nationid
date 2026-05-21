@@ -18,8 +18,6 @@ const SPECS = {
   ES_NIE: nieSpec,
   ES_NIF_PJ: nifPjSpec,
   ES_NUSS: nussSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `ES_PASAPORTE` after all v0.5 agents complete.
   ES_PASAPORTE: passportSpec,
 } as const;
 
@@ -71,7 +69,7 @@ function resolveSpec(code: ESDocumentType | ShortCode): DocumentSpec {
 }
 
 /** España (ES) document bundle for orchestrator registration. */
-export const esBundle: CountryDocumentBundle = {
+export const esBundle = {
   country: "ES",
   // NUSS identifies the natural person within the Seguridad Social system; it
   // is not a NIF and never doubles as one — kept on `personal` only.
@@ -80,4 +78,4 @@ export const esBundle: CountryDocumentBundle = {
   tax: [nifPjSpec, dniSpec, nieSpec],
   defaultPersonal: "ES_DNI",
   defaultTax: "ES_NIF_PJ",
-};
+} as const satisfies CountryDocumentBundle;

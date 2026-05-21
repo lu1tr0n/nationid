@@ -2,9 +2,6 @@
  * Portugal document validators.
  *
  * Tree-shakable subpath: `import { validate } from 'nationid/pt'`.
- *
- * Country code `PT` and document codes `PT_NIF`, `PT_CC` are added to
- * `CountryCode` / `DocumentTypeCode` by the orchestrator at integration time.
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
@@ -19,8 +16,6 @@ export { ccSpec, nifHolderType, nifSpec, passportSpec };
 const SPECS = {
   PT_NIF: nifSpec,
   PT_CC: ccSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `PT_PASAPORTE` after all v0.5 agents complete.
   PT_PASAPORTE: passportSpec,
 } as const;
 
@@ -86,11 +81,11 @@ function resolveSpec(code: PTDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const ptBundle: CountryDocumentBundle = {
-  country: "PT" as CountryDocumentBundle["country"],
+export const ptBundle = {
+  country: "PT",
   personal: [ccSpec, passportSpec],
   // NIF doubles as the tax ID for both naturales and coletivos.
   tax: [nifSpec],
-  defaultPersonal: "PT_CC" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "PT_NIF" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "PT_CC",
+  defaultTax: "PT_NIF",
+} as const satisfies CountryDocumentBundle;

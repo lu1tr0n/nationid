@@ -14,8 +14,6 @@ export { dniSpec, passportSpec, rtnSpec };
 const SPECS = {
   HN_DNI: dniSpec,
   HN_RTN: rtnSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `HN_PASAPORTE` after all v0.5 agents complete.
   HN_PASAPORTE: passportSpec,
 } as const;
 
@@ -81,10 +79,10 @@ function resolveSpec(code: HNDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const hnBundle: CountryDocumentBundle = {
+export const hnBundle = {
   country: "HN",
   personal: [dniSpec, passportSpec],
   tax: [rtnSpec, dniSpec],
   defaultPersonal: "HN_DNI",
   defaultTax: "HN_RTN",
-};
+} as const satisfies CountryDocumentBundle;

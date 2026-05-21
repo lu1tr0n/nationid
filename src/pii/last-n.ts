@@ -7,7 +7,7 @@
  */
 
 import type { DocumentTypeCode } from "../core/types.ts";
-import { getSpec } from "../index.ts";
+import { getPiiSpec } from "./spec-table.ts";
 
 /** Default reveal count, matching common KYC display conventions. */
 const DEFAULT_N = 4;
@@ -36,7 +36,10 @@ const DEFAULT_N = 4;
  * ```
  */
 export function lastN(code: DocumentTypeCode, input: string, n: number = DEFAULT_N): string {
-  const spec = getSpec(code);
+  const spec = getPiiSpec(code);
+  if (spec === undefined) {
+    throw new Error(`nationid/pii.lastN: no spec registered for "${code}"`);
+  }
   const normalized = spec.normalize(input);
   if (n <= 0) return "";
   if (normalized.length <= n) return normalized;

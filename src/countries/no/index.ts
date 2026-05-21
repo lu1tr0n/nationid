@@ -86,11 +86,11 @@ function resolveSpec(code: NODocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const noBundle: CountryDocumentBundle = {
-  country: "NO" as CountryDocumentBundle["country"],
+export const noBundle = {
+  country: "NO",
   personal: [fnrSpec, dnrSpec],
   // FNR / DNR double as natural-person tax IDs; orgnr / MVA for legal entities.
   tax: [fnrSpec, dnrSpec, orgnrSpec, mvaSpec],
-  defaultPersonal: "NO_FNR" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "NO_ORGNR" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "NO_FNR",
+  defaultTax: "NO_ORGNR",
+} as const satisfies CountryDocumentBundle;

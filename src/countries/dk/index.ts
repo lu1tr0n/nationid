@@ -66,11 +66,11 @@ function resolveSpec(code: DKDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Denmark (DK) document bundle for orchestrator registration. */
-export const dkBundle: CountryDocumentBundle = {
-  country: "DK" as CountryDocumentBundle["country"],
+export const dkBundle = {
+  country: "DK",
   personal: [cprSpec],
   // CPR doubles as natural-person tax ID (SKAT); CVR / VAT for legal entities.
   tax: [cprSpec, cvrSpec, vatSpec],
-  defaultPersonal: "DK_CPR" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "DK_CVR" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "DK_CPR",
+  defaultTax: "DK_CVR",
+} as const satisfies CountryDocumentBundle;

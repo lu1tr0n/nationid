@@ -32,14 +32,14 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{9}[A-Z]{2}\d$/;
 // Accepted formatted forms: `12345678 9 ZZ 4` or `12345678 9 ZZ4`.
 const FORMATTED_REGEX = /^\d{8} \d [A-Z]{2}\s?\d$/;
 
-const COUNTRY = "PT" as CountryCode;
-const CODE = "PT_CC" as DocumentTypeCode;
+const COUNTRY = "PT";
+const CODE = "PT_CC";
 
 export const ccSpec: DocumentSpec = {
   code: CODE,

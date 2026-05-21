@@ -16,8 +16,6 @@ const SPECS = {
   CR_CEDULA_FISICA: cedulaFisicaSpec,
   CR_DIMEX: dimexSpec,
   CR_CEDULA_JURIDICA: cedulaJuridicaSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `CR_PASAPORTE` after all v0.5 agents complete.
   CR_PASAPORTE: passportSpec,
 } as const;
 
@@ -67,10 +65,10 @@ function resolveSpec(code: CRDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Costa Rica (CR) document bundle for orchestrator registration. */
-export const crBundle: CountryDocumentBundle = {
+export const crBundle = {
   country: "CR",
   personal: [cedulaFisicaSpec, dimexSpec, passportSpec],
   tax: [cedulaJuridicaSpec, cedulaFisicaSpec],
   defaultPersonal: "CR_CEDULA_FISICA",
   defaultTax: "CR_CEDULA_JURIDICA",
-};
+} as const satisfies CountryDocumentBundle;

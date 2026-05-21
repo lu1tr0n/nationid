@@ -83,10 +83,10 @@ function resolveSpec(code: PLDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const plBundle: CountryDocumentBundle = {
-  country: "PL" as CountryDocumentBundle["country"],
+export const plBundle = {
+  country: "PL",
   personal: [peselSpec],
   tax: [nipSpec, regonSpec, peselSpec],
-  defaultPersonal: "PL_PESEL" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "PL_NIP" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "PL_PESEL",
+  defaultTax: "PL_NIP",
+} as const satisfies CountryDocumentBundle;

@@ -66,12 +66,12 @@ function resolveSpec(code: FIDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Finland (FI) document bundle for orchestrator registration. */
-export const fiBundle: CountryDocumentBundle = {
-  country: "FI" as CountryDocumentBundle["country"],
+export const fiBundle = {
+  country: "FI",
   personal: [hetuSpec],
   // HETU doubles as natural-person tax ID (Verohallinto); Y-tunnus / VAT for
   // legal entities.
   tax: [hetuSpec, ytunnusSpec, vatSpec],
-  defaultPersonal: "FI_HETU" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "FI_YTUNNUS" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "FI_HETU",
+  defaultTax: "FI_YTUNNUS",
+} as const satisfies CountryDocumentBundle;

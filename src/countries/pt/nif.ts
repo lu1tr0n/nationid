@@ -32,7 +32,7 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{9}$/;
 const WEIGHTS = [9, 8, 7, 6, 5, 4, 3, 2] as const;
@@ -42,8 +42,8 @@ const WEIGHTS = [9, 8, 7, 6, 5, 4, 3, 2] as const;
 // `nifHolderType` if they need to discriminate naturales / coletivos.
 const VALID_FIRST_DIGIT = new Set(["1", "2", "3", "4", "5", "6", "7", "8", "9"]);
 
-const COUNTRY = "PT" as CountryCode;
-const CODE = "PT_NIF" as DocumentTypeCode;
+const COUNTRY = "PT";
+const CODE = "PT_NIF";
 
 export const nifSpec: DocumentSpec = {
   code: CODE,

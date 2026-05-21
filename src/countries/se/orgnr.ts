@@ -18,14 +18,13 @@
 
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{10}$/;
 const FORMATTED_REGEX = /^\d{6}-\d{4}$/;
 
-const COUNTRY = "SE" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with SE_ORGNR.
-const CODE = "SE_ORGNR" as DocumentTypeCode;
+const COUNTRY = "SE";
+const CODE = "SE_ORGNR";
 
 export const orgnrSpec: DocumentSpec = {
   code: CODE,

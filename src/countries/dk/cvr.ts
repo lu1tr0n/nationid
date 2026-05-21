@@ -16,14 +16,13 @@
 
 import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{8}$/;
 const W = [2, 7, 6, 5, 4, 3, 2, 1] as const;
 
-const COUNTRY = "DK" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with DK_CVR.
-const CODE = "DK_CVR" as DocumentTypeCode;
+const COUNTRY = "DK";
+const CODE = "DK_CVR";
 
 export const cvrSpec: DocumentSpec = {
   code: CODE,
@@ -82,6 +81,6 @@ export const cvrSpec: DocumentSpec = {
 
 export function checkCVR(digits: string): boolean {
   if (digits.length !== 8) return false;
-  const sum = mod11WeightedSum(digits, W as unknown as number[]);
+  const sum = mod11WeightedSum(digits, W);
   return sum % 11 === 0;
 }

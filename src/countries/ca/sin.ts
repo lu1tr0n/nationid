@@ -32,17 +32,13 @@
 
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{9}$/;
 const FORMATTED_REGEX = /^\d{3}-\d{3}-\d{3}$/;
 
-// `CA` and `CA_SIN` are added by the orchestrator to `CountryCode` /
-// `DocumentTypeCode` at integration. We cast the literals so this module
-// compiles in isolation; the casts are the only narrowing escape hatches
-// and disappear once the orchestrator widens the unions.
-const COUNTRY = "CA" as CountryCode;
-const CODE = "CA_SIN" as DocumentTypeCode;
+const COUNTRY = "CA";
+const CODE = "CA_SIN";
 
 export const sinSpec: DocumentSpec = {
   code: CODE,

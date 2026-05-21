@@ -63,9 +63,13 @@ describe("extract — PE_RUC", () => {
   });
 
   describe("extractDOB / extractSex", () => {
-    it("returns null for unsupported kinds", () => {
+    it("rejects unsupported kinds at compile time", () => {
       const ruc = buildRuc("10", "12345678");
+      // PE_RUC only encodes region; the narrowed signatures now reject it
+      // for DOB / sex. Runtime safety net still returns null.
+      // @ts-expect-error PE_RUC does not encode DOB
       expect(extractDOB("PE_RUC", ruc)).toBeNull();
+      // @ts-expect-error PE_RUC does not encode sex
       expect(extractSex("PE_RUC", ruc)).toBeNull();
     });
   });
@@ -80,9 +84,15 @@ describe("extract — unsupported codes", () => {
     expect(supports("CL_RUT", "sex")).toBe(false);
   });
 
-  it("returns null for all extracts on unsupported codes", () => {
+  it("rejects unsupported codes at compile time", () => {
+    // These calls used to compile and return null at runtime; v1.0 narrows
+    // the typed signature to the support matrix, so they're now type errors.
+    // The runtime guard remains as a defensive backstop.
+    // @ts-expect-error SV_DUI is not in CodesSupporting<"dob">
     expect(extractDOB("SV_DUI", "045678903")).toBeNull();
+    // @ts-expect-error BR_CPF is not in CodesSupporting<"sex">
     expect(extractSex("BR_CPF", "39053344705")).toBeNull();
+    // @ts-expect-error CL_RUT is not in CodesSupporting<"region">
     expect(extractRegion("CL_RUT", "76086428-5")).toBeNull();
   });
 });

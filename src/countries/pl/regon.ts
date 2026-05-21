@@ -18,14 +18,13 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{9}(\d{5})?$/;
 const WEIGHTS_9 = [8, 9, 2, 3, 4, 5, 6, 7] as const;
 const WEIGHTS_14 = [2, 4, 8, 5, 0, 9, 7, 3, 6, 1, 2, 4, 8] as const;
-const COUNTRY = "PL" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `PL_REGON`.
-const CODE = "PL_REGON" as DocumentTypeCode;
+const COUNTRY = "PL";
+const CODE = "PL_REGON";
 
 export const regonSpec: DocumentSpec = {
   code: CODE,

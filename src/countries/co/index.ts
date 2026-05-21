@@ -74,10 +74,10 @@ function resolveSpec(code: CODocumentType | ShortCode): DocumentSpec {
 }
 
 /** Colombia (CO) document bundle for orchestrator registration. */
-export const coBundle: CountryDocumentBundle = {
+export const coBundle = {
   country: "CO",
   personal: [ccSpec, ceSpec, tiSpec, pasaporteSpec, pepSpec, pptSpec],
   tax: [nitSpec, ccSpec],
   defaultPersonal: "CO_CC",
   defaultTax: "CO_NIT",
-};
+} as const satisfies CountryDocumentBundle;

@@ -2,10 +2,6 @@
  * Ecuador document validators.
  *
  * Tree-shakable subpath: `import { validate } from 'nationid/ec'`.
- *
- * TODO(v0.4-integration): orchestrator will register `EC_CEDULA` and
- * `EC_RUC` codes in src/core/types.ts and root barrel src/index.ts after
- * all v0.4 agents complete.
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
@@ -18,8 +14,6 @@ export { cedulaSpec, passportSpec, rucSpec };
 const SPECS = {
   EC_CEDULA: cedulaSpec,
   EC_RUC: rucSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `EC_PASAPORTE` after all v0.5 agents complete.
   EC_PASAPORTE: passportSpec,
 } as const;
 
@@ -68,11 +62,11 @@ function resolveSpec(code: ECDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Ecuador (EC) document bundle for orchestrator registration. */
-export const ecBundle: CountryDocumentBundle = {
+export const ecBundle = {
   country: "EC",
   personal: [cedulaSpec, passportSpec],
   // RUC for naturales reuses cédula DV; expose cédula as a tax option too.
   tax: [rucSpec, cedulaSpec],
   defaultPersonal: "EC_CEDULA",
   defaultTax: "EC_RUC",
-};
+} as const satisfies CountryDocumentBundle;

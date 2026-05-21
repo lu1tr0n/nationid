@@ -11,7 +11,7 @@
  */
 
 import type { DocumentTypeCode } from "../core/types.ts";
-import { getSpec } from "../index.ts";
+import { getPiiSpec } from "./spec-table.ts";
 
 // Local Web Crypto / TextEncoder ambients — narrowest possible surface so we
 // don't pull `lib: ["DOM"]` into the whole project (which would mask real bugs
@@ -86,7 +86,10 @@ export async function hash(
         "Use Node 20+, Deno, Bun, or a modern browser/edge runtime.",
     );
   }
-  const spec = getSpec(code);
+  const spec = getPiiSpec(code);
+  if (spec === undefined) {
+    throw new Error(`nationid/pii.hash: no spec registered for "${code}"`);
+  }
   const normalized = spec.normalize(input);
   const salt = opts.salt ?? "";
   const algorithm: HashAlgorithm = opts.algorithm ?? DEFAULT_ALGORITHM;

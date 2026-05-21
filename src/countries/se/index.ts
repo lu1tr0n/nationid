@@ -83,12 +83,12 @@ function resolveSpec(code: SEDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const seBundle: CountryDocumentBundle = {
-  country: "SE" as CountryDocumentBundle["country"],
+export const seBundle = {
+  country: "SE",
   personal: [personnummerSpec],
   // Personnummer doubles as natural-person tax ID (Skatteverket); orgnr / VAT
   // for legal entities.
   tax: [personnummerSpec, orgnrSpec, vatSpec],
-  defaultPersonal: "SE_PERSONNUMMER" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "SE_ORGNR" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "SE_PERSONNUMMER",
+  defaultTax: "SE_ORGNR",
+} as const satisfies CountryDocumentBundle;

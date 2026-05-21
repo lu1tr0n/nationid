@@ -11,15 +11,14 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { checkCVR } from "./cvr.ts";
 
 const RAW_REGEX = /^DK\d{8}$/;
 const FORMATTED_REGEX = /^DK\d{8}$/;
 
-const COUNTRY = "DK" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with DK_VAT.
-const CODE = "DK_VAT" as DocumentTypeCode;
+const COUNTRY = "DK";
+const CODE = "DK_VAT";
 
 export const vatSpec: DocumentSpec = {
   code: CODE,

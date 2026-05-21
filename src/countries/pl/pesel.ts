@@ -27,13 +27,12 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{11}$/;
 const WEIGHTS = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3] as const;
-const COUNTRY = "PL" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `PL_PESEL`.
-const CODE = "PL_PESEL" as DocumentTypeCode;
+const COUNTRY = "PL";
+const CODE = "PL_PESEL";
 
 export const peselSpec: DocumentSpec = {
   code: CODE,

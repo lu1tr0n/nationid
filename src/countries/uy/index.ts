@@ -14,8 +14,6 @@ export { ciSpec, passportSpec, rutSpec };
 const SPECS = {
   UY_CI: ciSpec,
   UY_RUT: rutSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `UY_PASAPORTE` after all v0.5 agents complete.
   UY_PASAPORTE: passportSpec,
 } as const;
 
@@ -81,10 +79,10 @@ function resolveSpec(code: UYDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const uyBundle: CountryDocumentBundle = {
+export const uyBundle = {
   country: "UY",
   personal: [ciSpec, passportSpec],
   tax: [rutSpec, ciSpec],
   defaultPersonal: "UY_CI",
   defaultTax: "UY_RUT",
-};
+} as const satisfies CountryDocumentBundle;

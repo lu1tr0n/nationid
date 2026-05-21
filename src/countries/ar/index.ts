@@ -18,8 +18,6 @@ const SPECS = {
   AR_CUIL: cuilSpec,
   AR_CUIT: cuitSpec,
   AR_CDI: cdiSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `AR_PASAPORTE` after all v0.5 agents complete.
   AR_PASAPORTE: passportSpec,
 } as const;
 
@@ -88,7 +86,7 @@ function resolveSpec(code: ARDocumentType | ShortCode): DocumentSpec {
 }
 
 /** Argentina (AR) document bundle for orchestrator registration. */
-export const arBundle: CountryDocumentBundle = {
+export const arBundle = {
   country: "AR",
   personal: [dniSpec, cuilSpec, passportSpec],
   // CUIT remains the primary tax doc; CUIL doubles as labor tax id; CDI is
@@ -96,4 +94,4 @@ export const arBundle: CountryDocumentBundle = {
   tax: [cuitSpec, cuilSpec, cdiSpec],
   defaultPersonal: "AR_DNI",
   defaultTax: "AR_CUIT",
-};
+} as const satisfies CountryDocumentBundle;

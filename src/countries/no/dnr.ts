@@ -16,14 +16,13 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { checkFnrDigits } from "./fnr.ts";
 
 const RAW_REGEX = /^\d{11}$/;
 
-const COUNTRY = "NO" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with NO_DNR.
-const CODE = "NO_DNR" as DocumentTypeCode;
+const COUNTRY = "NO";
+const CODE = "NO_DNR";
 
 export const dnrSpec: DocumentSpec = {
   code: CODE,

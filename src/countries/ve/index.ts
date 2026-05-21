@@ -2,9 +2,6 @@
  * Venezuela document validators.
  *
  * Tree-shakable subpath: `import { validate } from 'nationid/ve'`.
- *
- * Country code `VE` and document codes `VE_CEDULA`, `VE_RIF` are added to
- * `CountryCode` / `DocumentTypeCode` by the orchestrator at integration time.
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
@@ -19,8 +16,6 @@ export { cedulaSpec, passportSpec, rifHolderType, rifSpec };
 const SPECS = {
   VE_CEDULA: cedulaSpec,
   VE_RIF: rifSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `VE_PASAPORTE` after all v0.5 agents complete.
   VE_PASAPORTE: passportSpec,
 } as const;
 
@@ -86,10 +81,10 @@ function resolveSpec(code: VEDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const veBundle: CountryDocumentBundle = {
-  country: "VE" as CountryDocumentBundle["country"],
+export const veBundle = {
+  country: "VE",
   personal: [cedulaSpec, passportSpec],
   tax: [rifSpec],
-  defaultPersonal: "VE_CEDULA" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "VE_RIF" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "VE_CEDULA",
+  defaultTax: "VE_RIF",
+} as const satisfies CountryDocumentBundle;

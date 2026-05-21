@@ -14,8 +14,8 @@
  */
 
 import type { DocumentTypeCode } from "../core/types.ts";
-import { getSpec } from "../index.ts";
 import { applyMaskWithReveal, computeRevealCount, countPlaceholders } from "./mask.ts";
+import { getPiiSpec } from "./spec-table.ts";
 
 export type { HashAlgorithm, HashOptions } from "./hash.ts";
 export { hash } from "./hash.ts";
@@ -56,10 +56,8 @@ const EMPTY_PLACEHOLDER = "***";
 export function mask(code: DocumentTypeCode, input: string): string {
   if (input.trim().length === 0) return EMPTY_PLACEHOLDER;
 
-  let spec: ReturnType<typeof getSpec>;
-  try {
-    spec = getSpec(code);
-  } catch {
+  const spec = getPiiSpec(code);
+  if (spec === undefined) {
     // Unknown code — soft fallback per the documented contract.
     return input;
   }

@@ -17,8 +17,7 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
-
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 /**
  * Normalized form: `BE` + 10 digits, leading digit `0` or `1`. Pre-2008
  * VAT numbers issued without a leading `0` are accepted on input and
@@ -26,9 +25,8 @@ import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from ".
  */
 const RAW_REGEX = /^BE[01]\d{9}$/;
 const FORMATTED_REGEX = /^BE\s?[01]\d{3}\.\d{3}\.\d{3}$/;
-const COUNTRY = "BE" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `BE_BTW`.
-const CODE = "BE_BTW" as DocumentTypeCode;
+const COUNTRY = "BE";
+const CODE = "BE_BTW";
 
 export const btwSpec: DocumentSpec = {
   code: CODE,
