@@ -132,8 +132,15 @@ const REGISTRY: ReadonlyMap<DocumentTypeCode, DocumentSpec> = (() => {
  * helpers. The returned spec is the same singleton instance held in the
  * internal registry; do not mutate it.
  *
+ * Generic over the document type code: passing a literal narrows the returned
+ * spec to `DocumentSpec<"MX_CURP">` so `.code` keeps its literal type instead
+ * of widening to the whole `DocumentTypeCode` union. The runtime invariant
+ * `REGISTRY.get(code).code === code` justifies the cast at the boundary.
+ *
+ * @typeParam C - The literal `DocumentTypeCode` of the requested spec.
  * @param code - Stable `DocumentTypeCode` such as `"SV_DUI"` or `"BR_CNPJ"`.
- * @returns The `DocumentSpec` registered for `code`.
+ * @returns The `DocumentSpec<C>` registered for `code`, with a code-narrowed
+ *   return type for richer IDE inference.
  * @throws {Error} if `code` is not registered. Call `listSupportedCodes()` to
  *   inspect the set of known codes.
  * @example
@@ -141,16 +148,19 @@ const REGISTRY: ReadonlyMap<DocumentTypeCode, DocumentSpec> = (() => {
  * import { getSpec } from "nationid";
  *
  * const dui = getSpec("SV_DUI");
+ * dui.code;                    // "SV_DUI" — literal, not the whole union
  * console.log(dui.country);    // "SV"
  * console.log(dui.confidence); // "structural"
  * ```
  */
-export function getSpec(code: DocumentTypeCode): DocumentSpec {
+export function getSpec<C extends DocumentTypeCode>(code: C): DocumentSpec<C> {
   const spec = REGISTRY.get(code);
   if (!spec) {
     throw new Error(`nationid: no spec registered for "${code}"`);
   }
-  return spec;
+  // Safe: REGISTRY.get(code) returns the spec whose `.code === code` at runtime,
+  // so its DocumentSpec<DocumentTypeCode> shape is also a valid DocumentSpec<C>.
+  return spec as DocumentSpec<C>;
 }
 
 /**
@@ -223,20 +233,31 @@ export function format(code: DocumentTypeCode, input: string): string {
  * branch on the failure mode (use this when you need to show a user-facing
  * error message via `nationid/i18n.getErrorMessage`).
  *
+ * Generic over the document type code: passing a literal narrows the returned
+ * `ParseResult<C>` so `result.code` keeps its literal type. A `switch (r.code)`
+ * after the call sees only `C` as a reachable value, not the whole 124-member
+ * `DocumentTypeCode` union.
+ *
+ * @typeParam C - The literal `DocumentTypeCode` of the document being parsed.
  * @param code - Document type to parse.
  * @param input - Raw user input.
- * @returns A discriminated union: `{ ok: true, value }` on success, or
- *   `{ ok: false, error }` describing why the input was rejected.
+ * @returns A discriminated union `ParseResult<C>`: `{ ok: true, value }` on
+ *   success, or `{ ok: false, error }` describing why the input was rejected.
+ *   `result.code` is narrowed to the literal `C`.
  * @throws {Error} if `code` is not registered (input errors do NOT throw).
  * @example
  * ```ts
  * const r = parse("BR_CPF", "111.444.777-00");
+ * r.code;                       // "BR_CPF" — literal, not DocumentTypeCode
  * if (!r.ok) {
- *   console.log(r.error.kind); // "invalid_checksum"
+ *   console.log(r.reason.kind); // "invalid_checksum"
  * }
  * ```
  */
-export function parse(code: DocumentTypeCode, input: string): ParseResult {
+export function parse<C extends DocumentTypeCode>(
+  code: C,
+  input: string,
+): ParseResult<C> {
   return getSpec(code).parse(input);
 }
 
