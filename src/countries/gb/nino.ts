@@ -21,6 +21,7 @@
 
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 /**
  * Strict NINO regex per HMRC NIM39110:
  * - First letter: A-Z minus D, F, I, Q, U, V

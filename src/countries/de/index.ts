@@ -4,7 +4,7 @@
  * Tree-shakable subpath: `import { validate } from 'nationid/de'`.
  */
 
-import type { CountryDocumentBundle, DocumentSpec, ParseResult, } from "../../core/types.ts";
+import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
 import { steuerIdSpec } from "./steuer-id.ts";
 import { steuernummerSpec } from "./steuernummer.ts";
 import { ustidSpec } from "./ustid.ts";

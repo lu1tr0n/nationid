@@ -4,7 +4,7 @@
  * Tree-shakable subpath: `import { validate } from 'nationid/gb'`.
  */
 
-import type { CountryDocumentBundle, DocumentSpec, ParseResult, } from "../../core/types.ts";
+import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
 import { nhsSpec } from "./nhs.ts";
 import { ninoSpec } from "./nino.ts";
 import { utrSpec } from "./utr.ts";

@@ -17,6 +17,7 @@
  */
 
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 // Normalized form: letter prefix `V` or `E` followed by 7-8 digits, no separator.
 const RAW_REGEX = /^[VE]\d{7,8}$/;
 // Accepted formatted forms: with optional hyphen and surrounding whitespace.

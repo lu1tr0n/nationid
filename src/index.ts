@@ -254,10 +254,7 @@ export function format(code: DocumentTypeCode, input: string): string {
  * }
  * ```
  */
-export function parse<C extends DocumentTypeCode>(
-  code: C,
-  input: string,
-): ParseResult<C> {
+export function parse<C extends DocumentTypeCode>(code: C, input: string): ParseResult<C> {
   return getSpec(code).parse(input);
 }
 

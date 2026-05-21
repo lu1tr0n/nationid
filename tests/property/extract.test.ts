@@ -22,14 +22,13 @@
 
 import * as fc from "fast-check";
 import { describe, expect, it } from "vitest";
-
+import type { DateOfBirth, Region, Sex } from "../../src/extract/index.ts";
 import {
   extractDOB as extractDOBNarrow,
   extractRegion as extractRegionNarrow,
   extractSex as extractSexNarrow,
   supports,
 } from "../../src/extract/index.ts";
-import type { DateOfBirth, Region, Sex } from "../../src/extract/index.ts";
 import type { DocumentTypeCode } from "../../src/index.ts";
 import { listSupportedCodes } from "../../src/index.ts";
 
@@ -43,7 +42,10 @@ import { listSupportedCodes } from "../../src/index.ts";
  * imports here is the legitimate boundary cast: we're testing the runtime
  * fallback, not the typed surface that v1.0 ships to consumers.
  */
-const extractDOB = extractDOBNarrow as (code: DocumentTypeCode, input: string) => DateOfBirth | null;
+const extractDOB = extractDOBNarrow as (
+  code: DocumentTypeCode,
+  input: string,
+) => DateOfBirth | null;
 const extractSex = extractSexNarrow as (code: DocumentTypeCode, input: string) => Sex | null;
 const extractRegion = extractRegionNarrow as (
   code: DocumentTypeCode,

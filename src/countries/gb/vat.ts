@@ -26,6 +26,7 @@
 
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 /**
  * Normalized form: `GB` prefix optional; 9 or 12 trailing digits. We always
  * store the prefix during normalization so downstream code can rely on

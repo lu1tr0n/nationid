@@ -20,6 +20,7 @@
 
 import { stripNonDigits } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 /** 10-13 digits accept window: covers all Land variants and the 13-digit "Bundeseinheitliche Steuernummer". */
 const RAW_REGEX = /^\d{10,13}$/;
 /**

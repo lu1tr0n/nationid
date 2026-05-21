@@ -30,6 +30,7 @@
 
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 /**
  * Normalized form: 15 chars, uppercase, digits except positions 6-7 which may
  * be `2A` or `2B` (Corsica). All-digit form is enforced for everywhere else.

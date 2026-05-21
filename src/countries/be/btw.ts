@@ -18,6 +18,7 @@
 
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 /**
  * Normalized form: `BE` + 10 digits, leading digit `0` or `1`. Pre-2008
  * VAT numbers issued without a leading `0` are accepted on input and

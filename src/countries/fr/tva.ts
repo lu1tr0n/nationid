@@ -22,6 +22,7 @@
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 /**
  * Normalized form: `FR` + 2-char key + 9-digit SIREN. The two key chars may
  * be digits or letters from `[A-HJ-NP-Z]` (excluding `I` and `O` to avoid

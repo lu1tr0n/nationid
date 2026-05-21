@@ -23,6 +23,7 @@
 
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 // 9-digit root, with an optional space + program letters + 4-digit reference.
 const RAW_REGEX = /^\d{9}(?:(?:RT|RP|RC|RM|RR|RZ)\d{4})?$/;
 const FORMATTED_REGEX = /^\d{9}(?: (?:RT|RP|RC|RM|RR|RZ)\d{4})?$/;

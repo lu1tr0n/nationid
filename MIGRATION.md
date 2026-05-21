@@ -1,5 +1,70 @@
 # Migration guide
 
+Two migration paths live in this document:
+
+- **v0.x → v1.0** ([§0 below](#0-migrating-from-v0x-to-v10)) — three small breaking changes inside `nationid` itself.
+- **`validator.js` / `cpf-cnpj-validator` / `brazilian-utils` / `rut.js` → `nationid`** ([§1 onward](#1-why-migrate)) — drop-in replacement recipes.
+
+---
+
+## 0. Migrating from v0.x to v1.0
+
+`nationid` v1.0 ships the API-stability promise. Most of the v0.6 surface is unchanged. Three intentional breakings are listed below, ordered by likely user impact.
+
+### 0.1 `mask()` now throws on unknown codes (symmetry fix)
+
+**v0.x:** `pii.mask(code, input)` silently returned `input` unchanged when `code` was not a registered `DocumentTypeCode`. Its siblings `pii.hash` and `pii.lastN` already threw `Error("nationid/pii.<fn>: no spec registered for "<code>"")`. The asymmetry meant the same caller code worked or broke depending on which primitive it picked.
+
+**v1.0:** all three throw on unknown code.
+
+```ts
+// BEFORE — soft fallback (now removed)
+const out = mask("XX_UNKNOWN", "12345"); // "12345"
+
+// AFTER — throws
+const out = mask("XX_UNKNOWN", "12345"); // ❌ Error: no spec registered for "XX_UNKNOWN"
+```
+
+**Migration:** if you relied on the soft fallback (rare — `code` is type-checked at compile time by the `DocumentTypeCode` union), wrap calls in a `try/catch` or gate on `listSupportedCodes().includes(code)` first. In practice, the only callers that hit this path were ones using `as DocumentTypeCode` to suppress a real type error.
+
+### 0.2 `package.json` `exports` denies undocumented subpaths
+
+**v0.x:** importing from non-public subpaths like `nationid/core/normalize` or `nationid/countries/mx/curp` worked because Node fell back to the file system after the explicit exports map missed.
+
+**v1.0:** the exports map ends with `"./*": null`, which denies any subpath not listed. Only the documented entries resolve: `nationid`, `nationid/algorithms`, `nationid/<cc>` (34 country subpaths), `nationid/extract`, `nationid/pii`, `nationid/catalog`, `nationid/i18n` (+ `/en`, `/es`, `/pt`).
+
+**Migration:** if you imported a private internal, switch to a documented subpath. Per-country specs are re-exported by their country bundle (`import { curpSpec } from "nationid/mx"`); algorithm primitives come from `nationid/algorithms`. If you need a primitive that is not exported, open an issue — the gap probably points at a missing public API rather than a need to escape the deny rule.
+
+### 0.3 `CA_PASAPORTE` and `ES_PASAPORTE` demote `high → moderate`
+
+**v0.x:** both passports declared `confidence: "high"`.
+
+**v1.0:** both demote to `"moderate"`. The runtime regex and validation are unchanged. The reason: neither IRCC (Canada) nor DGP (Spain) publishes a first-party format spec we can cite. The library inherited the patterns from Microsoft Purview's DLP catalog and the corresponding Wikipedia articles. After v1.0 ships a governance test (`tests/governance/confidence-citations.test.ts`) that fails CI when a `high` spec lacks an issuer-grade citation, these two no longer qualify.
+
+**Migration:** if you branch on `confidence === "high"` to decide whether to accept the document without secondary verification (e.g., KYC tiering), audit the call sites that touched CA / ES passports. The library's runtime behaviour is unchanged — only the metadata field shifted. If you require structural confidence, switch to `country === "X" && code === "X_PASAPORTE"` plus your own out-of-band check.
+
+### What did NOT change
+
+- All `validate / format / normalize / parse / getSpec / listSupportedCodes` signatures stay backward-compatible at the type level. `parse()` and `getSpec()` are now generic over `<C extends DocumentTypeCode>`, but with `DocumentTypeCode` as the default parameter — existing `: ParseResult` and `: DocumentSpec` annotations keep working.
+- All country bundles (`mxBundle`, `brBundle`, …) keep the same shape and contents.
+- All 34 country subpaths keep the same entry points.
+- All translations (`nationid/i18n/{en,es,pt}`) keep the same keys.
+- Tarball is **76% smaller** (1.7 MB → 413 KB) thanks to dropped sourcemaps and `extract`/`pii` no longer pulling the root REGISTRY. No code change needed to benefit.
+
+### Upgrade in one line
+
+```bash
+pnpm add nationid@1.0.0
+# or
+npm install nationid@1.0.0
+# or
+yarn upgrade nationid@1.0.0
+```
+
+Re-run your test suite. If `pnpm typecheck` and `pnpm test` stay green, you are done.
+
+---
+
 Move from `validator.js`, `cpf-cnpj-validator`, `@brazilian-utils/brazilian-utils`, or `rut.js` to `nationid` in under ten minutes per library, with cross-validated test evidence that the swap is behaviourally safe.
 
 This guide is paired with [`docs/CROSS_VALIDATION.md`](docs/CROSS_VALIDATION.md), which documents every observed divergence at the v0.1.0 release gate. When this document references a divergence (e.g. `D1`, `D2`), the link points at the canonical entry there.

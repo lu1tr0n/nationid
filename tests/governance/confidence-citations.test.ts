@@ -17,8 +17,7 @@
  * `getSpec("X").confidence === "high"` can rely on an issuer-grade source.
  */
 
-import { readFileSync } from "node:fs";
-import { globSync } from "node:fs";
+import { globSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -223,24 +222,23 @@ describe("governance — confidence: 'high' requires a first-party citation", ()
     expect(highSpecs.length).toBeGreaterThan(40);
   });
 
-  it.each(highSpecs.map((f) => [f.relPath, f] as const))(
-    "%s cites a first-party source (issuer-TLD URL or legal statute)",
-    (_relPath, file) => {
-      const ok = hasFirstPartyUrl(file.header) || hasStatuteCitation(file.header);
-      if (!ok) {
-        // Build a diagnostic so a failing PR sees what's missing.
-        const urls = file.header.match(/https?:\/\/[^\s,)]+/g) ?? [];
-        throw new Error(
-          [
-            `${file.relPath}: declares confidence:"high" but the JSDoc header lacks a first-party citation.`,
-            `URLs found: ${urls.length === 0 ? "<none>" : urls.join(", ")}`,
-            `Required: at least one URL on an issuer domain (e.g., *.gob.*, *.gov.uk, agenciatributaria.es),`,
-            `or a recognized legal-statute reference (RG AFIP, Real Decreto, Pub., Anexo …).`,
-            `Microsoft Purview / Wikipedia URLs alone do NOT satisfy the requirement.`,
-          ].join("\n"),
-        );
-      }
-      expect(ok).toBe(true);
-    },
-  );
+  it.each(
+    highSpecs.map((f) => [f.relPath, f] as const),
+  )("%s cites a first-party source (issuer-TLD URL or legal statute)", (_relPath, file) => {
+    const ok = hasFirstPartyUrl(file.header) || hasStatuteCitation(file.header);
+    if (!ok) {
+      // Build a diagnostic so a failing PR sees what's missing.
+      const urls = file.header.match(/https?:\/\/[^\s,)]+/g) ?? [];
+      throw new Error(
+        [
+          `${file.relPath}: declares confidence:"high" but the JSDoc header lacks a first-party citation.`,
+          `URLs found: ${urls.length === 0 ? "<none>" : urls.join(", ")}`,
+          `Required: at least one URL on an issuer domain (e.g., *.gob.*, *.gov.uk, agenciatributaria.es),`,
+          `or a recognized legal-statute reference (RG AFIP, Real Decreto, Pub., Anexo …).`,
+          `Microsoft Purview / Wikipedia URLs alone do NOT satisfy the requirement.`,
+        ].join("\n"),
+      );
+    }
+    expect(ok).toBe(true);
+  });
 });

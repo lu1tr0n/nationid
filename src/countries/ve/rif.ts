@@ -40,6 +40,7 @@
  */
 
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 // Normalized form: prefix letter + 8 correlative + 1 DV = 10 chars total.
 const RAW_REGEX = /^[VEJPGC]\d{9}$/;
 // Accepted formatted forms: `A-00000000-0` with optional whitespace.

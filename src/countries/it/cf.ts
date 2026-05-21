@@ -36,6 +36,7 @@
 
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
+
 /**
  * Lenient regex tolerating homocodia substitutions (digits 7..14 may be
  * letters). Position 7-8 (year) and 10-11 (day) are the most commonly
