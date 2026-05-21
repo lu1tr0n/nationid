@@ -21,7 +21,7 @@
 
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 /**
  * Normalized form: `FR` + 2-char key + 9-digit SIREN. The two key chars may
@@ -31,9 +31,8 @@ import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from ".
 const RAW_REGEX = /^FR[A-HJ-NP-Z\d]{2}\d{9}$/;
 const FORMATTED_REGEX = /^FR [A-HJ-NP-Z\d]{2} \d{9}$/;
 
-const COUNTRY = "FR" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `FR_TVA`.
-const CODE = "FR_TVA" as DocumentTypeCode;
+const COUNTRY = "FR";
+const CODE = "FR_TVA";
 
 export const tvaSpec: DocumentSpec = {
   code: CODE,

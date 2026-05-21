@@ -19,7 +19,7 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 /** 10-13 digits accept window: covers all Land variants and the 13-digit "Bundeseinheitliche Steuernummer". */
 const RAW_REGEX = /^\d{10,13}$/;
@@ -31,9 +31,8 @@ const RAW_REGEX = /^\d{10,13}$/;
  */
 const FORMATTED_REGEX = /^\d{2,4}\/\d{3,4}\/\d{4,5}$/;
 
-const COUNTRY = "DE" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode`.
-const CODE = "DE_STEUERNUMMER" as DocumentTypeCode;
+const COUNTRY = "DE";
+const CODE = "DE_STEUERNUMMER";
 
 export const steuernummerSpec: DocumentSpec = {
   code: CODE,

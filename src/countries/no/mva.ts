@@ -13,15 +13,14 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { checkOrgnr } from "./orgnr.ts";
 
 const RAW_REGEX = /^NO\d{9}MVA$/;
 const FORMATTED_REGEX = /^NO\d{9}MVA$/;
 
-const COUNTRY = "NO" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with NO_MVA.
-const CODE = "NO_MVA" as DocumentTypeCode;
+const COUNTRY = "NO";
+const CODE = "NO_MVA";
 
 export const mvaSpec: DocumentSpec = {
   code: CODE,

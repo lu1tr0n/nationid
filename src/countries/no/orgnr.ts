@@ -18,16 +18,15 @@
 
 import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{9}$/;
 const FORMATTED_REGEX = /^\d{3} \d{3} \d{3}$/;
 
 const W = [3, 2, 7, 6, 5, 4, 3, 2] as const;
 
-const COUNTRY = "NO" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with NO_ORGNR.
-const CODE = "NO_ORGNR" as DocumentTypeCode;
+const COUNTRY = "NO";
+const CODE = "NO_ORGNR";
 
 export const orgnrSpec: DocumentSpec = {
   code: CODE,
@@ -86,7 +85,7 @@ export const orgnrSpec: DocumentSpec = {
 
 export function checkOrgnr(digits: string): boolean {
   if (digits.length !== 9) return false;
-  const sum = mod11WeightedSum(digits.slice(0, 8), W as unknown as number[]);
+  const sum = mod11WeightedSum(digits.slice(0, 8), W);
   let dv = 11 - (sum % 11);
   if (dv === 11) dv = 0;
   if (dv === 10) return false;

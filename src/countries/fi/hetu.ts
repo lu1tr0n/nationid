@@ -25,15 +25,14 @@
  * `finnish-personal-identity-code` (npm) and `python-stdnum stdnum.fi.hetu`.
  */
 
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const CHARSET = "0123456789ABCDEFHJKLMNPRSTUVWXY";
 const RAW_REGEX = /^\d{6}[-+ABCDEFYXWVU]\d{3}[\dA-FHJ-NPR-Y]$/;
 const FORMATTED_REGEX = RAW_REGEX;
 
-const COUNTRY = "FI" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with FI_HETU.
-const CODE = "FI_HETU" as DocumentTypeCode;
+const COUNTRY = "FI";
+const CODE = "FI_HETU";
 
 export const hetuSpec: DocumentSpec = {
   code: CODE,

@@ -16,14 +16,13 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { checkUid } from "./uid.ts";
 
 const RAW_REGEX = /^CHE\d{9}(MWST|TVA|IVA)$/;
 const FORMATTED_REGEX = /^CHE-\d{3}\.\d{3}\.\d{3}\s(MWST|TVA|IVA)$/;
-const COUNTRY = "CH" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `CH_MWST`.
-const CODE = "CH_MWST" as DocumentTypeCode;
+const COUNTRY = "CH";
+const CODE = "CH_MWST";
 
 export const mwstSpec: DocumentSpec = {
   code: CODE,

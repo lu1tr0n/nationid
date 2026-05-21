@@ -17,10 +17,10 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^([A-Z][0-9]{8}|[0-9]{9})$/;
-const CODE = "US_PASAPORTE" as DocumentTypeCode;
+const CODE = "US_PASAPORTE";
 
 export const passportSpec: DocumentSpec = {
   code: CODE,

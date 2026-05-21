@@ -17,24 +17,58 @@ const SPECS = {
   SV_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of SV document type codes accepted by the country-scoped helpers. */
 export type SVDocumentType = keyof typeof SPECS;
 
 type ShortCode = "DUI" | "NIT" | "PASAPORTE";
 
-/** Country-scoped validate: pass either `SV_DUI` or just `DUI`. */
+/**
+ * Validate a Salvadoran (SV) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`SV_DUI`, `SV_NIT`) or short (`DUI`, `NIT`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes SV-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/sv";
+ * validate("SV_DUI", "01234567-8");
+ * validate("NIT", "0614-010190-101-1");
+ * ```
+ */
 export function validate(code: SVDocumentType | ShortCode, input: string): boolean {
   const spec = resolveSpec(code);
   return spec.validate(input);
 }
 
+/**
+ * Format a Salvadoran (SV) document into its canonical display form.
+ *
+ * @param code - SV document type or short alias.
+ * @param input - Raw document string.
+ * @returns Canonical formatted representation.
+ */
 export function format(code: SVDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/**
+ * Normalize a Salvadoran (SV) document by stripping separators and casing.
+ *
+ * @param code - SV document type or short alias.
+ * @param input - Raw document string.
+ * @returns Storage-friendly normalized representation.
+ */
 export function normalize(code: SVDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/**
+ * Parse a Salvadoran (SV) document into a structured `ParseResult`.
+ *
+ * @param code - SV document type or short alias.
+ * @param input - Raw document string.
+ * @returns Parse result with validity, normalized value, and any spec-specific metadata.
+ */
 export function parse(code: SVDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -46,10 +80,10 @@ function resolveSpec(code: SVDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const svBundle: CountryDocumentBundle = {
+export const svBundle = {
   country: "SV",
   personal: [duiSpec, passportSpec],
   tax: [nitSpec, duiSpec],
   defaultPersonal: "SV_DUI",
   defaultTax: "SV_NIT",
-};
+} as const satisfies CountryDocumentBundle;

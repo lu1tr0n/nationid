@@ -127,32 +127,83 @@ const REGISTRY: ReadonlyMap<DocumentTypeCode, DocumentSpec> = (() => {
 /**
  * Lookup a `DocumentSpec` by its stable code.
  *
- * @throws if the code is not registered (use `listSupportedCodes()` to inspect).
+ * Useful when you need direct access to the spec's regex, mask, country, or
+ * confidence metadata without going through the wrapped `validate`/`format`
+ * helpers. The returned spec is the same singleton instance held in the
+ * internal registry; do not mutate it.
+ *
+ * Generic over the document type code: passing a literal narrows the returned
+ * spec to `DocumentSpec<"MX_CURP">` so `.code` keeps its literal type instead
+ * of widening to the whole `DocumentTypeCode` union. The runtime invariant
+ * `REGISTRY.get(code).code === code` justifies the cast at the boundary.
+ *
+ * @typeParam C - The literal `DocumentTypeCode` of the requested spec.
+ * @param code - Stable `DocumentTypeCode` such as `"SV_DUI"` or `"BR_CNPJ"`.
+ * @returns The `DocumentSpec<C>` registered for `code`, with a code-narrowed
+ *   return type for richer IDE inference.
+ * @throws {Error} if `code` is not registered. Call `listSupportedCodes()` to
+ *   inspect the set of known codes.
+ * @example
+ * ```ts
+ * import { getSpec } from "nationid";
+ *
+ * const dui = getSpec("SV_DUI");
+ * dui.code;                    // "SV_DUI" — literal, not the whole union
+ * console.log(dui.country);    // "SV"
+ * console.log(dui.confidence); // "structural"
+ * ```
  */
-export function getSpec(code: DocumentTypeCode): DocumentSpec {
+export function getSpec<C extends DocumentTypeCode>(code: C): DocumentSpec<C> {
   const spec = REGISTRY.get(code);
   if (!spec) {
     throw new Error(`nationid: no spec registered for "${code}"`);
   }
-  return spec;
+  // Safe: REGISTRY.get(code) returns the spec whose `.code === code` at runtime,
+  // so its DocumentSpec<DocumentTypeCode> shape is also a valid DocumentSpec<C>.
+  return spec as DocumentSpec<C>;
 }
 
 /**
  * Validate `input` against the document type identified by `code`.
  *
  * Internally normalizes the input (strips separators, uppercases). Returns
- * `true` only if both regex shape AND check digit pass.
+ * `true` only if both regex shape AND check digit pass. Never throws on
+ * malformed input — use `parse()` if you need the failure reason.
  *
+ * @param code - Document type to validate against (e.g. `"SV_DUI"`).
+ * @param input - Raw user input; separators and case are tolerated.
+ * @returns `true` if `input` is a syntactically and check-digit valid document.
+ * @throws {Error} if `code` is not registered.
  * @example
- * validate('SV_DUI', '04567890-3')   // true
- * validate('SV_NIT', '06141505851012')  // true
+ * ```ts
+ * import { validate } from "nationid";
+ *
+ * validate("SV_DUI", "04567890-3");       // true
+ * validate("SV_NIT", "06141505851012");   // true
+ * validate("BR_CPF", "111.444.777-35");   // true
+ * validate("BR_CPF", "111.444.777-00");   // false (bad check digit)
+ * ```
  */
 export function validate(code: DocumentTypeCode, input: string): boolean {
   return getSpec(code).validate(input);
 }
 
 /**
- * Strip separators and uppercase. Idempotent. Returns the canonical storage form.
+ * Strip separators and uppercase characters to produce the canonical storage
+ * form. Idempotent: calling `normalize` twice yields the same string.
+ *
+ * Use the normalized form as the database column value so equality lookups
+ * work regardless of how the user typed the document.
+ *
+ * @param code - Document type whose normalization rules apply.
+ * @param input - Raw user input.
+ * @returns Canonical storage form (digits/uppercase, no separators).
+ * @throws {Error} if `code` is not registered.
+ * @example
+ * ```ts
+ * normalize("BR_CNPJ", "12.345.678/0001-90"); // "12345678000190"
+ * normalize("MX_CURP", "gomc850315hdfrrr07"); // "GOMC850315HDFRRR07"
+ * ```
  */
 export function normalize(code: DocumentTypeCode, input: string): string {
   return getSpec(code).normalize(input);
@@ -160,25 +211,79 @@ export function normalize(code: DocumentTypeCode, input: string): string {
 
 /**
  * Apply the canonical mask for display. If `input` is not a valid number for
- * `code`, returns `input` unchanged.
+ * `code`, returns `input` unchanged (soft fallback so render code never throws).
+ *
+ * @param code - Document type whose mask pattern applies.
+ * @param input - Raw or normalized document body.
+ * @returns Human-friendly formatted string with separators.
+ * @throws {Error} if `code` is not registered.
+ * @example
+ * ```ts
+ * format("BR_CNPJ", "12345678000190"); // "12.345.678/0001-90"
+ * format("SV_DUI",  "045678903");      // "04567890-3"
+ * ```
  */
 export function format(code: DocumentTypeCode, input: string): string {
   return getSpec(code).format(input);
 }
 
 /**
- * Detailed parse with discriminated result. Never throws on input errors.
+ * Detailed parse with a discriminated `ParseResult`. Never throws on input
+ * errors; instead returns `{ ok: false, error: { kind, ... } }` so callers can
+ * branch on the failure mode (use this when you need to show a user-facing
+ * error message via `nationid/i18n.getErrorMessage`).
+ *
+ * Generic over the document type code: passing a literal narrows the returned
+ * `ParseResult<C>` so `result.code` keeps its literal type. A `switch (r.code)`
+ * after the call sees only `C` as a reachable value, not the whole 124-member
+ * `DocumentTypeCode` union.
+ *
+ * @typeParam C - The literal `DocumentTypeCode` of the document being parsed.
+ * @param code - Document type to parse.
+ * @param input - Raw user input.
+ * @returns A discriminated union `ParseResult<C>`: `{ ok: true, value }` on
+ *   success, or `{ ok: false, error }` describing why the input was rejected.
+ *   `result.code` is narrowed to the literal `C`.
+ * @throws {Error} if `code` is not registered (input errors do NOT throw).
+ * @example
+ * ```ts
+ * const r = parse("BR_CPF", "111.444.777-00");
+ * r.code;                       // "BR_CPF" — literal, not DocumentTypeCode
+ * if (!r.ok) {
+ *   console.log(r.reason.kind); // "invalid_checksum"
+ * }
+ * ```
  */
-export function parse(code: DocumentTypeCode, input: string): ParseResult {
+export function parse<C extends DocumentTypeCode>(code: C, input: string): ParseResult<C> {
   return getSpec(code).parse(input);
 }
 
-/** List every supported `DocumentTypeCode`. */
+/**
+ * List every supported `DocumentTypeCode` in registration order. Stable across
+ * patch releases; new codes are appended (never inserted mid-list) so it is
+ * safe to drive UI dropdowns from this list directly.
+ *
+ * @returns Read-only array of all registered document type codes.
+ * @example
+ * ```ts
+ * listSupportedCodes().length; // e.g. 50+
+ * listSupportedCodes().filter(c => c.startsWith("MX_")); // Mexico-only codes
+ * ```
+ */
 export function listSupportedCodes(): ReadonlyArray<DocumentTypeCode> {
   return Array.from(REGISTRY.keys());
 }
 
-/** List every supported ISO 3166-1 alpha-2 country code. */
+/**
+ * List every supported ISO 3166-1 alpha-2 country code with at least one
+ * registered document. Useful for country-pickers in UIs.
+ *
+ * @returns Read-only array of two-letter country codes (uppercase).
+ * @example
+ * ```ts
+ * listSupportedCountries(); // ["SV", "MX", "CO", "BR", ...]
+ * ```
+ */
 export function listSupportedCountries(): ReadonlyArray<CountryCode> {
   const set = new Set<CountryCode>();
   for (const spec of REGISTRY.values()) {

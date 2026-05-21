@@ -19,22 +19,31 @@
  * who treat that as a real DOB are responsible for filtering generics out.
  */
 
-import { getSpec } from "../../index.ts";
+import { rfcPfSpec } from "../../countries/mx/rfc-pf.ts";
 import type { DateOfBirth } from "../types.ts";
 
 /**
- * Cutoff year used to disambiguate 2-digit years for RFC PF. We compute this
- * lazily from the current calendar year so the rule keeps "rolling" with time
- * (no source-edit needed every January).
+ * Clock function injected for testability. Defaults to `() => new Date()`.
+ * Tests pass a fixed clock to exercise century-disambiguation behavior at
+ * arbitrary points in time without monkey-patching the Date global.
  */
-function currentTwoDigitYear(): number {
-  return new Date().getUTCFullYear() % 100;
+export type Clock = () => Date;
+
+const defaultClock: Clock = () => new Date();
+
+/**
+ * Cutoff year used to disambiguate 2-digit years for RFC PF. Computed from
+ * `now()` so the rule keeps rolling with the calendar (no source-edit needed
+ * every January).
+ */
+function currentTwoDigitYear(now: Clock): number {
+  return now().getUTCFullYear() % 100;
 }
 
-function inferCentury(yy: number): number {
+function inferCentury(yy: number, now: Clock): number {
   // Future-proofing: if YY > current YY, the date is in the past century.
   // Equality is treated as the current century (a valid present-day RFC).
-  return yy <= currentTwoDigitYear() ? 2000 + yy : 1900 + yy;
+  return yy <= currentTwoDigitYear(now) ? 2000 + yy : 1900 + yy;
 }
 
 function validateCalendar(year: number, month: number, day: number): DateOfBirth | null {
@@ -51,8 +60,8 @@ function validateCalendar(year: number, month: number, day: number): DateOfBirth
   return { year, month, day };
 }
 
-export function extractRfcDOB(input: string): DateOfBirth | null {
-  const result = getSpec("MX_RFC_PF").parse(input);
+export function extractRfcDOB(input: string, now: Clock = defaultClock): DateOfBirth | null {
+  const result = rfcPfSpec.parse(input);
   if (!result.ok) return null;
   const cleaned = result.normalized;
   if (cleaned.length !== 13) return null;
@@ -60,5 +69,5 @@ export function extractRfcDOB(input: string): DateOfBirth | null {
   const mm = Number(cleaned.slice(6, 8));
   const dd = Number(cleaned.slice(8, 10));
   if (!Number.isFinite(yy) || !Number.isFinite(mm) || !Number.isFinite(dd)) return null;
-  return validateCalendar(inferCentury(yy), mm, dd);
+  return validateCalendar(inferCentury(yy, now), mm, dd);
 }

@@ -28,13 +28,12 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 import { checkBsn } from "./bsn.ts";
 
 const RAW_REGEX = /^NL\d{9}B\d{2}$/;
-const COUNTRY = "NL" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `NL_BTW`.
-const CODE = "NL_BTW" as DocumentTypeCode;
+const COUNTRY = "NL";
+const CODE = "NL_BTW";
 
 export const btwSpec: DocumentSpec = {
   code: CODE,

@@ -25,13 +25,12 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{11}$/;
 const FORMATTED_REGEX = /^\d{2}\.\d{2}\.\d{2}-\d{3}\.\d{2}$/;
-const COUNTRY = "BE" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `BE_NRN`.
-const CODE = "BE_NRN" as DocumentTypeCode;
+const COUNTRY = "BE";
+const CODE = "BE_NRN";
 
 export const nrnSpec: DocumentSpec = {
   code: CODE,

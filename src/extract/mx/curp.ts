@@ -19,7 +19,7 @@
  * `python-stdnum` discussion threads and SEGOB technical bulletins.
  */
 
-import { getSpec } from "../../index.ts";
+import { curpSpec } from "../../countries/mx/curp.ts";
 import type { DateOfBirth, Region, Sex } from "../types.ts";
 
 const ALPHA_RE = /^[A-Z]$/;
@@ -64,7 +64,7 @@ function validateCalendar(year: number, month: number, day: number): DateOfBirth
 }
 
 export function extractCurpDOB(input: string): DateOfBirth | null {
-  const result = getSpec("MX_CURP").parse(input);
+  const result = curpSpec.parse(input);
   if (!result.ok) return null;
   const cleaned = result.normalized;
   const yy = Number(cleaned.slice(4, 6));
@@ -76,7 +76,7 @@ export function extractCurpDOB(input: string): DateOfBirth | null {
 }
 
 export function extractCurpSex(input: string): Sex | null {
-  const result = getSpec("MX_CURP").parse(input);
+  const result = curpSpec.parse(input);
   if (!result.ok) return null;
   const sexChar = result.normalized.charAt(10);
   if (sexChar === "H") return "M";
@@ -85,7 +85,7 @@ export function extractCurpSex(input: string): Sex | null {
 }
 
 export function extractCurpRegion(input: string): Region | null {
-  const result = getSpec("MX_CURP").parse(input);
+  const result = curpSpec.parse(input);
   if (!result.ok) return null;
   const code = result.normalized.slice(11, 13);
   if (code.length !== 2) return null;

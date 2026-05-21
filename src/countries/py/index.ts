@@ -2,10 +2,6 @@
  * Paraguay document validators.
  *
  * Tree-shakable subpath: `import { validate } from 'nationid/py'`.
- *
- * TODO(v0.4-integration): orchestrator will register `PY_CI` and `PY_RUC`
- * codes in src/core/types.ts and root barrel src/index.ts after all v0.4
- * agents complete.
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
@@ -18,28 +14,60 @@ export { ciSpec, passportSpec, rucSpec };
 const SPECS = {
   PY_CI: ciSpec,
   PY_RUC: rucSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `PY_PASAPORTE` after all v0.5 agents complete.
   PY_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of PY document type codes accepted by the country-scoped helpers. */
 export type PYDocumentType = keyof typeof SPECS;
 
 type ShortCode = "CI" | "RUC" | "PASAPORTE";
 
-/** Country-scoped validate: pass either `PY_CI` or just `CI`. */
+/**
+ * Validate a Paraguayan (PY) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`PY_CI`, `PY_RUC`) or short (`CI`, `RUC`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes PY-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/py";
+ * validate("PY_CI", "1234567");
+ * validate("RUC", "80012345-6");
+ * ```
+ */
 export function validate(code: PYDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/**
+ * Format a Paraguayan (PY) document into its canonical display form.
+ *
+ * @param code - PY document type or short alias.
+ * @param input - Raw document string.
+ * @returns Canonical formatted representation.
+ */
 export function format(code: PYDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/**
+ * Normalize a Paraguayan (PY) document by stripping separators and casing.
+ *
+ * @param code - PY document type or short alias.
+ * @param input - Raw document string.
+ * @returns Storage-friendly normalized representation.
+ */
 export function normalize(code: PYDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/**
+ * Parse a Paraguayan (PY) document into a structured `ParseResult`.
+ *
+ * @param code - PY document type or short alias.
+ * @param input - Raw document string.
+ * @returns Parse result with validity, normalized value, and any spec-specific metadata.
+ */
 export function parse(code: PYDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -51,10 +79,10 @@ function resolveSpec(code: PYDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const pyBundle: CountryDocumentBundle = {
+export const pyBundle = {
   country: "PY",
   personal: [ciSpec, passportSpec],
   tax: [rucSpec],
   defaultPersonal: "PY_CI",
   defaultTax: "PY_RUC",
-};
+} as const satisfies CountryDocumentBundle;

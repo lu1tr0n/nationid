@@ -18,28 +18,42 @@ const SPECS = {
   ES_NIE: nieSpec,
   ES_NIF_PJ: nifPjSpec,
   ES_NUSS: nussSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `ES_PASAPORTE` after all v0.5 agents complete.
   ES_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of ES document type codes accepted by the country-scoped helpers. */
 export type ESDocumentType = keyof typeof SPECS;
 
 type ShortCode = "DNI" | "NIE" | "NIF_PJ" | "CIF" | "NUSS" | "PASAPORTE";
 
-/** Country-scoped validate: pass either `ES_DNI` or just `DNI` / `NIE` / `CIF` / `NUSS`. */
+/**
+ * Validate a Spanish (ES) identity, tax or social-security document.
+ *
+ * @param code - Document type, either fully-qualified (`ES_DNI`, `ES_NIE`, `ES_NIF_PJ`, `ES_NUSS`, `ES_PASAPORTE`) or short (`DNI`, `NIE`, `NIF_PJ`, `CIF`, `NUSS`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes ES-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/es";
+ * validate("ES_DNI", "12345678Z"); // true
+ * validate("NIF_PJ", "A58818501");
+ * ```
+ */
 export function validate(code: ESDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format a Spanish (ES) document into its canonical display form. */
 export function format(code: ESDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize a Spanish (ES) document by stripping separators and casing. */
 export function normalize(code: ESDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse a Spanish (ES) document into a structured `ParseResult`. */
 export function parse(code: ESDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -54,7 +68,8 @@ function resolveSpec(code: ESDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const esBundle: CountryDocumentBundle = {
+/** España (ES) document bundle for orchestrator registration. */
+export const esBundle = {
   country: "ES",
   // NUSS identifies the natural person within the Seguridad Social system; it
   // is not a NIF and never doubles as one — kept on `personal` only.
@@ -63,4 +78,4 @@ export const esBundle: CountryDocumentBundle = {
   tax: [nifPjSpec, dniSpec, nieSpec],
   defaultPersonal: "ES_DNI",
   defaultTax: "ES_NIF_PJ",
-};
+} as const satisfies CountryDocumentBundle;

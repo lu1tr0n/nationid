@@ -13,24 +13,25 @@
  * Check digit: none on the printed number. MRZ validation via
  * `algorithms/icao-9303.ts`.
  *
- * Confidence: high (Microsoft Purview SIT entity, IRCC-aligned).
+ * Confidence: moderate. Microsoft Purview documents the 2L+6D regex but no
+ * first-party IRCC spec is publicly cited; demoted from `high` in v1.0.
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^[A-Z]{2}[0-9]{6}$/;
-const CODE = "CA_PASAPORTE" as DocumentTypeCode;
+const CODE = "CA_PASAPORTE";
 
 export const passportSpec: DocumentSpec = {
   code: CODE,
-  country: "CA" as DocumentSpec["country"],
+  country: "CA",
   scope: "personal",
   labelKey: "documents.CA_PASAPORTE.label",
   rawRegex: RAW_REGEX,
   mask: "AA000000",
   hasCheckDigit: false,
-  confidence: "high",
+  confidence: "moderate",
 
   normalize(input: string): string {
     return stripAndUpper(input);
@@ -66,7 +67,7 @@ export const passportSpec: DocumentSpec = {
       code: CODE,
       normalized: cleaned,
       formatted: cleaned,
-      confidence: "high",
+      confidence: "moderate",
     };
   },
 };

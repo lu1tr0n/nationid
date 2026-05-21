@@ -20,7 +20,7 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 /**
  * Strict NINO regex per HMRC NIM39110:
@@ -34,9 +34,8 @@ const RAW_REGEX = /^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z]\
 const FORMATTED_REGEX =
   /^(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z] \d{2} \d{2} \d{2} [A-D]$/;
 
-const COUNTRY = "GB" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `GB_NINO`.
-const CODE = "GB_NINO" as DocumentTypeCode;
+const COUNTRY = "GB";
+const CODE = "GB_NINO";
 
 export const ninoSpec: DocumentSpec = {
   code: CODE,

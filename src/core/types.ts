@@ -223,19 +223,25 @@ export type Confidence = "high" | "moderate" | "low" | "unconfirmed";
 /**
  * Discriminated union returned by `parse()`.
  *
+ * Parametrized over the document type code so the public root `parse<C>(code, input)`
+ * can narrow `result.code` to the exact `C` the caller passed in (instead of the
+ * whole `DocumentTypeCode` union). The default `C = DocumentTypeCode` keeps
+ * unparametrized references (`ParseResult` with no type argument) backwards
+ * compatible — they behave exactly as they did pre-v1.0.
+ *
  * No exceptions are thrown from public API.
  */
-export type ParseResult =
+export type ParseResult<C extends DocumentTypeCode = DocumentTypeCode> =
   | {
       readonly ok: true;
-      readonly code: DocumentTypeCode;
+      readonly code: C;
       readonly normalized: string;
       readonly formatted: string;
       readonly confidence: Confidence;
     }
   | {
       readonly ok: false;
-      readonly code: DocumentTypeCode;
+      readonly code: C;
       readonly reason: ParseError;
     };
 
@@ -250,9 +256,15 @@ export type ParseError =
  * Definition of one document type.
  *
  * Each country file under `src/countries/<cc>/` exports one or more specs.
+ *
+ * Parametrized over the document type code so the public root `getSpec<C>(code)`
+ * can narrow the returned spec to the exact `C` the caller passed in. Existing
+ * country files annotate their specs as `: DocumentSpec` (no type argument),
+ * which resolves to `DocumentSpec<DocumentTypeCode>` via the default — no
+ * per-country changes required.
  */
-export interface DocumentSpec {
-  readonly code: DocumentTypeCode;
+export interface DocumentSpec<C extends DocumentTypeCode = DocumentTypeCode> {
+  readonly code: C;
   readonly country: CountryCode;
   readonly scope: DocumentScope;
   /** i18n key path, e.g. `documents.SV_DUI.label`. UI consumers resolve to localized text. */
@@ -273,7 +285,7 @@ export interface DocumentSpec {
   /** Reverse of normalize, applies the canonical mask. Returns input unchanged if invalid. */
   format(input: string): string;
   /** Detailed parse with discriminated result. */
-  parse(input: string): ParseResult;
+  parse(input: string): ParseResult<C>;
 }
 
 /**

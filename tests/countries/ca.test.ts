@@ -284,7 +284,7 @@ describe("CA — Passport (CA_PASAPORTE)", () => {
         code: "CA_PASAPORTE",
         normalized: "AB123456",
         formatted: "AB123456",
-        confidence: "high",
+        confidence: "moderate",
       });
     });
 

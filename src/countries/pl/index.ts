@@ -21,22 +21,57 @@ const SPECS = {
   PL_REGON: regonSpec,
 } as const;
 
+/** Union of PL document type codes accepted by the country-scoped helpers. */
 export type PLDocumentType = keyof typeof SPECS;
 
 type ShortCode = "PESEL" | "NIP" | "REGON";
 
+/**
+ * Validate a Polish (PL) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`PL_PESEL`, `PL_NIP`, `PL_REGON`) or short (`PESEL`, `NIP`, `REGON`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes PL-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/pl";
+ * validate("PL_PESEL", "44051401359");
+ * validate("NIP", "5260250274");
+ * ```
+ */
 export function validate(code: PLDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/**
+ * Format a Polish (PL) document into its canonical display form.
+ *
+ * @param code - PL document type or short alias.
+ * @param input - Raw document string.
+ * @returns Canonical formatted representation.
+ */
 export function format(code: PLDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/**
+ * Normalize a Polish (PL) document by stripping separators and casing.
+ *
+ * @param code - PL document type or short alias.
+ * @param input - Raw document string.
+ * @returns Storage-friendly normalized representation.
+ */
 export function normalize(code: PLDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/**
+ * Parse a Polish (PL) document into a structured `ParseResult`.
+ *
+ * @param code - PL document type or short alias.
+ * @param input - Raw document string.
+ * @returns Parse result with validity, normalized value, and any spec-specific metadata.
+ */
 export function parse(code: PLDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -48,10 +83,10 @@ function resolveSpec(code: PLDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const plBundle: CountryDocumentBundle = {
-  country: "PL" as CountryDocumentBundle["country"],
+export const plBundle = {
+  country: "PL",
   personal: [peselSpec],
   tax: [nipSpec, regonSpec, peselSpec],
-  defaultPersonal: "PL_PESEL" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "PL_NIP" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "PL_PESEL",
+  defaultTax: "PL_NIP",
+} as const satisfies CountryDocumentBundle;

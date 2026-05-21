@@ -19,15 +19,14 @@
 
 import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{8}$/;
 const FORMATTED_REGEX = /^\d{7}-\d$/;
 const W = [7, 9, 10, 5, 8, 4, 2] as const;
 
-const COUNTRY = "FI" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with FI_YTUNNUS.
-const CODE = "FI_YTUNNUS" as DocumentTypeCode;
+const COUNTRY = "FI";
+const CODE = "FI_YTUNNUS";
 
 export const ytunnusSpec: DocumentSpec = {
   code: CODE,
@@ -86,7 +85,7 @@ export const ytunnusSpec: DocumentSpec = {
 
 export function checkYtunnus(digits: string): boolean {
   if (digits.length !== 8) return false;
-  const sum = mod11WeightedSum(digits.slice(0, 7), W as unknown as number[]);
+  const sum = mod11WeightedSum(digits.slice(0, 7), W);
   const r = sum % 11;
   if (r === 1) return false; // dv would be 10, invalid by spec.
   const dv = r === 0 ? 0 : 11 - r;

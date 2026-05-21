@@ -20,15 +20,14 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{10}$/;
 const FORMATTED_REGEX = /^\d{3} \d{3} \d{4}$/;
 const WEIGHTS = [10, 9, 8, 7, 6, 5, 4, 3, 2] as const;
 
-const COUNTRY = "GB" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `GB_NHS`.
-const CODE = "GB_NHS" as DocumentTypeCode;
+const COUNTRY = "GB";
+const CODE = "GB_NHS";
 
 export const nhsSpec: DocumentSpec = {
   code: CODE,

@@ -25,7 +25,7 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 /**
  * Normalized form: `GB` prefix optional; 9 or 12 trailing digits. We always
@@ -37,9 +37,8 @@ const RAW_REGEX = /^GB\d{9}(\d{3})?$/;
 const FORMATTED_REGEX = /^GB \d{3} \d{4} \d{2}( \d{3})?$/;
 const WEIGHTS = [8, 7, 6, 5, 4, 3, 2] as const;
 
-const COUNTRY = "GB" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `GB_VAT`.
-const CODE = "GB_VAT" as DocumentTypeCode;
+const COUNTRY = "GB";
+const CODE = "GB_VAT";
 
 export const vatSpec: DocumentSpec = {
   code: CODE,

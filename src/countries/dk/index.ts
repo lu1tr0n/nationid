@@ -21,22 +21,39 @@ const SPECS = {
   DK_VAT: vatSpec,
 } as const;
 
+/** Union of DK document type codes accepted by the country-scoped helpers. */
 export type DKDocumentType = keyof typeof SPECS;
 
 type ShortCode = "CPR" | "CVR" | "VAT" | "MOMS";
 
+/**
+ * Validate a Danish (DK) identity, business or VAT document.
+ *
+ * @param code - Document type, either fully-qualified (`DK_CPR`, `DK_CVR`, `DK_VAT`) or short (`CPR`, `CVR`, `VAT`, `MOMS`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes DK-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/dk";
+ * validate("DK_CPR", "070761-4285"); // true
+ * validate("CVR", "13585628");
+ * ```
+ */
 export function validate(code: DKDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format a Danish (DK) document into its canonical display form. */
 export function format(code: DKDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize a Danish (DK) document by stripping separators. */
 export function normalize(code: DKDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse a Danish (DK) document into a structured `ParseResult`. */
 export function parse(code: DKDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -48,11 +65,12 @@ function resolveSpec(code: DKDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const dkBundle: CountryDocumentBundle = {
-  country: "DK" as CountryDocumentBundle["country"],
+/** Denmark (DK) document bundle for orchestrator registration. */
+export const dkBundle = {
+  country: "DK",
   personal: [cprSpec],
   // CPR doubles as natural-person tax ID (SKAT); CVR / VAT for legal entities.
   tax: [cprSpec, cvrSpec, vatSpec],
-  defaultPersonal: "DK_CPR" as CountryDocumentBundle["defaultPersonal"],
-  defaultTax: "DK_CVR" as CountryDocumentBundle["defaultTax"],
-};
+  defaultPersonal: "DK_CPR",
+  defaultTax: "DK_CVR",
+} as const satisfies CountryDocumentBundle;

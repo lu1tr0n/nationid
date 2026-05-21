@@ -11,6 +11,19 @@
  *   4. Number is valid iff sum is divisible by 10.
  *
  * Public-domain mathematical algorithm.
+ *
+ * @param digits - Digit-only string including the trailing check digit.
+ *   Non-digit input is rejected (returns `false`) — separators must be
+ *   stripped by the caller.
+ * @returns `true` when the digits satisfy the Luhn property (sum mod 10 = 0).
+ * @example
+ * ```ts
+ * import { luhnValid } from "nationid/algorithms";
+ *
+ * luhnValid("79927398713"); // true  (canonical Luhn specimen)
+ * luhnValid("79927398710"); // false
+ * luhnValid("12-34");       // false (non-digit characters)
+ * ```
  */
 export function luhnValid(digits: string): boolean {
   if (!/^\d+$/.test(digits)) return false;
@@ -33,7 +46,20 @@ export function luhnValid(digits: string): boolean {
  * Compute the Luhn check digit for a body of digits (without the check digit).
  *
  * Returns the check digit (0-9) that, when appended, makes the full number
- * Luhn-valid.
+ * Luhn-valid. Useful for generating synthetic test data or for the trailing
+ * digit on emitted document numbers.
+ *
+ * @param body - Digit-only string WITHOUT the check digit position.
+ * @returns Integer in `[0, 9]` — the digit to append to make `body` Luhn-valid.
+ * @throws {Error} if `body` contains non-digit characters.
+ * @example
+ * ```ts
+ * import { luhnCheckDigit, luhnValid } from "nationid/algorithms";
+ *
+ * const body = "7992739871";
+ * const cd = luhnCheckDigit(body); // 3
+ * luhnValid(body + String(cd));    // true
+ * ```
  */
 export function luhnCheckDigit(body: string): number {
   if (!/^\d+$/.test(body)) {

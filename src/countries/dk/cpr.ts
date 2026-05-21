@@ -31,16 +31,15 @@
 
 import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{10}$/;
 const FORMATTED_REGEX = /^\d{6}-\d{4}$/;
 
 const W = [4, 3, 2, 7, 6, 5, 4, 3, 2, 1] as const;
 
-const COUNTRY = "DK" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with DK_CPR.
-const CODE = "DK_CPR" as DocumentTypeCode;
+const COUNTRY = "DK";
+const CODE = "DK_CPR";
 
 export const cprSpec: DocumentSpec = {
   code: CODE,
@@ -117,6 +116,6 @@ function hasValidCprDate(digits: string): boolean {
 export function cprMod11Legacy(input: string): boolean {
   const digits = stripNonDigits(input);
   if (!RAW_REGEX.test(digits)) return false;
-  const sum = mod11WeightedSum(digits, W as unknown as number[]);
+  const sum = mod11WeightedSum(digits, W);
   return sum % 11 === 0;
 }

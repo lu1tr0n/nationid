@@ -20,11 +20,32 @@ import { errors as enErrors, neutralDocument as enNeutral } from "./locales/en.t
 import { errors as esErrors, neutralDocument as esNeutral } from "./locales/es.ts";
 import { errors as ptErrors, neutralDocument as ptNeutral } from "./locales/pt.ts";
 
-/** Supported locale tags shipped with v0.3. New locales land in v0.5 (EU). */
+/**
+ * Locale tags supported by the bundled `getErrorMessage` catalog.
+ *
+ * - `"es"` — Spanish (default for LATAM consumers)
+ * - `"en"` — English (library default)
+ * - `"pt"` — Portuguese (Brazil / Portugal)
+ */
 export type Locale = "es" | "en" | "pt";
 
+/**
+ * Read-only list of every locale tag the catalog ships templates for. Useful
+ * for building locale switchers in UIs.
+ *
+ * @example
+ * ```ts
+ * import { SUPPORTED_LOCALES } from "nationid/i18n";
+ *
+ * SUPPORTED_LOCALES.includes(navigator.language.slice(0, 2) as never);
+ * ```
+ */
 export const SUPPORTED_LOCALES: readonly Locale[] = ["es", "en", "pt"] as const;
 
+/**
+ * Locale used by `getErrorMessage` and `getErrorTemplate` when the caller
+ * omits the `locale` argument or passes an unsupported tag.
+ */
 export const DEFAULT_LOCALE: Locale = "en";
 
 /** Subset of `ParseError["kind"]` values we have hand-written templates for. */
@@ -88,20 +109,32 @@ function interpolate(template: string, substitute: string): string {
  *
  * Falls back to `DEFAULT_LOCALE` when `locale` is unsupported, and to a
  * generic per-locale message when the error `kind` is unknown (forward-compat
- * with future kinds added in core/types.ts).
+ * with future kinds added in `core/types.ts`).
  *
  * When `documentName` is omitted, the message uses neutral phrasing
- * ("the document" / "el documento" / "o documento").
+ * (`"the document"` / `"el documento"` / `"o documento"`).
  *
+ * @param error - The `ParseError` returned by `parse()` on failure.
+ * @param locale - Target locale. Unsupported values fall back to `DEFAULT_LOCALE`.
+ * @param documentName - Optional human-readable document name to interpolate
+ *   into the `{document}` slot (e.g. `"DUI"`, `"CPF"`).
+ * @returns A fully-rendered localized error message.
  * @example
- * getErrorMessage({ kind: "too_short" }, "es", "DUI")
- * // → "El DUI es demasiado corto."
+ * ```ts
+ * import { parse } from "nationid";
+ * import { getErrorMessage } from "nationid/i18n";
  *
- * getErrorMessage({ kind: "empty" }, "en")
- * // → "Please enter a value."
+ * const r = parse("SV_DUI", "12");
+ * if (!r.ok) {
+ *   getErrorMessage(r.error, "es", "DUI"); // "El DUI es demasiado corto."
+ * }
  *
- * getErrorMessage({ kind: "invalid_format" }, "pt", "CPF")
- * // → "O formato do CPF não é válido."
+ * getErrorMessage({ kind: "empty" }, "en");
+ * // "Please enter a value."
+ *
+ * getErrorMessage({ kind: "invalid_format" }, "pt", "CPF");
+ * // "O formato do CPF não é válido."
+ * ```
  */
 export function getErrorMessage(error: ParseError, locale?: Locale, documentName?: string): string {
   const lang = resolveLocale(locale);
@@ -109,7 +142,7 @@ export function getErrorMessage(error: ParseError, locale?: Locale, documentName
 
   // `error.kind` is typed by `ParseError`, but the function may be called
   // from JS or with a future kind not yet represented in TS. Guard at runtime.
-  const kind: string = (error as { kind: string }).kind;
+  const kind = error.kind;
   const template = isKnownKind(kind) ? bundle.errors[kind] : GENERIC_FALLBACK[lang];
 
   const trimmed = documentName?.trim();
@@ -120,8 +153,19 @@ export function getErrorMessage(error: ParseError, locale?: Locale, documentName
 /**
  * Returns the raw template string for `kind` in `locale` (no interpolation).
  *
- * The returned string still contains `{document}` for kinds other than
- * `empty`. Use `getErrorMessage` if you want substitution.
+ * The returned string still contains the `{document}` slot for kinds other
+ * than `"empty"`. Use {@link getErrorMessage} if you want substitution.
+ *
+ * @param kind - One of the `ParseError["kind"]` values.
+ * @param locale - Target locale. Unsupported values fall back to `DEFAULT_LOCALE`.
+ * @returns The raw template string, possibly containing `{document}`.
+ * @example
+ * ```ts
+ * import { getErrorTemplate } from "nationid/i18n";
+ *
+ * getErrorTemplate("too_short", "es"); // "El {document} es demasiado corto."
+ * getErrorTemplate("empty",     "en"); // "Please enter a value."
+ * ```
  */
 export function getErrorTemplate(kind: ParseError["kind"], locale?: Locale): string {
   const lang = resolveLocale(locale);

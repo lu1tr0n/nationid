@@ -120,8 +120,12 @@ describe("extract — MX_RFC_PF", () => {
   });
 
   describe("extractSex / extractRegion", () => {
-    it("returns null because the spec encodes neither", () => {
+    it("rejects sex/region at compile time because RFC_PF encodes neither", () => {
+      // MX_RFC_PF only declares "dob" support; the narrowed signatures now
+      // reject it for sex and region. Runtime safety net still returns null.
+      // @ts-expect-error MX_RFC_PF does not encode sex
       expect(extractSex("MX_RFC_PF", "GODE561231GR8")).toBeNull();
+      // @ts-expect-error MX_RFC_PF does not encode region
       expect(extractRegion("MX_RFC_PF", "GODE561231GR8")).toBeNull();
     });
   });

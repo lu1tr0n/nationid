@@ -257,7 +257,8 @@
       "import": "./dist/catalog/index.js",
       "require": "./dist/catalog/index.cjs"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./*": null
   },
   "files": [
     "dist",

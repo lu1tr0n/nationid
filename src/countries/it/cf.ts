@@ -35,7 +35,7 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 /**
  * Lenient regex tolerating homocodia substitutions (digits 7..14 may be
@@ -131,9 +131,8 @@ const HOMO_TO_DIGIT: Readonly<Record<string, string>> = {
   V: "9",
 };
 
-const COUNTRY = "IT" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `IT_CF`.
-const CODE = "IT_CF" as DocumentTypeCode;
+const COUNTRY = "IT";
+const CODE = "IT_CF";
 
 export const cfSpec: DocumentSpec = {
   code: CODE,

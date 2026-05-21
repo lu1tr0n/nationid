@@ -15,14 +15,13 @@
 
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{9}$/;
 const FORMATTED_REGEX = /^\d{3} \d{3} \d{3}$/;
 
-const COUNTRY = "FR" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `FR_SIREN`.
-const CODE = "FR_SIREN" as DocumentTypeCode;
+const COUNTRY = "FR";
+const CODE = "FR_SIREN";
 
 export const sirenSpec: DocumentSpec = {
   code: CODE,

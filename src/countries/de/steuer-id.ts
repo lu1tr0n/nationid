@@ -26,14 +26,13 @@
  */
 
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^[1-9]\d{10}$/;
 const FORMATTED_REGEX = /^\d{2} \d{3} \d{3} \d{3}$/;
 
-const COUNTRY = "DE" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode`.
-const CODE = "DE_STEUER_ID" as DocumentTypeCode;
+const COUNTRY = "DE";
+const CODE = "DE_STEUER_ID";
 
 export const steuerIdSpec: DocumentSpec = {
   code: CODE,

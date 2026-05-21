@@ -19,32 +19,63 @@ const SPECS = {
   MX_RFC_PF: rfcPfSpec,
   MX_RFC_PM: rfcPmSpec,
   MX_CLAVE_ELECTOR: claveElectorSpec,
-  // TODO(v0.5-integration): drop the cast once `MX_NSS` lands in
   // `src/core/types.ts` `DocumentTypeCode`. Keying the SPECS map by the
   // string literal keeps the lookup table tree-shakable.
   MX_NSS: nssSpec,
-  // TODO(v0.5-integration): orchestrator extends `DocumentTypeCode` with
-  // `MX_PASAPORTE` after all v0.5 agents complete.
   MX_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of MX document type codes accepted by the country-scoped helpers. */
 export type MXDocumentType = keyof typeof SPECS;
 
 type ShortCode = "CURP" | "RFC_PF" | "RFC_PM" | "CLAVE_ELECTOR" | "INE" | "NSS" | "PASAPORTE";
 
-/** Country-scoped validate: pass either `MX_CURP` or just `CURP`. */
+/**
+ * Validate a Mexican (MX) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`MX_CURP`, `MX_RFC_PF`) or short (`CURP`, `RFC_PF`, `RFC_PM`, `CLAVE_ELECTOR`, `INE`, `NSS`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes MX-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/mx";
+ * validate("MX_CURP", "HEGG560427MVZRRL04");
+ * validate("RFC_PF", "VECJ880326XXX");
+ * ```
+ */
 export function validate(code: MXDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/**
+ * Format a Mexican (MX) document into its canonical display form.
+ *
+ * @param code - MX document type or short alias.
+ * @param input - Raw document string.
+ * @returns Canonical formatted representation.
+ */
 export function format(code: MXDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/**
+ * Normalize a Mexican (MX) document by stripping separators and casing.
+ *
+ * @param code - MX document type or short alias.
+ * @param input - Raw document string.
+ * @returns Storage-friendly normalized representation.
+ */
 export function normalize(code: MXDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/**
+ * Parse a Mexican (MX) document into a structured `ParseResult`.
+ *
+ * @param code - MX document type or short alias.
+ * @param input - Raw document string.
+ * @returns Parse result with validity, normalized value, and any spec-specific metadata.
+ */
 export function parse(code: MXDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -61,7 +92,7 @@ function resolveSpec(code: MXDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
-export const mxBundle: CountryDocumentBundle = {
+export const mxBundle = {
   country: "MX",
   // NSS sits in `personal` (purpose: social_security) alongside CURP and the
   // Clave de Elector. RFC remains the only tax-scope MX doc family.
@@ -69,4 +100,4 @@ export const mxBundle: CountryDocumentBundle = {
   tax: [rfcPfSpec, rfcPmSpec],
   defaultPersonal: "MX_CURP",
   defaultTax: "MX_RFC_PF",
-};
+} as const satisfies CountryDocumentBundle;

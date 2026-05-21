@@ -28,16 +28,15 @@
 
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{10}$|^\d{12}$/;
 // Accept either separator (`-` for under-100, `+` for over-100) on the
 // 6+4 form, and an optional `-` on the 8+4 form.
 const FORMATTED_REGEX = /^(?:\d{6}[-+]\d{4}|\d{8}-?\d{4})$/;
 
-const COUNTRY = "SE" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with SE_PERSONNUMMER.
-const CODE = "SE_PERSONNUMMER" as DocumentTypeCode;
+const COUNTRY = "SE";
+const CODE = "SE_PERSONNUMMER";
 
 export const personnummerSpec: DocumentSpec = {
   code: CODE,

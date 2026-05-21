@@ -25,14 +25,13 @@
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^CHE\d{9}$/;
 const FORMATTED_REGEX = /^CHE-\d{3}\.\d{3}\.\d{3}$/;
 const WEIGHTS = [5, 4, 3, 2, 7, 6, 5, 4] as const;
-const COUNTRY = "CH" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `CH_UID`.
-const CODE = "CH_UID" as DocumentTypeCode;
+const COUNTRY = "CH";
+const CODE = "CH_UID";
 
 export const uidSpec: DocumentSpec = {
   code: CODE,

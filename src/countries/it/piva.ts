@@ -19,15 +19,14 @@
 
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^\d{11}$/;
 const FORMATTED_REGEX = RAW_REGEX;
 const PREFIXED_REGEX = /^IT\d{11}$/;
 
-const COUNTRY = "IT" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends `DocumentTypeCode` with `IT_PIVA`.
-const CODE = "IT_PIVA" as DocumentTypeCode;
+const COUNTRY = "IT";
+const CODE = "IT_PIVA";
 
 export const pivaSpec: DocumentSpec = {
   code: CODE,

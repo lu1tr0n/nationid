@@ -39,7 +39,7 @@
  * agree" for high confidence.
  */
 
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 // Normalized form: prefix letter + 8 correlative + 1 DV = 10 chars total.
 const RAW_REGEX = /^[VEJPGC]\d{9}$/;
@@ -57,8 +57,8 @@ const LETTER_VALUES: Record<string, number> = {
 
 const WEIGHTS = [3, 2, 7, 6, 5, 4, 3, 2] as const;
 
-const COUNTRY = "VE" as CountryCode;
-const CODE = "VE_RIF" as DocumentTypeCode;
+const COUNTRY = "VE";
+const CODE = "VE_RIF";
 
 function normalizeRif(input: string): string {
   return input.replace(/[^A-Za-z0-9]+/g, "").toUpperCase();

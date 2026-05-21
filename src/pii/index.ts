@@ -14,8 +14,8 @@
  */
 
 import type { DocumentTypeCode } from "../core/types.ts";
-import { getSpec } from "../index.ts";
 import { applyMaskWithReveal, computeRevealCount, countPlaceholders } from "./mask.ts";
+import { getPiiSpec } from "./spec-table.ts";
 
 export type { HashAlgorithm, HashOptions } from "./hash.ts";
 export { hash } from "./hash.ts";
@@ -30,25 +30,35 @@ const EMPTY_PLACEHOLDER = "***";
  * Reveal rule: `min(4, floor(numPlaceholders / 3))` chars at the tail. So a
  * 9-digit DUI reveals 3, a 14-digit CNPJ reveals 4, an 18-char CURP reveals 4.
  *
- * Stars only fall on placeholder positions; separators are preserved verbatim.
+ * Stars only fall on placeholder positions; separators are preserved verbatim
+ * so the masked form is visually consistent with the formatted form.
  *
- * Returns `"***"` for empty/whitespace-only input. Returns `input` unchanged
- * if the spec is unknown (matches the soft contract used by other helpers).
+ * Returns `"***"` for empty/whitespace-only input.
  *
+ * @param code - Document type whose mask pattern applies.
+ * @param input - Raw or normalized document body.
+ * @returns A masked, display-safe string with separators preserved.
+ * @throws {Error} if `code` is not registered. Symmetric with `hash`/`lastN`.
  * @example
- *   // mask("BR_CNPJ", "12345678000190")     -> "<dot><dot><slash>01-90" (separators kept, last 4 revealed)
- *   // mask("MX_CURP", "GOMC850315HDFRRR07") -> 14 stars + "RR07"
- *   // mask("SV_DUI", "012345678")            -> 6 stars + "67" + "-" + "8"
+ * ```ts
+ * import { mask } from "nationid/pii";
+ *
+ * mask("BR_CNPJ", "12345678000190");
+ * // "**.***.***\/01-90"  (separators kept; last 4 placeholders revealed)
+ *
+ * mask("MX_CURP", "GOMC850315HDFRRR07");
+ * // "**************RR07" (last 4 chars revealed)
+ *
+ * mask("SV_DUI", "");
+ * // "***"
+ * ```
  */
 export function mask(code: DocumentTypeCode, input: string): string {
   if (input.trim().length === 0) return EMPTY_PLACEHOLDER;
 
-  let spec: ReturnType<typeof getSpec>;
-  try {
-    spec = getSpec(code);
-  } catch {
-    // Unknown code — soft fallback per the documented contract.
-    return input;
+  const spec = getPiiSpec(code);
+  if (spec === undefined) {
+    throw new Error(`nationid/pii.mask: no spec registered for "${code}"`);
   }
 
   const normalized = spec.normalize(input);

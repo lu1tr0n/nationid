@@ -18,13 +18,29 @@
  * CUIT/CUIL?" page (archived) and the `argentine-validations` npm package.
  */
 
-import type { DocumentTypeCode } from "../../core/types.ts";
-import { getSpec } from "../../index.ts";
+import type { DocumentSpec, DocumentTypeCode } from "../../core/types.ts";
+import { cdiSpec } from "../../countries/ar/cdi.ts";
+import { cuilSpec } from "../../countries/ar/cuil.ts";
+import { cuitSpec } from "../../countries/ar/cuit.ts";
 import type { Sex } from "../types.ts";
 
 const MALE_PREFIXES: ReadonlySet<string> = new Set(["20", "23", "24", "25", "26"]);
 const FEMALE_PREFIXES: ReadonlySet<string> = new Set(["27"]);
 const JURIDICAL_PREFIXES: ReadonlySet<string> = new Set(["30", "33", "34"]);
+
+/**
+ * Per-code spec table local to this file. Importing the per-country spec files
+ * directly (instead of going through `src/index.ts:getSpec`) keeps the
+ * `nationid/extract` subpath from transitively pulling the entire 33-country
+ * REGISTRY into bundles that only use AR extractors.
+ */
+const AR_SEX_SPECS = {
+  AR_CUIT: cuitSpec,
+  AR_CUIL: cuilSpec,
+  AR_CDI: cdiSpec,
+} as const satisfies Partial<Record<DocumentTypeCode, DocumentSpec>>;
+
+type ArSexCode = keyof typeof AR_SEX_SPECS;
 
 /**
  * Resolve sex from the 11-digit normalized AFIP/ARCA number. Returns `null`
@@ -39,7 +55,9 @@ function sexFromPrefix(digits: string): Sex | null {
 }
 
 export function extractArSex(code: DocumentTypeCode, input: string): Sex | null {
-  const result = getSpec(code).parse(input);
+  const spec = AR_SEX_SPECS[code as ArSexCode];
+  if (spec === undefined) return null;
+  const result = spec.parse(input);
   if (!result.ok) return null;
   return sexFromPrefix(result.normalized);
 }

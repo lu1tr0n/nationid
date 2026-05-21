@@ -20,14 +20,13 @@
 
 import { luhnValid } from "../../algorithms/luhn.ts";
 import { stripAndUpper } from "../../core/normalize.ts";
-import type { CountryCode, DocumentSpec, DocumentTypeCode, ParseResult } from "../../core/types.ts";
+import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
 const RAW_REGEX = /^SE\d{12}$/;
 const FORMATTED_REGEX = /^SE\d{12}$/;
 
-const COUNTRY = "SE" as CountryCode;
-// TODO(v0.6-integration): orchestrator extends DocumentTypeCode with SE_VAT.
-const CODE = "SE_VAT" as DocumentTypeCode;
+const COUNTRY = "SE";
+const CODE = "SE_VAT";
 
 export const vatSpec: DocumentSpec = {
   code: CODE,
