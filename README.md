@@ -1,5 +1,7 @@
 # nationid
 
+**[English](./README.md) · [Español](./README.es.md) · [Português](./README.pt.md)**
+
 > TypeScript-first, zero-dependency validator for national identity and tax documents from every country.
 
 [![npm version](https://img.shields.io/npm/v/nationid?color=blue)](https://www.npmjs.com/package/nationid)
@@ -18,7 +20,16 @@
 
 Existing tools cover a fraction of the world. `validator.js` only validates 6 LATAM tax IDs. `cpf-cnpj-validator` covers Brazil. `rut.js` covers Chile. None ship El Salvador, Guatemala, Honduras, Dominican Republic, or Costa Rica with checksum verification.
 
-`nationid` fills that gap. As of v0.6 it ships **34 countries with ~120 document codes**, all with proper algorithms documented from official sources.
+`nationid` fills that gap. As of v1.0 it ships **34 countries with ~120 document codes**, all with proper algorithms documented from official sources — and ships an API-stability promise plus a CI-enforced governance test that every `high`-confidence spec cites a first-party issuer source.
+
+## What's new in v1.0
+
+- **TypeScript inference upgraded.** `parse("MX_CURP", x).code` now infers the literal `"MX_CURP"`, not the 124-member union. `extractDOB / extractSex / extractRegion` constrain their first argument to the codes that actually encode each field. Country bundles expose literal `country` / `defaultPersonal` / `defaultTax` types.
+- **76% smaller npm tarball.** From 1.7 MB → 414 KB by dropping shipped sourcemaps and breaking the `extract`/`pii`/`catalog` subpaths' dependency on the root REGISTRY. `nationid/extract` alone drops -90% raw.
+- **Three small breaking changes**, all documented in [`MIGRATION.md`](./MIGRATION.md) §0: `pii.mask` now throws on unknown codes (symmetric with `hash`/`lastN`); `package.json` exports denies undocumented subpaths; `CA_PASAPORTE` and `ES_PASAPORTE` confidence demote `high → moderate` (no first-party issuer spec to cite).
+- **Governance test.** New `tests/governance/confidence-citations.test.ts` fails CI if any `confidence: "high"` spec lacks an issuer-TLD URL or recognized legal statute in its JSDoc header.
+
+See [MIGRATION.md §0](./MIGRATION.md#0-migrating-from-v0x-to-v10) before upgrading from v0.x.
 
 ## Install
 
@@ -91,9 +102,9 @@ Algorithm primitives:
 import { luhnValid, mod11WeightedSum } from "nationid/algorithms";
 ```
 
-## v0.3 — Developer Experience helpers
+## DX helpers — extract / pii / i18n / catalog
 
-Four new tree-shakable modules for common app needs:
+Four tree-shakable modules for common app needs (available since v0.3):
 
 ```ts
 // Extract structured data from valid documents
@@ -190,13 +201,13 @@ UIs can choose to surface a warning when a low-confidence document validates onl
 ## Roadmap
 
 - **v0.1** — 13 countries: SV, MX, CO, BR, PE, AR, CL, DO, GT, HN, CR, ES, US ✅
-- **v0.2** — 8 additional codes in covered countries: `BR_CNH`, `BR_TITULO_ELEITOR`, `BR_PIS`, `AR_CDI`, `ES_NUSS`, `MX_CLAVE_ELECTOR`, `CO_PEP`, `CO_PPT` ✅
-- **v0.3** — `extract` (DOB, sex, region) + `pii` (mask, hash, lastN) + `i18n` (es/en/pt error messages) + `catalog` (queryable document metadata) ✅
+- **v0.2** — 8 additional codes in covered countries ✅
+- **v0.3** — `extract` + `pii` + `i18n` + `catalog` subpaths ✅
 - **v0.4** — 9 new countries: UY, VE, PA, EC, BO, PY, NI, CA, PT ✅
-- **v0.5** — Passport family (22 countries) + ICAO 9303 algorithm + BR_CNPJ alphanum rollout (IN RFB 2.229/2024) + MX_NSS + audit fixes ✅
+- **v0.5** — Passport family + ICAO 9303 algorithm + BR_CNPJ alphanum + MX_NSS + audit fixes ✅
 - **v0.6** — Europe principal: GB, FR, DE, IT, NL, BE, CH, PL, SE, NO, DK, FI ✅
-- **v1.0** — API stability declared. Every confidence flag verified against a cited source.
-- **v1.1+** — Asia (IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL), `@nationid/react` companion with `<DocumentInput>`, additional i18n locales, mutation testing.
+- **v1.0** — API stability declared. Every `high`-confidence spec backed by a first-party citation (CI-enforced). 76% smaller tarball. Type inference narrowing for `parse` / `getSpec` / `extract*`. ✅
+- **v1.1+** — Asia (IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL), `@nationid/react` companion with `<DocumentInput>`, additional i18n locales, mutation testing, lazy REGISTRY for full root-import tree-shaking.
 
 ## Contributing
 
