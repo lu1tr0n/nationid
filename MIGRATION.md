@@ -43,6 +43,60 @@ const out = mask("XX_UNKNOWN", "12345"); // ❌ Error: no spec registered for "X
 
 **Migration:** if you branch on `confidence === "high"` to decide whether to accept the document without secondary verification (e.g., KYC tiering), audit the call sites that touched CA / ES passports. The library's runtime behaviour is unchanged — only the metadata field shifted. If you require structural confidence, switch to `country === "X" && code === "X_PASAPORTE"` plus your own out-of-band check.
 
+### 0.4 Type-only narrowing in `nationid/extract` (compile-only, no runtime change)
+
+This is **not** a runtime break — `nationid/extract` behaves identically at runtime in v1.0 — but it can surface a type error for users in strict TypeScript whose code did not previously narrow the first argument.
+
+**v0.x:**
+```ts
+extractDOB(code: DocumentTypeCode, input: string): DateOfBirth | null
+extractSex(code: DocumentTypeCode, input: string): Sex | null
+extractRegion(code: DocumentTypeCode, input: string): Region | null
+```
+Any of the 124 codes typed-checked at the call site. Codes that don't structurally encode the field returned `null` at runtime.
+
+**v1.0:** each function constrains the first argument to the codes that actually encode that field, via a mapped type over the internal `SUPPORT_TABLE`:
+```ts
+extractDOB(code: CodesSupporting<"dob">,    input: string): DateOfBirth | null
+extractSex(code: CodesSupporting<"sex">,    input: string): Sex | null
+extractRegion(code: CodesSupporting<"region">, input: string): Region | null
+```
+Today `CodesSupporting<"dob"> = "MX_CURP" | "MX_RFC_PF"`, `CodesSupporting<"sex"> = "MX_CURP" | "AR_CUIT" | "AR_CUIL" | "AR_CDI"`, and `CodesSupporting<"region"> = "MX_CURP" | "GT_DPI" | "PE_RUC"`. The union grows automatically as new countries are added to `SUPPORT_TABLE`.
+
+**What this means for your code:**
+
+1. **Direct literal calls keep working:**
+   ```ts
+   extractDOB("MX_CURP", input); // ✅ unchanged
+   extractDOB("CL_RUT",  input); // ❌ compile error in v1.0 (silently returned null in v0.x)
+   ```
+
+2. **Variable-typed calls now require a narrow:** if you pass a variable typed `DocumentTypeCode`, TypeScript can no longer prove the call is safe.
+
+   ```ts
+   function showDob(code: DocumentTypeCode, value: string) {
+     extractDOB(code, value); // ❌ v1.0 — DocumentTypeCode not assignable to CodesSupporting<"dob">
+   }
+   ```
+
+   Fix with the existing `supports()` runtime guard, which narrows automatically:
+   ```ts
+   import { extractDOB, supports } from "nationid/extract";
+
+   function showDob(code: DocumentTypeCode, value: string) {
+     if (supports(code, "dob")) {
+       extractDOB(code, value); // ✅ code is now CodesSupporting<"dob">
+     }
+   }
+   ```
+
+   Or, if you genuinely want the old "try and fall back to null" shape, cast at the call site and document the cast:
+   ```ts
+   extractDOB(code as Parameters<typeof extractDOB>[0], value); // returns null at runtime if unsupported
+   ```
+
+3. **Runtime behaviour is identical.** Nothing about the `null` return path changed. If you were already gating with `supports()` (the documented pattern), v1.0 picks up the type narrowing for free with zero code change.
+
 ### What did NOT change
 
 - All `validate / format / normalize / parse / getSpec / listSupportedCodes` signatures stay backward-compatible at the type level. `parse()` and `getSpec()` are now generic over `<C extends DocumentTypeCode>`, but with `DocumentTypeCode` as the default parameter — existing `: ParseResult` and `: DocumentSpec` annotations keep working.
