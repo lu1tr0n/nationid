@@ -26,23 +26,39 @@ const SPECS = {
   FR_TVA: tvaSpec,
 } as const;
 
+/** Union of FR document type codes accepted by the country-scoped helpers. */
 export type FRDocumentType = keyof typeof SPECS;
 
 type ShortCode = "NIR" | "SIREN" | "SIRET" | "TVA";
 
-/** Country-scoped validate: pass either `FR_NIR` or just `NIR`. */
+/**
+ * Validate a French (FR) identity, business or VAT document.
+ *
+ * @param code - Document type, either fully-qualified (`FR_NIR`, `FR_SIREN`, `FR_SIRET`, `FR_TVA`) or short (`NIR`, `SIREN`, `SIRET`, `TVA`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes FR-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/fr";
+ * validate("FR_NIR", "1 84 12 76 451 089 46"); // true
+ * validate("SIREN", "732 829 320");
+ * ```
+ */
 export function validate(code: FRDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format a French (FR) document into its canonical display form. */
 export function format(code: FRDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize a French (FR) document by stripping separators. */
 export function normalize(code: FRDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse a French (FR) document into a structured `ParseResult`. */
 export function parse(code: FRDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -55,6 +71,7 @@ function resolveSpec(code: FRDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
+/** France (FR) document bundle for orchestrator registration. */
 export const frBundle: CountryDocumentBundle = {
   country: "FR" as CountryCode,
   personal: [nirSpec],

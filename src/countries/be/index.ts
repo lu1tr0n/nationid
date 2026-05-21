@@ -18,23 +18,39 @@ const SPECS = {
   BE_BTW: btwSpec,
 } as const;
 
+/** Union of BE document type codes accepted by the country-scoped helpers. */
 export type BEDocumentType = keyof typeof SPECS;
 
 type ShortCode = "NRN" | "RRN" | "BTW" | "TVA" | "VAT";
 
-/** Country-scoped validate. Accepts `BE_NRN`, `BE_BTW`, plus short forms. */
+/**
+ * Validate a Belgian (BE) identity or VAT document.
+ *
+ * @param code - Document type, either fully-qualified (`BE_NRN`, `BE_BTW`) or short (`NRN`, `RRN`, `BTW`, `TVA`, `VAT`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes BE-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/be";
+ * validate("BE_NRN", "93.05.18-223.61"); // true
+ * validate("VAT", "BE 0123.456.749");
+ * ```
+ */
 export function validate(code: BEDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format a Belgian (BE) document into its canonical display form. */
 export function format(code: BEDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize a Belgian (BE) document by stripping separators. */
 export function normalize(code: BEDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse a Belgian (BE) document into a structured `ParseResult`. */
 export function parse(code: BEDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -45,6 +61,7 @@ function resolveSpec(code: BEDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
+/** Belgium (BE) document bundle for orchestrator registration. */
 export const beBundle: CountryDocumentBundle = {
   country: "BE" as CountryDocumentBundle["country"],
   personal: [nrnSpec],

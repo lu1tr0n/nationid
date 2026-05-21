@@ -1,6 +1,14 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["src/index.ts", "src/algorithms/index.ts", "src/countries/*/index.ts"],
+  "entryPoints": [
+    "src/index.ts",
+    "src/algorithms/index.ts",
+    "src/extract/index.ts",
+    "src/pii/index.ts",
+    "src/i18n/index.ts",
+    "src/catalog/index.ts",
+    "src/countries/*/index.ts"
+  ],
   "entryPointStrategy": "expand",
   "tsconfig": "tsconfig.json",
   "out": "docs-site",

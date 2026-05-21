@@ -120,7 +120,7 @@ listDocuments("MX", "es");
 
 Each subpath is independently tree-shakable. Single locales (`nationid/i18n/es`, `/en`, `/pt`) ship as <200B bundles.
 
-## Coverage (22 countries)
+## Coverage (34 countries)
 
 | Country | Personal | Tax |
 |---------|----------|-----|
@@ -176,7 +176,8 @@ UIs can choose to surface a warning when a low-confidence document validates onl
 
 | | nationid | validator.js | cpf-cnpj-validator | rut.js |
 |---|---|---|---|---|
-| LATAM countries | **13** | 6 | 1 | 1 |
+| LATAM countries | **22** | 6 | 1 | 1 |
+| European countries | **12** | 8 | 0 | 0 |
 | El Salvador | ✅ | ❌ | ❌ | ❌ |
 | Guatemala | ✅ | ❌ | ❌ | ❌ |
 | Honduras | ✅ | ❌ | ❌ | ❌ |
@@ -194,9 +195,8 @@ UIs can choose to surface a warning when a low-confidence document validates onl
 - **v0.4** — 9 new countries: UY, VE, PA, EC, BO, PY, NI, CA, PT ✅
 - **v0.5** — Passport family (22 countries) + ICAO 9303 algorithm + BR_CNPJ alphanum rollout (IN RFB 2.229/2024) + MX_NSS + audit fixes ✅
 - **v0.6** — Europe principal: GB, FR, DE, IT, NL, BE, CH, PL, SE, NO, DK, FI ✅
-- **v0.7** — Asia: IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL
-- **v0.8** — `@nationid/react` companion with `<DocumentInput>` + additional i18n locales
-- **v1.0** — API stability, all current countries at High confidence
+- **v1.0** — API stability declared. Every confidence flag verified against a cited source.
+- **v1.1+** — Asia (IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL), `@nationid/react` companion with `<DocumentInput>`, additional i18n locales, mutation testing.
 
 ## Contributing
 

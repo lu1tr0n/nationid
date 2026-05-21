@@ -24,23 +24,39 @@ const SPECS = {
   DE_USTID: ustidSpec,
 } as const;
 
+/** Union of DE document type codes accepted by the country-scoped helpers. */
 export type DEDocumentType = keyof typeof SPECS;
 
 type ShortCode = "STEUER_ID" | "IDNR" | "STEUERNUMMER" | "USTID" | "UST_ID" | "VAT";
 
-/** Country-scoped validate: pass `DE_STEUER_ID` or just `IDNR`/`USTID`. */
+/**
+ * Validate a German (DE) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`DE_STEUER_ID`, `DE_STEUERNUMMER`, `DE_USTID`) or short (`STEUER_ID`, `IDNR`, `STEUERNUMMER`, `USTID`, `UST_ID`, `VAT`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes DE-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/de";
+ * validate("DE_STEUER_ID", "65 929 970 489"); // true
+ * validate("USTID", "DE123456788");
+ * ```
+ */
 export function validate(code: DEDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format a German (DE) document into its canonical display form. */
 export function format(code: DEDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize a German (DE) document by stripping separators. */
 export function normalize(code: DEDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse a German (DE) document into a structured `ParseResult`. */
 export function parse(code: DEDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -52,6 +68,7 @@ function resolveSpec(code: DEDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
+/** Germany (DE) document bundle for orchestrator registration. */
 export const deBundle: CountryDocumentBundle = {
   country: "DE" as CountryCode,
   // Steuer-ID is the lifelong personal tax ID; it is the only personal-scope

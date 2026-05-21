@@ -23,22 +23,57 @@ const SPECS = {
   NO_MVA: mvaSpec,
 } as const;
 
+/** Union of NO document type codes accepted by the country-scoped helpers. */
 export type NODocumentType = keyof typeof SPECS;
 
 type ShortCode = "FNR" | "FODSELSNUMMER" | "DNR" | "ORGNR" | "ORG" | "MVA" | "VAT";
 
+/**
+ * Validate a Norwegian (NO) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`NO_FNR`, `NO_DNR`, `NO_ORGNR`, `NO_MVA`) or short (`FNR`, `FODSELSNUMMER`, `DNR`, `ORGNR`, `ORG`, `MVA`, `VAT`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes NO-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/no";
+ * validate("NO_FNR", "01012055555");
+ * validate("ORGNR", "123456785");
+ * ```
+ */
 export function validate(code: NODocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/**
+ * Format a Norwegian (NO) document into its canonical display form.
+ *
+ * @param code - NO document type or short alias.
+ * @param input - Raw document string.
+ * @returns Canonical formatted representation.
+ */
 export function format(code: NODocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/**
+ * Normalize a Norwegian (NO) document by stripping separators and casing.
+ *
+ * @param code - NO document type or short alias.
+ * @param input - Raw document string.
+ * @returns Storage-friendly normalized representation.
+ */
 export function normalize(code: NODocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/**
+ * Parse a Norwegian (NO) document into a structured `ParseResult`.
+ *
+ * @param code - NO document type or short alias.
+ * @param input - Raw document string.
+ * @returns Parse result with validity, normalized value, and any spec-specific metadata.
+ */
 export function parse(code: NODocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }

@@ -25,23 +25,39 @@ const SPECS = {
   CO_PPT: pptSpec,
 } as const;
 
+/** Union of CO document type codes accepted by the country-scoped helpers. */
 export type CODocumentType = keyof typeof SPECS;
 
 type ShortCode = "CC" | "CE" | "TI" | "PASAPORTE" | "NIT" | "PEP" | "PPT";
 
-/** Country-scoped validate: pass either `CO_CC` or just `CC`. */
+/**
+ * Validate a Colombian (CO) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`CO_CC`, `CO_NIT`, ...) or short (`CC`, `CE`, `TI`, `PASAPORTE`, `NIT`, `PEP`, `PPT`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes CO-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/co";
+ * validate("CO_CC", "1.020.304.050"); // true
+ * validate("NIT", "900.123.456-1");
+ * ```
+ */
 export function validate(code: CODocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format a Colombian (CO) document into its canonical display form. */
 export function format(code: CODocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize a Colombian (CO) document by stripping separators. */
 export function normalize(code: CODocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse a Colombian (CO) document into a structured `ParseResult`. */
 export function parse(code: CODocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -57,6 +73,7 @@ function resolveSpec(code: CODocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
+/** Colombia (CO) document bundle for orchestrator registration. */
 export const coBundle: CountryDocumentBundle = {
   country: "CO",
   personal: [ccSpec, ceSpec, tiSpec, pasaporteSpec, pepSpec, pptSpec],

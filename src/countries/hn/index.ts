@@ -19,23 +19,57 @@ const SPECS = {
   HN_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of HN document type codes accepted by the country-scoped helpers. */
 export type HNDocumentType = keyof typeof SPECS;
 
 type ShortCode = "DNI" | "RTN" | "PASAPORTE";
 
-/** Country-scoped validate: pass either `HN_DNI` or just `DNI`. */
+/**
+ * Validate a Honduran (HN) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`HN_DNI`) or short (`DNI`, `RTN`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes HN-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/hn";
+ * validate("HN_DNI", "0801-1990-12345");
+ * validate("RTN", "08011990123456");
+ * ```
+ */
 export function validate(code: HNDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/**
+ * Format a Honduran (HN) document into its canonical display form.
+ *
+ * @param code - HN document type or short alias.
+ * @param input - Raw document string.
+ * @returns Canonical formatted representation.
+ */
 export function format(code: HNDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/**
+ * Normalize a Honduran (HN) document by stripping separators and casing.
+ *
+ * @param code - HN document type or short alias.
+ * @param input - Raw document string.
+ * @returns Storage-friendly normalized representation.
+ */
 export function normalize(code: HNDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/**
+ * Parse a Honduran (HN) document into a structured `ParseResult`.
+ *
+ * @param code - HN document type or short alias.
+ * @param input - Raw document string.
+ * @returns Parse result with validity, normalized value, and any spec-specific metadata.
+ */
 export function parse(code: HNDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }

@@ -24,26 +24,57 @@ const SPECS = {
   PT_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of PT document type codes accepted by the country-scoped helpers. */
 export type PTDocumentType = keyof typeof SPECS;
 
 type ShortCode = "NIF" | "NIPC" | "CC" | "PASAPORTE";
 
 /**
- * Country-scoped validate. Accepts `PT_NIF`, `PT_CC` plus the short forms
- * `NIF`, `NIPC` (alias for jurídicas), `CC`, and `PASAPORTE`.
+ * Validate a Portuguese (PT) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`PT_NIF`, `PT_CC`) or short (`NIF`, `NIPC`, `CC`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes PT-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/pt";
+ * validate("PT_NIF", "123456789");
+ * validate("CC", "12345678 9 ZZ4");
+ * ```
  */
 export function validate(code: PTDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/**
+ * Format a Portuguese (PT) document into its canonical display form.
+ *
+ * @param code - PT document type or short alias.
+ * @param input - Raw document string.
+ * @returns Canonical formatted representation.
+ */
 export function format(code: PTDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/**
+ * Normalize a Portuguese (PT) document by stripping separators and casing.
+ *
+ * @param code - PT document type or short alias.
+ * @param input - Raw document string.
+ * @returns Storage-friendly normalized representation.
+ */
 export function normalize(code: PTDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/**
+ * Parse a Portuguese (PT) document into a structured `ParseResult`.
+ *
+ * @param code - PT document type or short alias.
+ * @param input - Raw document string.
+ * @returns Parse result with validity, normalized value, and any spec-specific metadata.
+ */
 export function parse(code: PTDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }

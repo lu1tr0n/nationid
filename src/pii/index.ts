@@ -30,15 +30,28 @@ const EMPTY_PLACEHOLDER = "***";
  * Reveal rule: `min(4, floor(numPlaceholders / 3))` chars at the tail. So a
  * 9-digit DUI reveals 3, a 14-digit CNPJ reveals 4, an 18-char CURP reveals 4.
  *
- * Stars only fall on placeholder positions; separators are preserved verbatim.
+ * Stars only fall on placeholder positions; separators are preserved verbatim
+ * so the masked form is visually consistent with the formatted form.
  *
  * Returns `"***"` for empty/whitespace-only input. Returns `input` unchanged
- * if the spec is unknown (matches the soft contract used by other helpers).
+ * if the spec is unknown (soft fallback so render code never throws).
  *
+ * @param code - Document type whose mask pattern applies.
+ * @param input - Raw or normalized document body.
+ * @returns A masked, display-safe string with separators preserved.
  * @example
- *   // mask("BR_CNPJ", "12345678000190")     -> "<dot><dot><slash>01-90" (separators kept, last 4 revealed)
- *   // mask("MX_CURP", "GOMC850315HDFRRR07") -> 14 stars + "RR07"
- *   // mask("SV_DUI", "012345678")            -> 6 stars + "67" + "-" + "8"
+ * ```ts
+ * import { mask } from "nationid/pii";
+ *
+ * mask("BR_CNPJ", "12345678000190");
+ * // "**.***.***\/01-90"  (separators kept; last 4 placeholders revealed)
+ *
+ * mask("MX_CURP", "GOMC850315HDFRRR07");
+ * // "**************RR07" (last 4 chars revealed)
+ *
+ * mask("SV_DUI", "");
+ * // "***"
+ * ```
  */
 export function mask(code: DocumentTypeCode, input: string): string {
   if (input.trim().length === 0) return EMPTY_PLACEHOLDER;

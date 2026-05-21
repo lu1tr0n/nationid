@@ -26,23 +26,39 @@ const SPECS = {
   GB_NHS: nhsSpec,
 } as const;
 
+/** Union of GB document type codes accepted by the country-scoped helpers. */
 export type GBDocumentType = keyof typeof SPECS;
 
 type ShortCode = "NINO" | "UTR" | "VAT" | "NHS";
 
-/** Country-scoped validate: pass either `GB_NINO` or just `NINO`. */
+/**
+ * Validate a UK (GB) identity, tax, VAT or NHS document.
+ *
+ * @param code - Document type, either fully-qualified (`GB_NINO`, `GB_UTR`, `GB_VAT`, `GB_NHS`) or short (`NINO`, `UTR`, `VAT`, `NHS`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes GB-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/gb";
+ * validate("GB_NINO", "QQ 12 34 56 C"); // true
+ * validate("VAT", "GB 123 4567 89");
+ * ```
+ */
 export function validate(code: GBDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format a UK (GB) document into its canonical display form. */
 export function format(code: GBDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize a UK (GB) document by stripping separators and casing. */
 export function normalize(code: GBDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse a UK (GB) document into a structured `ParseResult`. */
 export function parse(code: GBDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -55,6 +71,7 @@ function resolveSpec(code: GBDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
+/** United Kingdom (GB) document bundle for orchestrator registration. */
 export const gbBundle: CountryDocumentBundle = {
   country: "GB" as CountryCode,
   personal: [ninoSpec, nhsSpec],

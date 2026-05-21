@@ -43,14 +43,49 @@ const SUPPORT_TABLE: Partial<Record<DocumentTypeCode, ReadonlySet<ExtractKind>>>
   PE_RUC: new Set<ExtractKind>(["region"]),
 };
 
-/** Returns whether `code` exposes the requested extract kind. */
+/**
+ * Returns whether `code` exposes the requested extract kind.
+ *
+ * Use this to gate UI affordances (e.g. only show a "show birthday" button
+ * for documents that encode a DOB).
+ *
+ * @param code - Document type to query.
+ * @param kind - Extract category: `"dob"`, `"sex"`, or `"region"`.
+ * @returns `true` if `code` can answer `kind`, `false` otherwise.
+ * @example
+ * ```ts
+ * import { supports } from "nationid/extract";
+ *
+ * supports("MX_CURP", "dob");    // true
+ * supports("MX_CURP", "sex");    // true
+ * supports("SV_DUI",  "dob");    // false (DUI does not encode DOB)
+ * ```
+ */
 export function supports(code: DocumentTypeCode, kind: ExtractKind): boolean {
   const kinds = SUPPORT_TABLE[code];
   if (kinds === undefined) return false;
   return kinds.has(kind);
 }
 
-/** Returns DOB or null if code doesn't encode it / input is invalid. */
+/**
+ * Returns the date of birth encoded in `input`, or `null` if the spec does
+ * not encode DOB or the input fails validation.
+ *
+ * The returned `DateOfBirth` is a plain calendar date (year/month/day) — NOT
+ * a `Date` instance — to side-step timezone semantics. See {@link DateOfBirth}.
+ *
+ * @param code - Document type. Must support `"dob"` (see `supports`).
+ * @param input - Raw user input; will be normalized and validated first.
+ * @returns A `DateOfBirth` on success, `null` otherwise.
+ * @example
+ * ```ts
+ * import { extractDOB } from "nationid/extract";
+ *
+ * extractDOB("MX_CURP", "GOMC850315HDFRRR07");
+ * // { year: 1985, month: 3, day: 15 }
+ * extractDOB("SV_DUI", "045678903"); // null  (DUI does not encode DOB)
+ * ```
+ */
 export function extractDOB(code: DocumentTypeCode, input: string): DateOfBirth | null {
   if (!supports(code, "dob")) return null;
   switch (code) {
@@ -63,7 +98,24 @@ export function extractDOB(code: DocumentTypeCode, input: string): DateOfBirth |
   }
 }
 
-/** Returns sex or null if code doesn't encode it / input is invalid. */
+/**
+ * Returns the sex marker encoded in `input`, or `null` if the spec does not
+ * encode sex or the input fails validation.
+ *
+ * Returns the document's literal marker — `"M"`, `"F"`, or `"X"` for
+ * non-physical-person entities (e.g. Argentine PJ CUIT prefixes `30/33/34`).
+ *
+ * @param code - Document type. Must support `"sex"` (see `supports`).
+ * @param input - Raw user input; will be normalized and validated first.
+ * @returns A `Sex` on success, `null` otherwise.
+ * @example
+ * ```ts
+ * import { extractSex } from "nationid/extract";
+ *
+ * extractSex("MX_CURP", "GOMC850315HDFRRR07"); // "M"
+ * extractSex("AR_CUIT", "30709653543");        // "X"  (persona jurídica)
+ * ```
+ */
 export function extractSex(code: DocumentTypeCode, input: string): Sex | null {
   if (!supports(code, "sex")) return null;
   switch (code) {
@@ -78,7 +130,28 @@ export function extractSex(code: DocumentTypeCode, input: string): Sex | null {
   }
 }
 
-/** Returns region or null if code doesn't encode it / input is invalid. */
+/**
+ * Returns the administrative region encoded in `input`, or `null` if the spec
+ * does not encode region or the input fails validation.
+ *
+ * The returned `Region` carries the raw token plus a `kind` discriminant
+ * (state / province / department / municipality / tax_region). Callers can
+ * resolve the token against their own catalog to obtain the human-readable
+ * region name.
+ *
+ * @param code - Document type. Must support `"region"` (see `supports`).
+ * @param input - Raw user input; will be normalized and validated first.
+ * @returns A `Region` on success, `null` otherwise.
+ * @example
+ * ```ts
+ * import { extractRegion } from "nationid/extract";
+ *
+ * extractRegion("MX_CURP", "GOMC850315HDFRRR07");
+ * // { code: "DF", kind: "state" }
+ * extractRegion("GT_DPI", "0123456780101");
+ * // { code: "01", kind: "department" }
+ * ```
+ */
 export function extractRegion(code: DocumentTypeCode, input: string): Region | null {
   if (!supports(code, "region")) return null;
   switch (code) {

@@ -23,23 +23,39 @@ const SPECS = {
   EC_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of EC document type codes accepted by the country-scoped helpers. */
 export type ECDocumentType = keyof typeof SPECS;
 
 type ShortCode = "CEDULA" | "RUC" | "PASAPORTE";
 
-/** Country-scoped validate: pass either `EC_CEDULA` or just `CEDULA`. */
+/**
+ * Validate an Ecuadorian (EC) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`EC_CEDULA`, `EC_RUC`, `EC_PASAPORTE`) or short (`CEDULA`, `RUC`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes EC-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/ec";
+ * validate("EC_CEDULA", "1710034065");
+ * validate("RUC", "1710034065001");
+ * ```
+ */
 export function validate(code: ECDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format an Ecuadorian (EC) document into its canonical display form. */
 export function format(code: ECDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize an Ecuadorian (EC) document by stripping separators. */
 export function normalize(code: ECDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse an Ecuadorian (EC) document into a structured `ParseResult`. */
 export function parse(code: ECDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -51,6 +67,7 @@ function resolveSpec(code: ECDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
+/** Ecuador (EC) document bundle for orchestrator registration. */
 export const ecBundle: CountryDocumentBundle = {
   country: "EC",
   personal: [cedulaSpec, passportSpec],

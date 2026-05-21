@@ -66,10 +66,22 @@ function resolveInfo(code: DocumentTypeCode, locale: Locale): DocumentInfo | nul
 }
 
 /**
- * List every registered document type for `country` in `locale` order.
+ * List every registered document type for `country` with locale-aware names.
  *
- * Returns an empty array for an unknown country. Specs that lack a catalog
- * entry are silently skipped — the coverage test guarantees they exist.
+ * Drives the "select your document" dropdown in onboarding UIs. Returns an
+ * empty array for an unknown country. Specs that lack a catalog entry are
+ * silently skipped — the coverage test guarantees they exist.
+ *
+ * @param country - ISO 3166-1 alpha-2 country code (uppercase).
+ * @param locale - Display locale (default `"en"`).
+ * @returns Read-only array of `DocumentInfo`, one per registered spec.
+ * @example
+ * ```ts
+ * import { listDocuments } from "nationid/catalog";
+ *
+ * const options = listDocuments("MX", "es");
+ * // [{ code: "MX_CURP", displayName: "CURP", longName: "Clave Única…", … }, …]
+ * ```
  */
 export function listDocuments(
   country: CountryCode,
@@ -85,7 +97,20 @@ export function listDocuments(
 }
 
 /**
- * Resolve one document's catalog info. Returns `null` if `code` is not registered.
+ * Resolve one document's catalog info in the requested locale.
+ *
+ * @param code - Stable `DocumentTypeCode` (e.g. `"BR_CPF"`).
+ * @param locale - Display locale (default `"en"`).
+ * @returns A `DocumentInfo` with localized names, or `null` if `code` is not
+ *   registered.
+ * @example
+ * ```ts
+ * import { getDocumentInfo } from "nationid/catalog";
+ *
+ * const info = getDocumentInfo("BR_CPF", "pt");
+ * info?.displayName; // "CPF"
+ * info?.longName;    // "Cadastro de Pessoas Físicas"
+ * ```
  */
 export function getDocumentInfo(
   code: DocumentTypeCode,
@@ -97,7 +122,18 @@ export function getDocumentInfo(
 /**
  * List every registered document of `purpose`, across all countries, in `locale`.
  *
- * Useful for global "show me all tax IDs" filters.
+ * Useful for global filters such as "show me every tax ID we support".
+ *
+ * @param purpose - Filter, e.g. `"tax"`, `"personal"`.
+ * @param locale - Display locale (default `"en"`).
+ * @returns Read-only array of `DocumentInfo` matching `purpose`.
+ * @example
+ * ```ts
+ * import { listDocumentsByPurpose } from "nationid/catalog";
+ *
+ * const taxIds = listDocumentsByPurpose("tax", "en");
+ * // [{ code: "BR_CNPJ", … }, { code: "MX_RFC_PM", … }, …]
+ * ```
  */
 export function listDocumentsByPurpose(
   purpose: import("./types.ts").DocumentPurpose,

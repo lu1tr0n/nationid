@@ -19,23 +19,57 @@ const SPECS = {
   PA_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of PA document type codes accepted by the country-scoped helpers. */
 export type PADocumentType = keyof typeof SPECS;
 
 type ShortCode = "CEDULA" | "RUC" | "PASAPORTE";
 
-/** Country-scoped validate: pass either `PA_CEDULA` or just `CEDULA`. */
+/**
+ * Validate a Panamanian (PA) identity or tax document.
+ *
+ * @param code - Document type, either fully-qualified (`PA_CEDULA`, `PA_RUC`) or short (`CEDULA`, `RUC`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes PA-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/pa";
+ * validate("PA_CEDULA", "8-123-456");
+ * validate("RUC", "8-123-456-12345");
+ * ```
+ */
 export function validate(code: PADocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/**
+ * Format a Panamanian (PA) document into its canonical display form.
+ *
+ * @param code - PA document type or short alias.
+ * @param input - Raw document string.
+ * @returns Canonical formatted representation.
+ */
 export function format(code: PADocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/**
+ * Normalize a Panamanian (PA) document by stripping separators and casing.
+ *
+ * @param code - PA document type or short alias.
+ * @param input - Raw document string.
+ * @returns Storage-friendly normalized representation.
+ */
 export function normalize(code: PADocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/**
+ * Parse a Panamanian (PA) document into a structured `ParseResult`.
+ *
+ * @param code - PA document type or short alias.
+ * @param input - Raw document string.
+ * @returns Parse result with validity, normalized value, and any spec-specific metadata.
+ */
 export function parse(code: PADocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }

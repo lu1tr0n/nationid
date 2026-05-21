@@ -23,23 +23,39 @@ const SPECS = {
   ES_PASAPORTE: passportSpec,
 } as const;
 
+/** Union of ES document type codes accepted by the country-scoped helpers. */
 export type ESDocumentType = keyof typeof SPECS;
 
 type ShortCode = "DNI" | "NIE" | "NIF_PJ" | "CIF" | "NUSS" | "PASAPORTE";
 
-/** Country-scoped validate: pass either `ES_DNI` or just `DNI` / `NIE` / `CIF` / `NUSS`. */
+/**
+ * Validate a Spanish (ES) identity, tax or social-security document.
+ *
+ * @param code - Document type, either fully-qualified (`ES_DNI`, `ES_NIE`, `ES_NIF_PJ`, `ES_NUSS`, `ES_PASAPORTE`) or short (`DNI`, `NIE`, `NIF_PJ`, `CIF`, `NUSS`, `PASAPORTE`).
+ * @param input - Raw document string (formatting tolerated).
+ * @returns `true` if the value passes ES-specific validation rules.
+ * @example
+ * ```ts
+ * import { validate } from "nationid/es";
+ * validate("ES_DNI", "12345678Z"); // true
+ * validate("NIF_PJ", "A58818501");
+ * ```
+ */
 export function validate(code: ESDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
+/** Format a Spanish (ES) document into its canonical display form. */
 export function format(code: ESDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
+/** Normalize a Spanish (ES) document by stripping separators and casing. */
 export function normalize(code: ESDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
+/** Parse a Spanish (ES) document into a structured `ParseResult`. */
 export function parse(code: ESDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
@@ -54,6 +70,7 @@ function resolveSpec(code: ESDocumentType | ShortCode): DocumentSpec {
   return SPECS[code];
 }
 
+/** España (ES) document bundle for orchestrator registration. */
 export const esBundle: CountryDocumentBundle = {
   country: "ES",
   // NUSS identifies the natural person within the Seguridad Social system; it
