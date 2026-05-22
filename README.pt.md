@@ -127,6 +127,14 @@ listDocuments("BR", "pt");
 // [{ code: "BR_CPF", displayName: "CPF",
 //    longName: "Cadastro de Pessoas Físicas",
 //    purpose: "identity", confidence: "high", ... }, ...]
+
+// Catálogo de países (v1.1) — nomes + bandeiras para os 34 países.
+// Usa Intl.DisplayNames (CLDR), portanto qualquer locale do runtime funciona.
+import { getCountryInfo, listCountries, flagEmoji } from "nationid/catalog";
+getCountryInfo("BR", "pt");
+// { code: "BR", alpha3: "BRA", name: "Brasil", flag: "🇧🇷" }
+flagEmoji("MX");          // "🇲🇽"
+listCountries("pt").length; // 34
 ```
 
 Cada subpath é tree-shakable de forma independente. Locales soltos (`nationid/i18n/es`, `/en`, `/pt`) pesam menos de 200 B cada.

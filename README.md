@@ -127,6 +127,14 @@ listDocuments("MX", "es");
 // [{ code: "MX_CURP", displayName: "CURP",
 //    longName: "Clave Única de Registro de Población",
 //    purpose: "identity", confidence: "high", ... }, ...]
+
+// Country catalog (v1.1) — names + flags for every supported country.
+// Uses Intl.DisplayNames (CLDR) so any locale the runtime supports works.
+import { getCountryInfo, listCountries, flagEmoji } from "nationid/catalog";
+getCountryInfo("MX", "es");
+// { code: "MX", alpha3: "MEX", name: "México", flag: "🇲🇽" }
+flagEmoji("BR");          // "🇧🇷"
+listCountries("pt").length; // 34
 ```
 
 Each subpath is independently tree-shakable. Single locales (`nationid/i18n/es`, `/en`, `/pt`) ship as <200B bundles.
