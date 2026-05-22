@@ -21,7 +21,8 @@ import { catalogEs } from "./data/es.ts";
 import { catalogPt } from "./data/pt.ts";
 import type { DocumentInfo, Locale, LocaleStrings } from "./types.ts";
 
-export type { DocumentInfo, DocumentPurpose, Locale, LocaleStrings } from "./types.ts";
+export { countryName, flagEmoji, getCountryInfo, listCountries } from "./countries.ts";
+export type { CountryInfo, DocumentInfo, DocumentPurpose, Locale, LocaleStrings } from "./types.ts";
 
 const DEFAULT_LOCALE: Locale = "en";
 

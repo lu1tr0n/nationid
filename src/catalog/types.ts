@@ -49,3 +49,27 @@ export interface DocumentInfo {
   readonly purpose: DocumentPurpose;
   readonly confidence: Confidence;
 }
+
+/**
+ * Resolved country catalog entry.
+ *
+ * `name` is sourced from `Intl.DisplayNames` (CLDR data shipped with the
+ * runtime) so any BCP 47 locale the runtime supports works — not just
+ * `es/en/pt`. `flag` is computed from the ISO 3166-1 alpha-2 code via
+ * Regional Indicator Symbols, so it stays correct for any future country
+ * we add.
+ *
+ * Future v1.x minors may extend this shape with optional fields
+ * (`phonePrefix`, `currency`, `continent`, etc.). Existing fields keep
+ * their semantics.
+ */
+export interface CountryInfo {
+  /** ISO 3166-1 alpha-2 code, e.g. `"MX"`, `"BR"`. */
+  readonly code: CountryCode;
+  /** ISO 3166-1 alpha-3 code, e.g. `"MEX"`, `"BRA"`. */
+  readonly alpha3: string;
+  /** Localized country name (e.g. `"México"` for `"MX"` in `"es"`). */
+  readonly name: string;
+  /** Flag emoji, two Regional Indicator Symbols. */
+  readonly flag: string;
+}

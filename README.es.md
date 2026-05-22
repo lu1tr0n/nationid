@@ -126,6 +126,14 @@ listDocuments("MX", "es");
 // [{ code: "MX_CURP", displayName: "CURP",
 //    longName: "Clave Única de Registro de Población",
 //    purpose: "identity", confidence: "high", ... }, ...]
+
+// Catálogo de países (v1.1) — nombres + banderas para los 34 países.
+// Usa Intl.DisplayNames (CLDR), así que cualquier locale del runtime sirve.
+import { getCountryInfo, listCountries, flagEmoji } from "nationid/catalog";
+getCountryInfo("MX", "es");
+// { code: "MX", alpha3: "MEX", name: "México", flag: "🇲🇽" }
+flagEmoji("BR");          // "🇧🇷"
+listCountries("pt").length; // 34
 ```
 
 Cada subpath se tree-shakea independiente. Los locales sueltos (`nationid/i18n/es`, `/en`, `/pt`) pesan menos de 200 B cada uno.
