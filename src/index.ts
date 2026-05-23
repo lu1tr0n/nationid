@@ -32,6 +32,7 @@ import { frBundle } from "./countries/fr/index.ts";
 import { gbBundle } from "./countries/gb/index.ts";
 import { gtBundle } from "./countries/gt/index.ts";
 import { hnBundle } from "./countries/hn/index.ts";
+import { inBundle } from "./countries/in/index.ts";
 import { itBundle } from "./countries/it/index.ts";
 import { mxBundle } from "./countries/mx/index.ts";
 import { niBundle } from "./countries/ni/index.ts";
@@ -107,6 +108,8 @@ const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
   noBundle,
   dkBundle,
   fiBundle,
+  // v1.2.0 — Asia phase 1
+  inBundle,
 ];
 
 /**

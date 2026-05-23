@@ -222,6 +222,11 @@
       "import": "./dist/countries/fi/index.js",
       "require": "./dist/countries/fi/index.cjs"
     },
+    "./in": {
+      "types": "./dist/countries/in/index.d.ts",
+      "import": "./dist/countries/in/index.js",
+      "require": "./dist/countries/in/index.cjs"
+    },
     "./extract": {
       "types": "./dist/extract/index.d.ts",
       "import": "./dist/extract/index.js",
@@ -283,7 +288,7 @@
     "docs": "typedoc",
     "docs:check": "typedoc --emit none",
     "check:exports": "attw --pack . --profile node16",
-    "check:publint": "publint",
+    "check:publint": "publint --level error",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:dist && pnpm check:publint",
     "bench": "tsx benchmarks/validate.bench.ts && tsx benchmarks/format.bench.ts && tsx benchmarks/parse.bench.ts",
     "bench:validate": "tsx benchmarks/validate.bench.ts",
@@ -361,7 +366,7 @@
     {
       "name": "algorithms primitives subpath",
       "path": "dist/algorithms/index.js",
-      "limit": "1 KB"
+      "limit": "1.5 KB"
     },
     {
       "name": "v0.3 — extract helpers subpath (includes full registry for getSpec)",

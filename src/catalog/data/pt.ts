@@ -711,4 +711,34 @@ export const catalogPt: Record<DocumentTypeCode, LocaleStrings> = {
     longName: "Número de IVA finlandês",
     description: "Formato FI + Y-tunnus sem hífen.",
   },
+  IN_AADHAAR: {
+    displayName: "Aadhaar",
+    longName: "Número Aadhaar",
+    description:
+      "Identificador único de 12 dígitos emitido pela UIDAI com dígito verificador Verhoeff.",
+  },
+  IN_PAN: {
+    displayName: "PAN",
+    longName: "Permanent Account Number",
+    description:
+      "Identificador fiscal alfanumérico de 10 caracteres emitido pelo Departamento de Impostos.",
+  },
+  IN_GSTIN: {
+    displayName: "GSTIN",
+    longName: "Número de identificação do imposto sobre bens e serviços",
+    description:
+      "Registro fiscal de 15 caracteres por estado, embute PAN e dígito verificador Luhn mod-36.",
+  },
+  IN_EPIC: {
+    displayName: "Voter ID",
+    longName: "Cartão de identidade eleitoral",
+    description:
+      "Identificador de eleitor de 10 caracteres emitido pela Comissão Eleitoral da Índia.",
+  },
+  IN_VID: {
+    displayName: "VID",
+    longName: "Virtual ID",
+    description:
+      "Alias Aadhaar revogável de 16 dígitos emitido pela UIDAI, mesmo esquema Verhoeff.",
+  },
 };

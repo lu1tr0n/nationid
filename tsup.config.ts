@@ -43,6 +43,8 @@ const ALL_COUNTRIES = [
   "no",
   "dk",
   "fi",
+  // v1.2.0 — Asia phase 1
+  "in",
 ] as const;
 
 const COUNTRIES = ALL_COUNTRIES.filter((cc) => existsSync(`src/countries/${cc}/index.ts`));

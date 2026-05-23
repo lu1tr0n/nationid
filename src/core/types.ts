@@ -43,7 +43,9 @@ export type CountryCode =
   | "SE"
   | "NO"
   | "DK"
-  | "FI";
+  | "FI"
+  // v1.2.0 — Asia phase 1 (India shipped, JP/SG/KR/TW follow-up)
+  | "IN";
 
 /**
  * Stable code persisted in DB. Format: `{ISO-2}_{TYPE}`.
@@ -205,7 +207,13 @@ export type DocumentTypeCode =
   // v0.6.0 — Finland
   | "FI_HETU"
   | "FI_YTUNNUS"
-  | "FI_VAT";
+  | "FI_VAT"
+  // India (v1.2.0)
+  | "IN_AADHAAR"
+  | "IN_PAN"
+  | "IN_GSTIN"
+  | "IN_EPIC"
+  | "IN_VID";
 
 /** Whether the document identifies a natural person, a tax entity, or both. */
 export type DocumentScope = "personal" | "tax" | "both";

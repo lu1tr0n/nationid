@@ -90,24 +90,25 @@ import { passportSpec as esPassportSpec } from "../countries/es/passport.ts";
 import { hetuSpec } from "../countries/fi/hetu.ts";
 import { vatSpec as fiVatSpec } from "../countries/fi/vat.ts";
 import { ytunnusSpec } from "../countries/fi/ytunnus.ts";
-
 import { nirSpec } from "../countries/fr/nir.ts";
 import { sirenSpec } from "../countries/fr/siren.ts";
 import { siretSpec } from "../countries/fr/siret.ts";
 import { tvaSpec } from "../countries/fr/tva.ts";
-
 import { nhsSpec } from "../countries/gb/nhs.ts";
 import { ninoSpec } from "../countries/gb/nino.ts";
 import { utrSpec } from "../countries/gb/utr.ts";
 import { vatSpec as gbVatSpec } from "../countries/gb/vat.ts";
-
 import { dpiSpec } from "../countries/gt/dpi.ts";
 import { nitSpec as gtNitSpec } from "../countries/gt/nit.ts";
 import { passportSpec as gtPassportSpec } from "../countries/gt/passport.ts";
-
 import { dniSpec as hnDniSpec } from "../countries/hn/dni.ts";
 import { passportSpec as hnPassportSpec } from "../countries/hn/passport.ts";
 import { rtnSpec } from "../countries/hn/rtn.ts";
+import { aadhaarSpec } from "../countries/in/aadhaar.ts";
+import { epicSpec } from "../countries/in/epic.ts";
+import { gstinSpec } from "../countries/in/gstin.ts";
+import { panSpec } from "../countries/in/pan.ts";
+import { vidSpec } from "../countries/in/vid.ts";
 
 import { cfSpec } from "../countries/it/cf.ts";
 import { pivaSpec } from "../countries/it/piva.ts";
@@ -334,6 +335,11 @@ export const PII_SPEC_TABLE: Record<DocumentTypeCode, DocumentSpec> = {
   FI_HETU: hetuSpec,
   FI_YTUNNUS: ytunnusSpec,
   FI_VAT: fiVatSpec,
+  IN_AADHAAR: aadhaarSpec,
+  IN_PAN: panSpec,
+  IN_GSTIN: gstinSpec,
+  IN_EPIC: epicSpec,
+  IN_VID: vidSpec,
 };
 
 /**

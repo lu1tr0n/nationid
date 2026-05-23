@@ -81,6 +81,8 @@ const COUNTRY_ALPHA3: Readonly<Record<CountryCode, string>> = {
   NO: "NOR",
   DK: "DNK",
   FI: "FIN",
+  // Asia phase 1 (v1.2.0)
+  IN: "IND",
 };
 
 /**

@@ -62,6 +62,7 @@ const EXPECTED_ALPHA3: ReadonlyArray<readonly [string, string]> = [
   ["NO", "NOR"],
   ["DK", "DNK"],
   ["FI", "FIN"],
+  ["IN", "IND"],
 ];
 
 describe("flagEmoji — Regional Indicator Symbol composition", () => {
