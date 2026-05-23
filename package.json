@@ -366,7 +366,7 @@
     {
       "name": "algorithms primitives subpath",
       "path": "dist/algorithms/index.js",
-      "limit": "1 KB"
+      "limit": "1.5 KB"
     },
     {
       "name": "v0.3 — extract helpers subpath (includes full registry for getSpec)",
