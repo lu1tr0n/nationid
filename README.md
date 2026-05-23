@@ -177,6 +177,7 @@ Each subpath is independently tree-shakable. Single locales (`nationid/i18n/es`,
 | 🇳🇴 Norway *(v0.6)* | Fødselsnummer, D-nummer | Organisasjonsnummer, MVA |
 | 🇩🇰 Denmark *(v0.6)* | CPR | CVR, Moms |
 | 🇫🇮 Finland *(v0.6)* | HETU | Y-tunnus, ALV |
+| 🇮🇳 India *(v1.2)* | Aadhaar, VID, Voter ID (EPIC) | PAN, GSTIN |
 
 Full per-country docs with algorithms and sources cited live in [`docs/countries/`](./docs/countries).
 

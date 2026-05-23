@@ -698,4 +698,31 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
     longName: "Finnish VAT Number",
     description: "Format FI + Y-tunnus without dash.",
   },
+  IN_AADHAAR: {
+    displayName: "Aadhaar",
+    longName: "Aadhaar Number",
+    description: "12-digit unique identifier issued by UIDAI, with Verhoeff check digit.",
+  },
+  IN_PAN: {
+    displayName: "PAN",
+    longName: "Permanent Account Number",
+    description: "10-character alphanumeric tax identifier issued by the Income Tax Department.",
+  },
+  IN_GSTIN: {
+    displayName: "GSTIN",
+    longName: "Goods and Services Tax Identification Number",
+    description:
+      "15-character state-aware tax registration with embedded PAN and Luhn mod-36 check.",
+  },
+  IN_EPIC: {
+    displayName: "Voter ID",
+    longName: "Elector's Photo Identity Card",
+    description:
+      "10-character voter identification number issued by the Election Commission of India.",
+  },
+  IN_VID: {
+    displayName: "VID",
+    longName: "Virtual ID",
+    description: "16-digit revocable Aadhaar alias issued by UIDAI, same Verhoeff scheme.",
+  },
 };

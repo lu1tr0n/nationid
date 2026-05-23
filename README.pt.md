@@ -177,6 +177,7 @@ Cada subpath é tree-shakable de forma independente. Locales soltos (`nationid/i
 | 🇳🇴 Noruega | Fødselsnummer, D-nummer | Organisasjonsnummer, MVA |
 | 🇩🇰 Dinamarca | CPR | CVR, Moms |
 | 🇫🇮 Finlândia | HETU | Y-tunnus, ALV |
+| 🇮🇳 Índia *(v1.2)* | Aadhaar, VID, EPIC (eleitoral) | PAN, GSTIN |
 
 Documentação completa por país com algoritmos e fontes citadas em [`docs/countries/`](./docs/countries).
 

@@ -222,6 +222,11 @@
       "import": "./dist/countries/fi/index.js",
       "require": "./dist/countries/fi/index.cjs"
     },
+    "./in": {
+      "types": "./dist/countries/in/index.d.ts",
+      "import": "./dist/countries/in/index.js",
+      "require": "./dist/countries/in/index.cjs"
+    },
     "./extract": {
       "types": "./dist/extract/index.d.ts",
       "import": "./dist/extract/index.js",

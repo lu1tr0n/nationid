@@ -205,4 +205,11 @@ export const catalogCommon: Record<DocumentTypeCode, CommonEntry> = {
   FI_HETU: { purpose: "identity", knownAs: ["HETU", "Henkilötunnus"] },
   FI_YTUNNUS: { purpose: "tax", knownAs: ["Y-tunnus"] },
   FI_VAT: { purpose: "tax", knownAs: ["ALV", "VAT"] },
+
+  // v1.2.0 — India
+  IN_AADHAAR: { purpose: "identity", knownAs: ["Aadhaar", "UID"] },
+  IN_PAN: { purpose: "tax", knownAs: ["PAN"] },
+  IN_GSTIN: { purpose: "tax", knownAs: ["GSTIN", "GSTN"] },
+  IN_EPIC: { purpose: "voter", knownAs: ["EPIC", "Voter ID"] },
+  IN_VID: { purpose: "identity", knownAs: ["VID", "Virtual ID"] },
 };

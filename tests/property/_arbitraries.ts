@@ -738,6 +738,36 @@ const VALID_SAMPLES: Readonly<Record<DocumentTypeCode, ReadonlyArray<string>>> =
   FI_HETU: generateBruteForceValid("FI_HETU", VALID_SAMPLES_PER_CODE),
   FI_YTUNNUS: generateBruteForceValid("FI_YTUNNUS", VALID_SAMPLES_PER_CODE),
   FI_VAT: generateBruteForceValid("FI_VAT", VALID_SAMPLES_PER_CODE),
+  // India — Verhoeff/Luhn-mod-36 spaces are too large for brute force; use
+  // hand-computed canonical vectors from docs/v1.2-asia-research/in.md.
+  IN_AADHAAR: [
+    "234123412346",
+    "999888777669",
+    "219876123402",
+    "345678901238",
+    "789123456789",
+    "567812345678",
+  ],
+  IN_PAN: ["AAPFU0939F", "AAACH7409R", "AAACR5055K", "ABCPL1234E", "XYZTA0001B", "BNZPM9876C"],
+  IN_GSTIN: [
+    "27AAPFU0939F1ZV",
+    "07AAACH7409R1Z3",
+    "09AAACI1681G1ZN",
+    "33AAACR5055K1ZE",
+    "29AAACW2702R1ZW",
+    "24AAACR4849B1ZO",
+    "19AAJCS6789L1Z9",
+  ],
+  IN_EPIC: ["ABC1234567", "XYZ7654321", "LMN9999999", "QQQ0000001", "DEL0000002"],
+  IN_VID: [
+    "1000300031518704",
+    "1234567890123455",
+    "1987654321098760",
+    "1500005000050007",
+    "1111111111111113",
+    "1000000000000005",
+    "1999999999999992",
+  ],
 };
 
 /**
