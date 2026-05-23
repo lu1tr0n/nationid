@@ -288,7 +288,7 @@
     "docs": "typedoc",
     "docs:check": "typedoc --emit none",
     "check:exports": "attw --pack . --profile node16",
-    "check:publint": "publint",
+    "check:publint": "publint --level error",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:dist && pnpm check:publint",
     "bench": "tsx benchmarks/validate.bench.ts && tsx benchmarks/format.bench.ts && tsx benchmarks/parse.bench.ts",
     "bench:validate": "tsx benchmarks/validate.bench.ts",
