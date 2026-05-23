@@ -8,7 +8,6 @@ Thanks for your interest in improving `nationid`. This document explains how to 
 - [Security policy](./SECURITY.md)
 - [Governance](./docs/GOVERNANCE.md)
 - [Style guide](./docs/STYLE_GUIDE.md)
-- Detailed contributor guide: [docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md)
 
 ## Local setup
 
