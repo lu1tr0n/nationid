@@ -191,6 +191,17 @@ Cada spec carrega um valor `confidence` que reflete o quão verificado está seu
 
 A UI pode optar por exibir um aviso quando um documento de baixa confiança valida apenas por formato.
 
+## Usado por
+
+`nationid` é usado em produção pelos seguintes SaaS operados pelo mantenedor:
+
+- **[Marcly](https://marcly.com)** — agendamento e gestão de equipes para salões de beleza/unhas na LATAM. Usa `nationid` para captura de identidade de clientes e validação tributária da equipe em SV / GT / HN / MX / CR / DO.
+- **[Emiso](https://panel.emiso.app)** — plataforma multi-tenant de notas fiscais eletrônicas para a América Central. Usa `nationid` para validação de DUI / NIT / RUC do receptor e mascaramento KYC.
+- **[JustSV](https://dashboard.justenlinea.com)** — emissão DTE para varejo em El Salvador. Usa `nationid` para validação SV_DUI / SV_NIT e autopreenchimento de formulários.
+- **[MH Reminder](https://github.com/lu1tr0n/mh-reminder)** — lembrete de prazos fiscais via WhatsApp para contribuintes salvadorenhos. Usa `nationid` para normalizar e validar NIT antes de agendar lembretes.
+
+Se seu produto usa `nationid` e quer aparecer aqui, abra um PR adicionando uma entrada de uma linha acima.
+
 ## Comparação
 
 | | nationid | validator.js | cpf-cnpj-validator | rut.js |

@@ -282,7 +282,9 @@
     "size": "size-limit",
     "docs": "typedoc",
     "docs:check": "typedoc --emit none",
-    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:dist",
+    "check:exports": "attw --pack . --profile node16",
+    "check:publint": "publint",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:dist && pnpm check:publint",
     "bench": "tsx benchmarks/validate.bench.ts && tsx benchmarks/format.bench.ts && tsx benchmarks/parse.bench.ts",
     "bench:validate": "tsx benchmarks/validate.bench.ts",
     "bench:format": "tsx benchmarks/format.bench.ts",
@@ -290,9 +292,17 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && changeset publish",
-    "prepublishOnly": "pnpm verify"
+    "prepublishOnly": "pnpm verify",
+    "prepare": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm nano-staged"
+  },
+  "nano-staged": {
+    "*.{ts,js,jsx,tsx,json,md,yml,yaml}": "biome check --no-errors-on-unmatched --write --staged"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@biomejs/biome": "^2.0.0",
     "@brazilian-utils/brazilian-utils": "^2.3.0",
     "@changesets/cli": "^2.27.10",
@@ -302,7 +312,10 @@
     "@vitest/coverage-v8": "^4.1.5",
     "cpf-cnpj-validator": "^2.1.0",
     "fast-check": "^4.0.0",
+    "nano-staged": "^1.0.2",
+    "publint": "^0.3.21",
     "rut.js": "^2.1.0",
+    "simple-git-hooks": "^2.13.1",
     "size-limit": "^12.1.0",
     "tinybench": "^6.0.1",
     "tsup": "^8.3.0",

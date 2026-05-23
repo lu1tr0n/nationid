@@ -19,10 +19,14 @@ This document describes how decisions are made today and how the project will sc
 
 When the project gains 2+ active maintainers, governance moves to:
 
-- A maintainer team listed in `.github/MAINTAINERS.md`
+- A maintainer team listed in [`MAINTAINERS.md`](../MAINTAINERS.md) (to be created when 2+ maintainers exist)
 - Decisions on breaking changes require lazy consensus among maintainers (3 day window, no objections = approved)
 - Maintainers are added by unanimous agreement of existing maintainers
 - The owner has tie-breaking authority
+
+Today (sole-maintainer phase), the team is:
+
+- **[@lu1tr0n](https://github.com/lu1tr0n)** — owner, sole maintainer, npm publish access. Contact: open an issue, or for security reports follow [SECURITY.md](../SECURITY.md).
 
 ## Release cadence
 
