@@ -227,6 +227,11 @@
       "import": "./dist/countries/in/index.js",
       "require": "./dist/countries/in/index.cjs"
     },
+    "./jp": {
+      "types": "./dist/countries/jp/index.d.ts",
+      "import": "./dist/countries/jp/index.js",
+      "require": "./dist/countries/jp/index.cjs"
+    },
     "./ie": {
       "types": "./dist/countries/ie/index.d.ts",
       "import": "./dist/countries/ie/index.js",
@@ -424,7 +429,7 @@
   },
   "size-limit": [
     {
-      "name": "full registry (root, all 52 countries through v1.7)",
+      "name": "full registry (root, all 53 countries through v2.1)",
       "path": "dist/index.js",
       "limit": "45 KB"
     },
@@ -461,7 +466,7 @@
     {
       "name": "v0.3 — pii helpers subpath (includes full registry for getSpec)",
       "path": "dist/pii/index.js",
-      "limit": "20 KB"
+      "limit": "22 KB"
     },
     {
       "name": "v0.3 — i18n core subpath",
@@ -474,7 +479,7 @@
       "limit": "1 KB"
     },
     {
-      "name": "v0.3 — catalog subpath (all 3 locales, 52 countries)",
+      "name": "v0.3 — catalog subpath (all 3 locales, 53 countries)",
       "path": "dist/catalog/index.js",
       "limit": "40 KB"
     }

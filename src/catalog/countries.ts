@@ -83,6 +83,8 @@ const COUNTRY_ALPHA3: Readonly<Record<CountryCode, string>> = {
   FI: "FIN",
   // Asia phase 1 (v1.2.0)
   IN: "IND",
+  // Asia phase 2 (v2.1.0)
+  JP: "JPN",
   // EU-VAT complete (v1.7.0)
   IE: "IRL",
   AT: "AUT",

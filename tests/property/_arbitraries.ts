@@ -768,6 +768,27 @@ const VALID_SAMPLES: Readonly<Record<DocumentTypeCode, ReadonlyArray<string>>> =
     "1000000000000005",
     "1999999999999992",
   ],
+  // v2.1.0 — Japan. Anchors hand-computed against 平成26年総務省令第85号 §5
+  // (MY) and 法人番号の指定等に関する省令 §3 (CN). 7000012050002 is the NTA's
+  // own corporate number; verifiable in NTA's public registry.
+  JP_MY_NUMBER: [
+    "123456789018",
+    "987654321093",
+    "111111111118",
+    "999999999996",
+    "400000000050",
+    "110000000000",
+    "000000000019",
+  ],
+  JP_CORPORATE_NUMBER: [
+    "7000012050002",
+    "9111111111111",
+    "9999999999999",
+    "7123456789012",
+    "8000000000001",
+    "7000000000010",
+    "9000000000009",
+  ],
   // v1.7.0 — EU-VAT complete. Vectors are canonical anchors or hand-derived
   // via the documented algorithm; verified in VERIFICATION.md / test files.
   IE_VAT: ["IE8473625E", "IE3628739UA"],

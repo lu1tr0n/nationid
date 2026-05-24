@@ -742,6 +742,20 @@ export const catalogPt: Record<DocumentTypeCode, LocaleStrings> = {
       "Alias Aadhaar revogável de 16 dígitos emitido pela UIDAI, mesmo esquema Verhoeff.",
   },
 
+  // v2.1.0 — Japão
+  JP_MY_NUMBER: {
+    displayName: "My Number",
+    longName: "Número Individual (個人番号)",
+    description:
+      "Identificador pessoal de 12 dígitos atribuído a cada residente do Japão; dígito de verificação mod-11 ponderado conforme a Portaria Ministerial 85 (MIC, 2014).",
+  },
+  JP_CORPORATE_NUMBER: {
+    displayName: "Corporate Number",
+    longName: "Número Corporativo (法人番号)",
+    description:
+      "Identificador de 13 dígitos para entidades jurídicas emitido pela Agência Tributária do Japão; dígito de verificação mod-9 ponderado na posição mais à esquerda.",
+  },
+
   // v1.7.0 — EU-VAT completo
   IE_VAT: {
     displayName: "VAT",

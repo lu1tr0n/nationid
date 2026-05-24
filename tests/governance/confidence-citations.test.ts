@@ -73,6 +73,8 @@ const ISSUER_TLD_SUFFIXES: ReadonlyArray<RegExp> = [
   /(?:^|\.)jus\.br$/i,
   // v1.7: Austria uses `gv.at` for federal government, not `gov.at`.
   /(?:^|\.)gv\.at$/i,
+  // v2.1: Japan uses `go.jp` for government, not `gov.jp`.
+  /(?:^|\.)go\.jp$/i,
 ];
 
 const ISSUER_ALLOWLIST_DOMAINS: ReadonlySet<string> = new Set([
@@ -242,6 +244,10 @@ const STATUTE_PATTERNS: ReadonlyArray<RegExp> = [
   /\bValue\s+Added\s+Tax\s+Act\b/i, // Malta / generic EN
   /\bCap\.\s*\d+\b/i, // Malta / Cyprus "Cap. 406", "Cap. …"
   /\bLög\s+nr\.\s*\d+\/\d+\b/iu, // Iceland
+  // v2.1 — Japan. MIC/MOF/NTA ministerial ordinances and the Number Use Act.
+  /総務省令第\d+号/u, // 総務省令第85号 (MIC Ordinance No. 85, 2014)
+  /法人番号の指定等に関する省令/u, // Corporate Number Designation Ordinance
+  /平成\d+年法律第\d+号/u, // Heisei-era statute reference (Number Use Act)
 ];
 
 /** Returns the JSDoc block at the top of the file (before any imports). */

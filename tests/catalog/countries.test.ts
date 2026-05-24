@@ -63,6 +63,8 @@ const EXPECTED_ALPHA3: ReadonlyArray<readonly [string, string]> = [
   ["DK", "DNK"],
   ["FI", "FIN"],
   ["IN", "IND"],
+  // v2.1.0 — Asia phase 2: Japan
+  ["JP", "JPN"],
   // v1.7.0 — EU-VAT complete
   ["IE", "IRL"],
   ["AT", "AUT"],

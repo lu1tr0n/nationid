@@ -213,6 +213,13 @@ export const catalogCommon: Record<DocumentTypeCode, CommonEntry> = {
   IN_EPIC: { purpose: "voter", knownAs: ["EPIC", "Voter ID"] },
   IN_VID: { purpose: "identity", knownAs: ["VID", "Virtual ID"] },
 
+  // v2.1.0 — Japan
+  JP_MY_NUMBER: {
+    purpose: "identity",
+    knownAs: ["My Number", "Individual Number", "個人番号", "マイナンバー"],
+  },
+  JP_CORPORATE_NUMBER: { purpose: "tax", knownAs: ["Corporate Number", "法人番号"] },
+
   // v1.7.0 — EU-VAT complete
   IE_VAT: { purpose: "tax", knownAs: ["VAT", "Irish VAT number"] },
   AT_UID: { purpose: "tax", knownAs: ["UID", "USt-IdNr", "Umsatzsteuer-Identifikationsnummer"] },

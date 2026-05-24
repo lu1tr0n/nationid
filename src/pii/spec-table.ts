@@ -108,6 +108,8 @@ import { vidSpec } from "../countries/in/vid.ts";
 import { vskSpec as isVskSpec } from "../countries/is/vsk.ts";
 import { cfSpec } from "../countries/it/cf.ts";
 import { pivaSpec } from "../countries/it/piva.ts";
+import { corporateNumberSpec as jpCorporateNumberSpec } from "../countries/jp/corporate_number.ts";
+import { myNumberSpec as jpMyNumberSpec } from "../countries/jp/my_number.ts";
 import { vatSpec as ltVatSpec } from "../countries/lt/vat.ts";
 import { vatSpec as luVatSpec } from "../countries/lu/vat.ts";
 import { vatSpec as lvVatSpec } from "../countries/lv/vat.ts";
@@ -329,6 +331,8 @@ export const PII_SPEC_TABLE: Record<DocumentTypeCode, DocumentSpec> = {
   IN_GSTIN: gstinSpec,
   IN_EPIC: epicSpec,
   IN_VID: vidSpec,
+  JP_MY_NUMBER: jpMyNumberSpec,
+  JP_CORPORATE_NUMBER: jpCorporateNumberSpec,
   // v1.7.0 — EU-VAT complete
   IE_VAT: ieVatSpec,
   AT_UID: atUidSpec,

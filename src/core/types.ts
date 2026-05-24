@@ -46,6 +46,8 @@ export type CountryCode =
   | "FI"
   // v1.2.0 — Asia phase 1 (India shipped, JP/SG/KR/TW follow-up)
   | "IN"
+  // v2.1.0 — Asia phase 2: Japan
+  | "JP"
   // v1.7.0 — EU-VAT complete (16 EU members + 1 EEA Iceland)
   | "IE"
   | "AT"
@@ -232,6 +234,9 @@ export type DocumentTypeCode =
   | "IN_GSTIN"
   | "IN_EPIC"
   | "IN_VID"
+  // v2.1.0 — Asia phase 2: Japan
+  | "JP_MY_NUMBER"
+  | "JP_CORPORATE_NUMBER"
   // v1.7.0 — EU-VAT complete (17 codes, 16 EU + 1 EEA)
   | "IE_VAT"
   | "AT_UID"
