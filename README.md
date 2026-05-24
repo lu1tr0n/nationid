@@ -262,9 +262,9 @@ If your product uses `nationid` and you'd like to be listed here, open a PR addi
 - **v1.1** — Country catalog under `nationid/catalog`: names + flags + ISO alpha-3, locale param via `Intl.DisplayNames` (any BCP 47 tag). ✅
 - **v1.2** — Asia phase 1: India (Aadhaar, VID, PAN, GSTIN, EPIC) + Verhoeff primitive. ✅
 - **v2.0** — EU-VAT complete: 16 EU members + Iceland (EEA). ISO/IEC 7064 MOD 11,10 primitive. URL liveness audit pattern. ✅
-- **Next** — Asia phase 2 (research + verification complete): JP (My Number + Corporate Number), SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementing next.
-- **v1.8** — Balkans via JMBG core primitive (RS/BA/MK/ME) + GB Northern Ireland `XI` prefix + `BG_EGN` + `CZ_RC` (unlocks 10-digit BG and full CZ DIC branches).
-- **v1.x** — `@nationid/react` companion with `<DocumentInput>`, additional i18n locales, mutation testing (Stryker), lazy REGISTRY for full root-import tree-shaking.
+- **v2.1-v2.4** — Asia phase 2 (research + verification complete): JP (My Number + Corporate Number), SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementing next.
+- **v2.5** — Balkans via JMBG core primitive (RS/BA/MK/ME) + GB Northern Ireland `XI` prefix + `BG_EGN` + `CZ_RC` (unlocks 10-digit BG and full CZ DIC branches).
+- **v2.x** — `@nationid/react` companion with `<DocumentInput>`, additional i18n locales, mutation testing (Stryker), lazy REGISTRY for full root-import tree-shaking.
 
 ## Contributing
 
