@@ -53,7 +53,7 @@
 - **Year of introduction:** 2015-10 (initial mailing of 通知カード began 2015-10-05 under the My Number Act). System became operational 2016-01-01.
 - **Source URLs (primary, issuer):**
   - https://www.cao.go.jp/bangouseido/ — Cabinet Office portal for the Social Security and Tax Number System (overview + statute index).
-  - https://www.soumu.go.jp/main_sosiki/jichi_gyousei/c-gyousei/bangouseido.html — MIC portal (algorithm originally announced here).
+  - https://www.soumu.go.jp/kojinbango_card/ — MIC portal (algorithm originally announced here).
   - https://www.digital.go.jp/policies/mynumber — Digital Agency (デジタル庁) portal post-2021 reorg.
   - https://www.ppc.go.jp/legal/policy/ — PPC (Personal Information Protection Commission), the regulatory body for My Number.
   - Official algorithm notice (告示): "個人番号の指定に関する省令" (総務省令第85号, 2014-09-10) — MIC ministerial ordinance defining the check-digit calculation and allowable number space. PDF historically hosted on soumu.go.jp.
@@ -217,11 +217,11 @@ The all-zeros case `000000000000` is algorithmically valid. Although municipalit
 - **Source URLs (primary, issuer):**
   - https://www.houjin-bangou.nta.go.jp/ — NTA's public Corporate Number Publication Site (法人番号公表サイト). Searchable registry, REST API, daily CSV exports.
   - https://www.houjin-bangou.nta.go.jp/setsumei/ — algorithm and format explanation page (lay-friendly).
-  - https://www.nta.go.jp/taxes/tetsuzuki/mynumber/houjinbangou/ — NTA top page for the Corporate Number system (overview + statute index + downloadable specifications).
-  - NTA notice 第31号 (2014-09-10) — defines the check-digit algorithm. Published in 官報 (Official Gazette) and mirrored at https://www.nta.go.jp/about/organization/ntc/sozei/houkoku/130822/pdf/01_betten.pdf (specification appendix).
+  - https://www.nta.go.jp/taxes/tetsuzuki/mynumberinfo/index.htm — NTA top page for the Corporate Number system (overview + statute index + downloadable specifications).
+  - NTA notice 第31号 (2014-09-10) — defines the check-digit algorithm. Published in 官報 (Official Gazette) and mirrored at https://www.houjin-bangou.nta.go.jp/pc/setsumei/images/kokuji_20210129.pdf (specification appendix).
 - **Statute:** 行政手続における特定の個人を識別するための番号の利用等に関する法律 (Number Use Act), Article 39; NTA Ordinance.
 - **Secondary verified sources:**
-  - `python-stdnum/stdnum/jp/corporate_number.py` (shipped since v1.13). Doctests against real NTA-issued numbers including `7000012050002` (NTA itself). Reproduces the algorithm exactly with weights applied right-to-left as `(1, 2, 1, 2, …)`, equivalent to left-to-right weights `(2, 1, 2, 1, …, 2, 1)`.
+  - `python-stdnum/stdnum/jp/cn.py` (shipped since v1.13). Doctests against real NTA-issued numbers including `7000012050002` (NTA itself). Reproduces the algorithm exactly with weights applied right-to-left as `(1, 2, 1, 2, …)`, equivalent to left-to-right weights `(2, 1, 2, 1, …, 2, 1)`.
   - NTA's own CSV exports of the entire registry serve as the universe of ground-truth test data. Anyone can download today's snapshot and verify the algorithm holds for all ~5.2M entries.
   - Ruby gem `corporate_number` and Go `github.com/spiegel-im-spiegel/jpcorpnum` independently match.
 - **Confidence tier:** **high.** The algorithm is published in a named NTA notice, the registry is open data, and the implementation has been cross-checked against 5M+ real issued numbers.
@@ -400,7 +400,7 @@ Hmm 96, not 89. Let me redo: 8+18=26; +0=26; +2=28; +2=30; +6=36; +4=40; +10=50;
 
 We recommend the following oracle plan for v1.2 CI:
 
-1. **`python-stdnum/stdnum/jp/corporate_number.py`** — already shipping. Use its `calc_check_digit` and `validate` directly as the gold oracle for `JP_CORPORATE_NUMBER`. Property-test: for 10 000 random base strings, our implementation and stdnum must produce identical check digits.
+1. **`python-stdnum/stdnum/jp/cn.py`** — already shipping. Use its `calc_check_digit` and `validate` directly as the gold oracle for `JP_CORPORATE_NUMBER`. Property-test: for 10 000 random base strings, our implementation and stdnum must produce identical check digits.
 
 2. **NTA Corporate Number registry CSV** — downloadable at https://www.houjin-bangou.nta.go.jp/download/zenken/ (full national snapshot updated daily; pref-level CSVs also available). Each row's first column is a verified-in-the-wild 13-digit corporate number. Suggested test: fuzz-load 1 000 random rows from the latest snapshot and assert `validate()` returns true for all of them. This is the strongest possible cross-check because it is the ground-truth issued universe.
 
@@ -510,7 +510,7 @@ This is **optional** — Option A alone is sufficient because we can cite `https
  *          (My Number Act / Number Use Act, Act No. 27 of 2013).
  * Algorithm: 総務省令第85号 (平成26年9月10日).
  * Source: https://www.cao.go.jp/bangouseido/
- *         https://www.soumu.go.jp/main_sosiki/jichi_gyousei/c-gyousei/bangouseido.html
+ *         https://www.soumu.go.jp/kojinbango_card/
  *         https://www.digital.go.jp/policies/mynumber
  *
  * Format: 12 digits, last digit is the check digit.
@@ -541,7 +541,7 @@ This is **optional** — Option A alone is sufficient because we can cite `https
  *          (My Number Act, Act No. 27 of 2013, Article 39).
  * Algorithm: 国税庁告示第31号 (平成26年9月10日).
  * Source: https://www.houjin-bangou.nta.go.jp/
- *         https://www.nta.go.jp/taxes/tetsuzuki/mynumber/houjinbangou/
+ *         https://www.nta.go.jp/taxes/tetsuzuki/mynumberinfo/index.htm
  *
  * Format: 13 digits. First digit is the check digit (always 1-9, never 0).
  *         Digits 2..13 are the 12-digit base number.
@@ -552,7 +552,7 @@ This is **optional** — Option A alone is sufficient because we can cite `https
  *   S = Σ Pₙ · digit_n (n=1..12)
  *   check = 9 − (S mod 9)        // always in {1..9}
  *
- * Cross-validated against python-stdnum/stdnum/jp/corporate_number.py and
+ * Cross-validated against python-stdnum/stdnum/jp/cn.py and
  * NTA's open Corporate Number registry (~5.2M issued numbers).
  *
  * Confidence: high.
