@@ -20,14 +20,14 @@
 
 Existing tools cover a fraction of the world. `validator.js` only validates 6 LATAM tax IDs. `cpf-cnpj-validator` covers Brazil. `rut.js` covers Chile. None ship El Salvador, Guatemala, Honduras, Dominican Republic, or Costa Rica with checksum verification.
 
-`nationid` fills that gap. As of v1.7 it ships **52 countries with ~145 document codes**, all with proper algorithms documented from official sources — and ships an API-stability promise plus a CI-enforced governance test that every `high`-confidence spec cites a first-party issuer source.
+`nationid` fills that gap. As of v2.0 it ships **52 countries with ~145 document codes**, all with proper algorithms documented from official sources — and ships an API-stability promise plus a CI-enforced governance test that every `high`-confidence spec cites a first-party issuer source.
 
-## What's new in v1.7 (2026-05-24)
+## What's new in v2.0 (2026-05-24)
 
 - 🇪🇺 **EU-VAT complete** — 16 EU members + 1 EEA participant ship VAT validators in one batched release: `IE_VAT`, `AT_UID`, `LU_VAT`, `GR_VAT`, `CZ_DIC`, `HU_VAT`, `RO_VAT`, `BG_VAT`, `HR_OIB`, `SK_VAT`, `SI_VAT`, `LT_VAT`, `LV_VAT`, `EE_VAT`, `MT_VAT`, `CY_VAT`, `IS_VSK`. Unlocks **EU VIES feature parity** as a single tagline.
 - **ISO/IEC 7064 MOD 11,10 primitive** — `mod11_10CheckDigit` + `mod11_10Valid` exported from `nationid/algorithms`. Length-generic; used by HR_OIB, DE_USTID, DE_STEUER_ID.
 - **Greek `EL`/`GR` prefix handling** built in — accept both on input, normalise to `EL` (canonical VIES form). Closes the #1 historical EU-VAT bug.
-- **Every URL in every JSDoc verified live** via `browser_fetch` (firefox133 TLS impersonation) before publish — fixes 5 broken URLs caught in shipped India v1.2 and 3 in v1.7. `web.archive.org` snapshots accepted as supplementary citation where issuer cert blocks programmatic checks.
+- **Every URL in every JSDoc verified live** via `browser_fetch` (firefox133 TLS impersonation) before publish — fixes 5 broken URLs caught in shipped India v1.2 and 3 in v2.0. `web.archive.org` snapshots accepted as supplementary citation where issuer cert blocks programmatic checks.
 - 6606 → 6900+ tests, 52 countries × ~145 codes.
 
 ## What's new in v1.2 (2026-05-23)
@@ -196,23 +196,23 @@ Each subpath is independently tree-shakable. Single locales (`nationid/i18n/es`,
 | 🇩🇰 Denmark *(v0.6)* | CPR | CVR, Moms |
 | 🇫🇮 Finland *(v0.6)* | HETU | Y-tunnus, ALV |
 | 🇮🇳 India *(v1.2)* | Aadhaar, VID, Voter ID (EPIC) | PAN, GSTIN |
-| 🇮🇪 Ireland *(v1.7)* | — | VAT |
-| 🇦🇹 Austria *(v1.7)* | — | UID (USt-IdNr) |
-| 🇱🇺 Luxembourg *(v1.7)* | — | TVA |
-| 🇬🇷 Greece *(v1.7)* | — | VAT (AFM, VIES prefix `EL`) |
-| 🇨🇿 Czechia *(v1.7)* | — | DIČ (legal entity) |
-| 🇭🇺 Hungary *(v1.7)* | — | VAT (közösségi adószám) |
-| 🇷🇴 Romania *(v1.7)* | — | VAT (CUI / CIF) |
-| 🇧🇬 Bulgaria *(v1.7)* | — | VAT (legal entity) |
-| 🇭🇷 Croatia *(v1.7)* | OIB | OIB |
-| 🇸🇰 Slovakia *(v1.7)* | — | VAT (IČ DPH) |
-| 🇸🇮 Slovenia *(v1.7)* | — | VAT (DDV) |
-| 🇱🇹 Lithuania *(v1.7)* | — | VAT (PVM) |
-| 🇱🇻 Latvia *(v1.7)* | — | VAT (PVN, legal entity high / personal moderate) |
-| 🇪🇪 Estonia *(v1.7)* | — | VAT (KMKR) |
-| 🇲🇹 Malta *(v1.7)* | — | VAT |
-| 🇨🇾 Cyprus *(v1.7)* | — | VAT |
-| 🇮🇸 Iceland *(v1.7)* | — | VSK (format-only, EEA not VIES) |
+| 🇮🇪 Ireland *(v2.0)* | — | VAT |
+| 🇦🇹 Austria *(v2.0)* | — | UID (USt-IdNr) |
+| 🇱🇺 Luxembourg *(v2.0)* | — | TVA |
+| 🇬🇷 Greece *(v2.0)* | — | VAT (AFM, VIES prefix `EL`) |
+| 🇨🇿 Czechia *(v2.0)* | — | DIČ (legal entity) |
+| 🇭🇺 Hungary *(v2.0)* | — | VAT (közösségi adószám) |
+| 🇷🇴 Romania *(v2.0)* | — | VAT (CUI / CIF) |
+| 🇧🇬 Bulgaria *(v2.0)* | — | VAT (legal entity) |
+| 🇭🇷 Croatia *(v2.0)* | OIB | OIB |
+| 🇸🇰 Slovakia *(v2.0)* | — | VAT (IČ DPH) |
+| 🇸🇮 Slovenia *(v2.0)* | — | VAT (DDV) |
+| 🇱🇹 Lithuania *(v2.0)* | — | VAT (PVM) |
+| 🇱🇻 Latvia *(v2.0)* | — | VAT (PVN, legal entity high / personal moderate) |
+| 🇪🇪 Estonia *(v2.0)* | — | VAT (KMKR) |
+| 🇲🇹 Malta *(v2.0)* | — | VAT |
+| 🇨🇾 Cyprus *(v2.0)* | — | VAT |
+| 🇮🇸 Iceland *(v2.0)* | — | VSK (format-only, EEA not VIES) |
 
 Full per-country docs with algorithms and sources cited live in [`docs/countries/`](./docs/countries).
 
@@ -240,7 +240,7 @@ If your product uses `nationid` and you'd like to be listed here, open a PR addi
 | LATAM countries | **22** | 6 | 1 | 1 |
 | European countries | **29** (EU-27 VIES + UK/CH/NO/IS) | 8 | 0 | 0 |
 | EU-VIES VAT coverage | **EU-27 complete** | partial | 0 | 0 |
-| Asia countries | **1** (IN; JP/SG/KR/TW in v1.3-v1.6) | 0 | 0 | 0 |
+| Asia countries | **1** (IN; JP/SG/KR/TW next) | 0 | 0 | 0 |
 | El Salvador | ✅ | ❌ | ❌ | ❌ |
 | Guatemala | ✅ | ❌ | ❌ | ❌ |
 | Honduras | ✅ | ❌ | ❌ | ❌ |
@@ -261,8 +261,8 @@ If your product uses `nationid` and you'd like to be listed here, open a PR addi
 - **v1.0** — API stability declared. Every `high`-confidence spec backed by a first-party citation (CI-enforced). 76% smaller tarball. Type inference narrowing for `parse` / `getSpec` / `extract*`. ✅
 - **v1.1** — Country catalog under `nationid/catalog`: names + flags + ISO alpha-3, locale param via `Intl.DisplayNames` (any BCP 47 tag). ✅
 - **v1.2** — Asia phase 1: India (Aadhaar, VID, PAN, GSTIN, EPIC) + Verhoeff primitive. ✅
-- **v1.7** — EU-VAT complete: 16 EU members + Iceland (EEA). ISO/IEC 7064 MOD 11,10 primitive. URL liveness audit pattern. ✅
-- **v1.3 / v1.4 / v1.5 / v1.6** — Asia phase 2 (research + verification complete): JP (My Number + Corporate Number), SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementing next.
+- **v2.0** — EU-VAT complete: 16 EU members + Iceland (EEA). ISO/IEC 7064 MOD 11,10 primitive. URL liveness audit pattern. ✅
+- **Next** — Asia phase 2 (research + verification complete): JP (My Number + Corporate Number), SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementing next.
 - **v1.8** — Balkans via JMBG core primitive (RS/BA/MK/ME) + GB Northern Ireland `XI` prefix + `BG_EGN` + `CZ_RC` (unlocks 10-digit BG and full CZ DIC branches).
 - **v1.x** — `@nationid/react` companion with `<DocumentInput>`, additional i18n locales, mutation testing (Stryker), lazy REGISTRY for full root-import tree-shaking.
 

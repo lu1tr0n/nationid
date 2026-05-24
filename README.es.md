@@ -20,14 +20,14 @@
 
 Las herramientas existentes cubren una fracción del mundo. `validator.js` solo valida 6 tax IDs de LATAM. `cpf-cnpj-validator` cubre Brasil. `rut.js` cubre Chile. Ninguna trae El Salvador, Guatemala, Honduras, República Dominicana o Costa Rica con verificación de checksum.
 
-`nationid` llena ese vacío. A partir de v1.7 trae **52 países con ~145 códigos de documento**, todos con algoritmos documentados desde fuentes oficiales — y promete estabilidad de API más un test de gobernanza en CI que exige a cada spec con `confidence: "high"` que cite una fuente del emisor de primera mano.
+`nationid` llena ese vacío. A partir de v2.0 trae **52 países con ~145 códigos de documento**, todos con algoritmos documentados desde fuentes oficiales — y promete estabilidad de API más un test de gobernanza en CI que exige a cada spec con `confidence: "high"` que cite una fuente del emisor de primera mano.
 
-## Novedades en v1.7 (2026-05-24)
+## Novedades en v2.0 (2026-05-24)
 
 - 🇪🇺 **EU-VAT completo** — 16 miembros UE + 1 participante EEA shipean validadores de IVA en un release batched: `IE_VAT`, `AT_UID`, `LU_VAT`, `GR_VAT`, `CZ_DIC`, `HU_VAT`, `RO_VAT`, `BG_VAT`, `HR_OIB`, `SK_VAT`, `SI_VAT`, `LT_VAT`, `LV_VAT`, `EE_VAT`, `MT_VAT`, `CY_VAT`, `IS_VSK`. Desbloquea **EU VIES feature parity** como un solo tagline.
 - **Primitiva ISO/IEC 7064 MOD 11,10** — `mod11_10CheckDigit` + `mod11_10Valid` exportados desde `nationid/algorithms`. Length-generic; usada por HR_OIB, DE_USTID, DE_STEUER_ID.
 - **Handling del prefijo griego `EL`/`GR`** built-in — acepta ambos en input, normaliza a `EL` (forma canónica VIES). Cierra el #1 bug histórico de EU-VAT.
-- **Cada URL en cada JSDoc verificada en vivo** via `browser_fetch` (TLS impersonation firefox133) antes del publish — arregla 5 URLs rotas en India v1.2 ya shipping y 3 en v1.7. Snapshots de `web.archive.org` aceptados como cita supplementary cuando el cert del emisor bloquea checks programáticos.
+- **Cada URL en cada JSDoc verificada en vivo** via `browser_fetch` (TLS impersonation firefox133) antes del publish — arregla 5 URLs rotas en India v1.2 ya shipping y 3 en v2.0. Snapshots de `web.archive.org` aceptados como cita supplementary cuando el cert del emisor bloquea checks programáticos.
 - 6606 → 6900+ tests, 52 países × ~145 códigos.
 
 ## Novedades en v1.2 (2026-05-23)
@@ -195,23 +195,23 @@ Cada subpath se tree-shakea independiente. Los locales sueltos (`nationid/i18n/e
 | 🇩🇰 Dinamarca | CPR | CVR, Moms |
 | 🇫🇮 Finlandia | HETU | Y-tunnus, ALV |
 | 🇮🇳 India *(v1.2)* | Aadhaar, VID, EPIC (electoral) | PAN, GSTIN |
-| 🇮🇪 Irlanda *(v1.7)* | — | IVA |
-| 🇦🇹 Austria *(v1.7)* | — | UID (USt-IdNr) |
-| 🇱🇺 Luxemburgo *(v1.7)* | — | TVA |
-| 🇬🇷 Grecia *(v1.7)* | — | IVA (AFM, prefijo VIES `EL`) |
-| 🇨🇿 Chequia *(v1.7)* | — | DIČ (persona jurídica) |
-| 🇭🇺 Hungría *(v1.7)* | — | IVA (közösségi adószám) |
-| 🇷🇴 Rumania *(v1.7)* | — | IVA (CUI / CIF) |
-| 🇧🇬 Bulgaria *(v1.7)* | — | IVA (persona jurídica) |
-| 🇭🇷 Croacia *(v1.7)* | OIB | OIB |
-| 🇸🇰 Eslovaquia *(v1.7)* | — | IVA (IČ DPH) |
-| 🇸🇮 Eslovenia *(v1.7)* | — | IVA (DDV) |
-| 🇱🇹 Lituania *(v1.7)* | — | IVA (PVM) |
-| 🇱🇻 Letonia *(v1.7)* | — | IVA (PVN, persona jurídica high / personal moderate) |
-| 🇪🇪 Estonia *(v1.7)* | — | IVA (KMKR) |
-| 🇲🇹 Malta *(v1.7)* | — | IVA |
-| 🇨🇾 Chipre *(v1.7)* | — | IVA |
-| 🇮🇸 Islandia *(v1.7)* | — | VSK (solo formato, EEA sin VIES) |
+| 🇮🇪 Irlanda *(v2.0)* | — | IVA |
+| 🇦🇹 Austria *(v2.0)* | — | UID (USt-IdNr) |
+| 🇱🇺 Luxemburgo *(v2.0)* | — | TVA |
+| 🇬🇷 Grecia *(v2.0)* | — | IVA (AFM, prefijo VIES `EL`) |
+| 🇨🇿 Chequia *(v2.0)* | — | DIČ (persona jurídica) |
+| 🇭🇺 Hungría *(v2.0)* | — | IVA (közösségi adószám) |
+| 🇷🇴 Rumania *(v2.0)* | — | IVA (CUI / CIF) |
+| 🇧🇬 Bulgaria *(v2.0)* | — | IVA (persona jurídica) |
+| 🇭🇷 Croacia *(v2.0)* | OIB | OIB |
+| 🇸🇰 Eslovaquia *(v2.0)* | — | IVA (IČ DPH) |
+| 🇸🇮 Eslovenia *(v2.0)* | — | IVA (DDV) |
+| 🇱🇹 Lituania *(v2.0)* | — | IVA (PVM) |
+| 🇱🇻 Letonia *(v2.0)* | — | IVA (PVN, persona jurídica high / personal moderate) |
+| 🇪🇪 Estonia *(v2.0)* | — | IVA (KMKR) |
+| 🇲🇹 Malta *(v2.0)* | — | IVA |
+| 🇨🇾 Chipre *(v2.0)* | — | IVA |
+| 🇮🇸 Islandia *(v2.0)* | — | VSK (solo formato, EEA sin VIES) |
 
 La documentación per-país completa con algoritmos y fuentes citadas vive en [`docs/countries/`](./docs/countries).
 
@@ -258,8 +258,8 @@ Si tu producto usa `nationid` y querés aparecer acá, abrí un PR con una entra
 - **v1.0** — API estabilizada. Cada spec con `confidence: "high"` respaldado por una cita first-party (verificado en CI). Tarball -76%. Inferencia con narrowing para `parse` / `getSpec` / `extract*`. ✅
 - **v1.1** — Catálogo de países bajo `nationid/catalog`: nombres + banderas + ISO alpha-3; cualquier locale BCP 47 via `Intl.DisplayNames`. ✅
 - **v1.2** — Asia fase 1: India (Aadhaar, VID, PAN, GSTIN, EPIC) + primitiva Verhoeff. ✅
-- **v1.7** — EU-VAT completo: 16 miembros UE + Islandia (EEA). Primitiva ISO/IEC 7064 MOD 11,10. Patrón de URL liveness audit. ✅
-- **v1.3 / v1.4 / v1.5 / v1.6** — Asia fase 2 (research + verification completos): JP (My Number + 法人番号), SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementando a continuación.
+- **v2.0** — EU-VAT completo: 16 miembros UE + Islandia (EEA). Primitiva ISO/IEC 7064 MOD 11,10. Patrón de URL liveness audit. ✅
+- **Next** — Asia fase 2 (research + verification completos): JP (My Number + 法人番号), SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementando a continuación.
 - **v1.8** — Balcanes via primitiva JMBG (RS/BA/MK/ME) + prefijo GB Northern Ireland `XI` + `BG_EGN` + `CZ_RC` (desbloquea las ramas 10-digit BG y full CZ DIC).
 - **v1.x** — `@nationid/react` con `<DocumentInput>`, más locales i18n, mutation testing (Stryker), REGISTRY lazy para tree-shaking completo desde el root.
 
