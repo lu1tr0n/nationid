@@ -424,7 +424,7 @@
   },
   "size-limit": [
     {
-      "name": "full registry (root, all 34 countries through v0.6)",
+      "name": "full registry (root, all 52 countries through v1.7)",
       "path": "dist/index.js",
       "limit": "45 KB"
     },
@@ -474,9 +474,9 @@
       "limit": "1 KB"
     },
     {
-      "name": "v0.3 — catalog subpath (all 3 locales, 34 countries)",
+      "name": "v0.3 — catalog subpath (all 3 locales, 52 countries)",
       "path": "dist/catalog/index.js",
-      "limit": "30 KB"
+      "limit": "40 KB"
     }
   ]
 }
