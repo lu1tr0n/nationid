@@ -36,6 +36,14 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
+      - name: Upgrade npm CLI for Trusted Publisher OIDC
+        # Node 22 LTS ships with npm 10.x. npm Trusted Publishing requires
+        # npm 11.5.1+ for the OIDC token exchange against the npm registry.
+        # Without this, changesets/action detects OIDC and tries to use it,
+        # but the underlying `npm publish` (v10) falls back to anonymous
+        # auth and the registry returns 404 ("auth missing", masked).
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
