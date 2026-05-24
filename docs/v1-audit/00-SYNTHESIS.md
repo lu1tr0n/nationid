@@ -32,7 +32,7 @@ Everything else is non-breaking polish.
 - A2: JSDoc bulk pass for 34 country barrels (parallel agent, split in 2 if needed)
 - A3: README refresh (22 → 34 countries, v1.0 confidence claim rewording, root-vs-subpath import guidance)
 - A4: TypeDoc `entryPoints` expansion (add extract/pii/i18n/catalog) + `notDocumented: true` for CI
-- Test gate: `pnpm test` must stay green (no source changes that could break)
+- Test gate: `pnpm test` from repo root must stay green (no source changes that could break)
 
 ### Wave B — TS types + bundle (parallel)
 - B1: Delete 161 dead `as DocumentTypeCode` + 6 `as unknown as number[]` casts (mechanical agent)
@@ -41,7 +41,7 @@ Everything else is non-breaking polish.
 - B4: Parametrize `parse()` and `getSpec()` over `<C extends DocumentTypeCode>` for narrowing
 - B5: tsup `sourcemap: false` (zero-risk)
 - B6: Refactor `extract/pii/catalog` internals to bypass root `getSpec` (90% bundle reduction)
-- Test gate: `pnpm test` + `pnpm typecheck` + bundle measure (must shrink, not grow)
+- Test gate: `pnpm test` from repo root + `pnpm typecheck` + bundle measure (must shrink, not grow)
 
 ### Wave C — Intentional breaking + governance
 - C1: `mask()` asymmetry fix — throw on unknown code from `lastN`/`hash`
@@ -50,7 +50,7 @@ Everything else is non-breaking polish.
 - C4: New `tests/governance/confidence-citations.test.ts` (fails CI if "high" lacks issuer URL)
 - C5: New `tests/algorithms/mod11.test.ts` (close 47% → ~95% coverage gap)
 - C6: Inject clock into `src/extract/mx/rfc.ts` to kill 2056 time bomb
-- Test gate: full `pnpm test` + `pnpm test:coverage` (line ≥96%, branch ≥87%)
+- Test gate: full `pnpm test` from repo root + `pnpm test:coverage` (line ≥96%, branch ≥87%)
 
 ### Post-implement — release
 - D1: MIGRATION.md v1.0 section (3 breaking changes documented with examples)
@@ -66,7 +66,7 @@ Everything else is non-breaking polish.
 ## Tests-after-each-wave protocol
 
 After each Wave:
-1. `cd /mnt/e/projects_ideas/nationid && pnpm test` (must pass)
+1. `pnpm test` from the repo root (must pass)
 2. `pnpm typecheck` (must pass)
 3. `pnpm lint` (must pass)
 4. If any of the 3 fail → STOP, fix, retry. Don't move to next Wave.

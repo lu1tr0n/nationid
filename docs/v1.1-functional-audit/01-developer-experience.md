@@ -59,7 +59,7 @@ The features are also not represented in the comparison table (`README.md:196-20
 
 ### Friction 5 — No example showing `flagEmoji` / `listCountries` / `getCountryInfo`
 
-The eight examples at `/mnt/e/projects_ideas/nationid_example/src/examples/` ship a hand-rolled `COUNTRY_META` table in `@/lib/countries.ts` (referenced from `nationid_example/src/examples/ReactHookFormExample.tsx:13` and `nationid_example/src/examples/DynamicPickerExample.tsx:9`) to provide flag + name per country. This duplicates exactly what `nationid/catalog`'s new v1.1 functions provide for free. From a discovery standpoint this is a flashing red light: the *library's own showcase* does not consume the v1.1 catalog, so a consumer copying the showcase code will keep hand-maintaining a country table.
+The eight examples at `../nationid_example/src/examples/` ship a hand-rolled `COUNTRY_META` table in `@/lib/countries.ts` (referenced from `nationid_example/src/examples/ReactHookFormExample.tsx:13` and `nationid_example/src/examples/DynamicPickerExample.tsx:9`) to provide flag + name per country. This duplicates exactly what `nationid/catalog`'s new v1.1 functions provide for free. From a discovery standpoint this is a flashing red light: the *library's own showcase* does not consume the v1.1 catalog, so a consumer copying the showcase code will keep hand-maintaining a country table.
 
 Note that the `BR_CNPJ_ALPHANUM_SOURCE` and `MX_NSS_SOURCE` examples (`nationid_example/src/examples/BrCnpjAlphanumExample.tsx:143-166`, `nationid_example/src/examples/MxNssExample.tsx:151-167`) embed inline source snippets that *do* show the right API patterns — but the React components mix in `COUNTRY_META[code].flag` calls that should now be `flagEmoji(code)`.
 

@@ -16,7 +16,8 @@ jobs:
     permissions:
       # changesets/action needs `contents: write` to push tags and the
       # release commit, `pull-requests: write` to open the release PR,
-      # and `id-token: write` for npm provenance via OIDC.
+      # and `id-token: write` for the OIDC identity used by both npm
+      # Trusted Publishing (replaces NPM_TOKEN) and sigstore provenance.
       contents: write
       pull-requests: write
       id-token: write
@@ -53,5 +54,3 @@ jobs:
           title: "chore: release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
