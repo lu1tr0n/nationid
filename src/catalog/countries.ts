@@ -83,6 +83,24 @@ const COUNTRY_ALPHA3: Readonly<Record<CountryCode, string>> = {
   FI: "FIN",
   // Asia phase 1 (v1.2.0)
   IN: "IND",
+  // EU-VAT complete (v1.7.0)
+  IE: "IRL",
+  AT: "AUT",
+  LU: "LUX",
+  GR: "GRC",
+  CZ: "CZE",
+  HU: "HUN",
+  RO: "ROU",
+  BG: "BGR",
+  HR: "HRV",
+  SK: "SVK",
+  SI: "SVN",
+  LT: "LTU",
+  LV: "LVA",
+  EE: "EST",
+  MT: "MLT",
+  CY: "CYP",
+  IS: "ISL",
 };
 
 /**

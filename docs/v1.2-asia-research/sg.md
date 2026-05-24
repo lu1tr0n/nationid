@@ -1,5 +1,17 @@
 # Singapore (SG) — research for nationid v1.2
 
+> ⚠️ **Verified 2026-05-23.** Cross-checked against python-stdnum master,
+> OECD CRS Singapore-TIN PDF, ICA / SSO statute references, and
+> uen.gov.sg. **Four corrections required before implementing** — see
+> [`VERIFICATION.md` §SG-1 through §SG-4](./VERIFICATION.md#singapore):
+> (1) ICA M-prefix permalink returns 404, replace with web.archive.org;
+> (2) add OECD CRS PDF as secondary citation; (3) `SG_FIN` M-prefix
+> oracle (`stdnum/sg/nric.py`) does NOT exist — downgrade to
+> `confidence: "moderate"` OR find alternate oracle; (4) **CRITICAL UPGRADE**
+> `SG_UEN`: python-stdnum DOES ship `stdnum/sg/uen.py` with deterministic
+> checksums for all 3 categories; raise from `hasCheckDigit: false` →
+> `hasCheckDigit: true`, `confidence: "high"` for all 3.
+
 > Target codes: `SG_NRIC`, `SG_FIN`, `SG_UEN`
 > Author: research-agent · Date: 2026-05-23 · Library version: nationid@1.1.0 → planned 1.2.0
 > Scope: Singapore only. Driver's licence, passport, work-permit numbers (WPN), and CPF account numbers are deferred.

@@ -3,8 +3,9 @@
  *
  * Issuer: Unique Identification Authority of India (UIDAI), Ministry of
  * Electronics & IT.
- * Source: https://uidai.gov.in/en/my-aadhaar/about-your-aadhaar/virtual-id-vid.html
- *         UIDAI Circular K-11020/205/2017 dated 10-Jan-2018.
+ * Source: https://uidai.gov.in/en/contact-support/have-any-question/284-faqs/aadhaar-online-services/virtual-id-vid
+ *         UIDAI Circular K-11020/205/2017 dated 10-Jan-2018 (legal basis).
+ *         URLs verified live 2026-05-24.
  *
  * Format: 16 digits, first digit `1` (UIDAI reserves the `1xxx...` range
  * for VID, separate from the `2-9` Aadhaar range).

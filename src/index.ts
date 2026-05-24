@@ -14,7 +14,9 @@ import type {
 } from "./core/types.ts";
 
 import { arBundle } from "./countries/ar/index.ts";
+import { atBundle } from "./countries/at/index.ts";
 import { beBundle } from "./countries/be/index.ts";
+import { bgBundle } from "./countries/bg/index.ts";
 import { boBundle } from "./countries/bo/index.ts";
 import { brBundle } from "./countries/br/index.ts";
 import { caBundle } from "./countries/ca/index.ts";
@@ -22,18 +24,30 @@ import { chBundle } from "./countries/ch/index.ts";
 import { clBundle } from "./countries/cl/index.ts";
 import { coBundle } from "./countries/co/index.ts";
 import { crBundle } from "./countries/cr/index.ts";
+import { cyBundle } from "./countries/cy/index.ts";
+import { czBundle } from "./countries/cz/index.ts";
 import { deBundle } from "./countries/de/index.ts";
 import { dkBundle } from "./countries/dk/index.ts";
 import { doBundle } from "./countries/do/index.ts";
 import { ecBundle } from "./countries/ec/index.ts";
+import { eeBundle } from "./countries/ee/index.ts";
 import { esBundle } from "./countries/es/index.ts";
 import { fiBundle } from "./countries/fi/index.ts";
 import { frBundle } from "./countries/fr/index.ts";
 import { gbBundle } from "./countries/gb/index.ts";
+import { grBundle } from "./countries/gr/index.ts";
 import { gtBundle } from "./countries/gt/index.ts";
 import { hnBundle } from "./countries/hn/index.ts";
+import { hrBundle } from "./countries/hr/index.ts";
+import { huBundle } from "./countries/hu/index.ts";
+import { ieBundle } from "./countries/ie/index.ts";
 import { inBundle } from "./countries/in/index.ts";
+import { isBundle } from "./countries/is/index.ts";
 import { itBundle } from "./countries/it/index.ts";
+import { ltBundle } from "./countries/lt/index.ts";
+import { luBundle } from "./countries/lu/index.ts";
+import { lvBundle } from "./countries/lv/index.ts";
+import { mtBundle } from "./countries/mt/index.ts";
 import { mxBundle } from "./countries/mx/index.ts";
 import { niBundle } from "./countries/ni/index.ts";
 import { nlBundle } from "./countries/nl/index.ts";
@@ -43,7 +57,10 @@ import { peBundle } from "./countries/pe/index.ts";
 import { plBundle } from "./countries/pl/index.ts";
 import { ptBundle } from "./countries/pt/index.ts";
 import { pyBundle } from "./countries/py/index.ts";
+import { roBundle } from "./countries/ro/index.ts";
 import { seBundle } from "./countries/se/index.ts";
+import { siBundle } from "./countries/si/index.ts";
+import { skBundle } from "./countries/sk/index.ts";
 import { svBundle } from "./countries/sv/index.ts";
 import { usBundle } from "./countries/us/index.ts";
 import { uyBundle } from "./countries/uy/index.ts";
@@ -110,6 +127,24 @@ const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
   fiBundle,
   // v1.2.0 — Asia phase 1
   inBundle,
+  // v1.7.0 — EU-VAT complete (16 EU + 1 EEA)
+  ieBundle,
+  atBundle,
+  luBundle,
+  grBundle,
+  czBundle,
+  huBundle,
+  roBundle,
+  bgBundle,
+  hrBundle,
+  skBundle,
+  siBundle,
+  ltBundle,
+  lvBundle,
+  eeBundle,
+  mtBundle,
+  cyBundle,
+  isBundle,
 ];
 
 /**

@@ -4,7 +4,9 @@
  * Issuer: Unique Identification Authority of India (UIDAI), Ministry of
  * Electronics & IT.
  * Source: https://uidai.gov.in/en/my-aadhaar/about-your-aadhaar.html
+ *         (verified live 2026-05-24).
  *         https://web.archive.org/web/20140611025606/http://uidai.gov.in/UID_PDF/Working_Papers/A_UID_Numbering_Scheme.pdf
+ *         (UIDAI "A UID Numbering Scheme" working paper — Wayback snapshot).
  * Statute: Aadhaar (Targeted Delivery of Financial and Other Subsidies,
  *          Benefits and Services) Act 2016.
  *

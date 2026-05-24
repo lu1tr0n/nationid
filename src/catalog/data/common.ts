@@ -212,4 +212,23 @@ export const catalogCommon: Record<DocumentTypeCode, CommonEntry> = {
   IN_GSTIN: { purpose: "tax", knownAs: ["GSTIN", "GSTN"] },
   IN_EPIC: { purpose: "voter", knownAs: ["EPIC", "Voter ID"] },
   IN_VID: { purpose: "identity", knownAs: ["VID", "Virtual ID"] },
+
+  // v1.7.0 — EU-VAT complete
+  IE_VAT: { purpose: "tax", knownAs: ["VAT", "Irish VAT number"] },
+  AT_UID: { purpose: "tax", knownAs: ["UID", "USt-IdNr", "Umsatzsteuer-Identifikationsnummer"] },
+  LU_VAT: { purpose: "tax", knownAs: ["TVA", "VAT"] },
+  GR_VAT: { purpose: "tax", knownAs: ["ΑΦΜ", "AFM", "VAT"] },
+  CZ_DIC: { purpose: "tax", knownAs: ["DIČ", "DIC"] },
+  HU_VAT: { purpose: "tax", knownAs: ["Közösségi adószám", "VAT"] },
+  RO_VAT: { purpose: "tax", knownAs: ["CUI", "CIF", "CF", "VAT"] },
+  BG_VAT: { purpose: "tax", knownAs: ["ДДС №", "VAT"] },
+  HR_OIB: { purpose: "tax", knownAs: ["OIB", "Osobni identifikacijski broj"] },
+  SK_VAT: { purpose: "tax", knownAs: ["IČ DPH", "DPH", "VAT"] },
+  SI_VAT: { purpose: "tax", knownAs: ["DDV", "ID za DDV", "VAT"] },
+  LT_VAT: { purpose: "tax", knownAs: ["PVM", "VAT"] },
+  LV_VAT: { purpose: "tax", knownAs: ["PVN", "VAT"] },
+  EE_VAT: { purpose: "tax", knownAs: ["KMKR", "VAT"] },
+  MT_VAT: { purpose: "tax", knownAs: ["VAT"] },
+  CY_VAT: { purpose: "tax", knownAs: ["ΦΠΑ", "VAT"] },
+  IS_VSK: { purpose: "tax", knownAs: ["VSK", "Iceland VAT"] },
 };

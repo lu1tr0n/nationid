@@ -1,5 +1,13 @@
 # South Korea (KR) — research for nationid v1.2
 
+> ⚠️ **Verified 2026-05-23.** Cross-checked against OECD CRS Korea-TIN PDF,
+> python-stdnum master, and MOIS 2020-05-25 notice. **Two JSDoc additions
+> required before implementing** — see [`VERIFICATION.md` §KR-1 and §KR-2](./VERIFICATION.md#south-korea):
+> (1) explicit callout that the 2020-10-05 randomization only affected
+> positions 8–12, the check digit at position 13 is still deterministic;
+> (2) BRN engineering-convergence note (algorithm not in the 시행령).
+> Both specs ship at `confidence: "high"` after these patches.
+
 > Target codes: `KR_RRN`, `KR_BRN`
 > Author: research-agent · Date: 2026-05-23 · Library version: nationid@1.1.0 → planned 1.2.0
 > Scope: South Korea only. Foreigner Registration Number (외국인등록번호, FRN) and Korean passports are deferred to v1.3+. The FRN shares the *exact* RRN algorithm and digit layout (positions 7 = 5/6/7/8 instead of 1/2/3/4), so v1.3 will be additive.

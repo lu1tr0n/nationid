@@ -1,5 +1,19 @@
 # Taiwan (TW) — research for nationid v1.2
 
+> 🛑 **Verified 2026-05-23 — load-bearing correctness bug found.**
+> Cross-checked against Wikipedia (EN/ZH), python-stdnum master,
+> enylin/taiwan-id-validator, and MOI 2021 reform records. **Three
+> corrections required before implementing** — see
+> [`VERIFICATION.md` §TW-1 through §TW-4](./VERIFICATION.md#taiwan):
+> (1) drop or cite the unverified "2023-09-01 MOF UBN expansion" claim;
+> (2) `python-stdnum/tw/twid.py` oracle does NOT exist — replace with
+> `enylin/taiwan-id-validator`; (3) **CRITICAL: `TW_ARC` research doc
+> inverts old/new formats.** Old (pre-2021) is `[A-Z][A-D]\d{8}`, new
+> (post-2021-01-02) is `[A-Z][89]\d{8}` sharing the `TW_NID` algorithm.
+> Shipping as-is would reject every modern ARC and accept every legacy
+> one. **Swap before implementing**, then ship at high/moderate per the
+> verification doc.
+
 > Target codes: TW_UBN, TW_NID, TW_ARC
 > Author: research-agent · Date: 2026-05-23 · Library version: 1.1.0 → planned 1.2.0
 

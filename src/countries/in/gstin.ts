@@ -3,8 +3,9 @@
  *
  * Issuer: Goods and Services Tax Network (GSTN), under CBIC, Ministry of
  * Finance.
- * Source: https://www.gst.gov.in/
- *         https://cbic-gst.gov.in/
+ * Source: https://cbic-gst.gov.in/ (issuer root — verified live 2026-05-24).
+ *         https://www.gst.gov.in/ (taxpayer portal — may rate-limit
+ *         programmatic checks, browser-accessible).
  * Statute: CGST Act 2017; CGST Rules 2017, Rule 10.
  *
  * Format: 15-char alphanumeric `SS PPPPPPPPPP E Z C`:

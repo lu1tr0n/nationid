@@ -742,4 +742,101 @@ export const catalogEs: Record<DocumentTypeCode, LocaleStrings> = {
     longName: "Virtual ID",
     description: "Alias Aadhaar revocable de 16 dígitos emitido por UIDAI, mismo esquema Verhoeff.",
   },
+
+  // v1.7.0 — EU-VAT completo
+  IE_VAT: {
+    displayName: "VAT",
+    longName: "Número de IVA irlandés",
+    description:
+      "Registro de IVA de 8 o 9 caracteres emitido por Revenue Commissioners; dígito de control mod-23 alfabético.",
+  },
+  AT_UID: {
+    displayName: "UID",
+    longName: "Umsatzsteuer-Identifikationsnummer",
+    description:
+      "ATU + 8 dígitos. Identificación de IVA austriaca emitida por el BMF; dígito de control mod-10 ponderado.",
+  },
+  LU_VAT: {
+    displayName: "TVA",
+    longName: "Número de identificación de IVA luxemburgués",
+    description: "Número de IVA de 8 dígitos emitido por la AED; control derivado de body6 mod 89.",
+  },
+  GR_VAT: {
+    displayName: "IVA",
+    longName: "Número de IVA griego (ΑΦΜ)",
+    description: "Número fiscal/IVA griego de 9 dígitos emitido por la AADE; prefijo VIES EL.",
+  },
+  CZ_DIC: {
+    displayName: "DIČ",
+    longName: "Número de identificación fiscal checo",
+    description:
+      "Número de IVA checo de 8 dígitos para personas jurídicas; control mod-11 ponderado.",
+  },
+  HU_VAT: {
+    displayName: "IVA",
+    longName: "Número fiscal comunitario húngaro",
+    description: "Número de IVA húngaro de 8 dígitos emitido por NAV; control mod-10 ponderado.",
+  },
+  RO_VAT: {
+    displayName: "IVA",
+    longName: "Código Único de Registro rumano",
+    description:
+      "Número fiscal/IVA rumano de 2 a 10 dígitos emitido por ANAF; control mod-11 ponderado.",
+  },
+  BG_VAT: {
+    displayName: "IVA",
+    longName: "Número de IVA búlgaro (persona jurídica)",
+    description:
+      "Número de IVA búlgaro de 9 dígitos para personas jurídicas emitido por NRA; mod-11 con pesos de respaldo.",
+  },
+  HR_OIB: {
+    displayName: "OIB",
+    longName: "Número de identificación personal croata",
+    description:
+      "Identificador personal/fiscal croata de 11 dígitos emitido por Porezna uprava; ISO/IEC 7064 MOD 11,10.",
+  },
+  SK_VAT: {
+    displayName: "IVA",
+    longName: "IČ DPH (IVA eslovaco)",
+    description:
+      "Número de IVA eslovaco de 10 dígitos emitido por Finančná správa; divisibilidad por 11.",
+  },
+  SI_VAT: {
+    displayName: "IVA",
+    longName: "Número de identificación de IVA esloveno",
+    description: "Número de IVA esloveno de 8 dígitos emitido por FURS; control mod-11 ponderado.",
+  },
+  LT_VAT: {
+    displayName: "IVA",
+    longName: "Código de contribuyente de IVA lituano",
+    description:
+      "Número de IVA lituano de 9 o 12 dígitos emitido por VMI; mod-11 con pesos alternativos.",
+  },
+  LV_VAT: {
+    displayName: "IVA",
+    longName: "Registro PVN letón",
+    description:
+      "Número de IVA letón de 11 dígitos emitido por VID; rama de persona jurídica con mod-11 ponderado.",
+  },
+  EE_VAT: {
+    displayName: "KMKR",
+    longName: "Número de IVA estonio",
+    description: "Número de IVA estonio de 9 dígitos emitido por MTA; control mod-10 ponderado.",
+  },
+  MT_VAT: {
+    displayName: "IVA",
+    longName: "Registro de IVA de Malta",
+    description: "Número de IVA maltés de 8 dígitos emitido por CFR; control mod-37 ponderado.",
+  },
+  CY_VAT: {
+    displayName: "IVA",
+    longName: "Número de IVA chipriota",
+    description: "8 dígitos + 1 letra de control; tabla de traducción posicional mod 26.",
+  },
+  IS_VSK: {
+    displayName: "VSK",
+    longName: "Número de IVA islandés",
+    description:
+      "Número de IVA islandés de 5 o 6 dígitos emitido por RSK; validación solo de formato (sin checksum).",
+  },
 };

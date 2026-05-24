@@ -45,7 +45,25 @@ export type CountryCode =
   | "DK"
   | "FI"
   // v1.2.0 — Asia phase 1 (India shipped, JP/SG/KR/TW follow-up)
-  | "IN";
+  | "IN"
+  // v1.7.0 — EU-VAT complete (16 EU members + 1 EEA Iceland)
+  | "IE"
+  | "AT"
+  | "LU"
+  | "GR"
+  | "CZ"
+  | "HU"
+  | "RO"
+  | "BG"
+  | "HR"
+  | "SK"
+  | "SI"
+  | "LT"
+  | "LV"
+  | "EE"
+  | "MT"
+  | "CY"
+  | "IS";
 
 /**
  * Stable code persisted in DB. Format: `{ISO-2}_{TYPE}`.
@@ -213,7 +231,25 @@ export type DocumentTypeCode =
   | "IN_PAN"
   | "IN_GSTIN"
   | "IN_EPIC"
-  | "IN_VID";
+  | "IN_VID"
+  // v1.7.0 — EU-VAT complete (17 codes, 16 EU + 1 EEA)
+  | "IE_VAT"
+  | "AT_UID"
+  | "LU_VAT"
+  | "GR_VAT"
+  | "CZ_DIC"
+  | "HU_VAT"
+  | "RO_VAT"
+  | "BG_VAT"
+  | "HR_OIB"
+  | "SK_VAT"
+  | "SI_VAT"
+  | "LT_VAT"
+  | "LV_VAT"
+  | "EE_VAT"
+  | "MT_VAT"
+  | "CY_VAT"
+  | "IS_VSK";
 
 /** Whether the document identifies a natural person, a tax entity, or both. */
 export type DocumentScope = "personal" | "tax" | "both";
@@ -307,8 +343,11 @@ export interface CountryDocumentBundle {
   readonly personal: ReadonlyArray<DocumentSpec>;
   /** All tax-scope specs. */
   readonly tax: ReadonlyArray<DocumentSpec>;
-  /** Default personal document type to surface in UI when none is selected. */
-  readonly defaultPersonal: DocumentTypeCode;
-  /** Default tax document type. */
-  readonly defaultTax: DocumentTypeCode;
+  /**
+   * Default personal document type to surface in UI when none is selected.
+   * Optional — VAT-only EU bundles (LU, MT, CY, IS) have no personal spec.
+   */
+  readonly defaultPersonal?: DocumentTypeCode;
+  /** Default tax document type. Optional for symmetry with `defaultPersonal`. */
+  readonly defaultTax?: DocumentTypeCode;
 }

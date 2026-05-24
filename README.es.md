@@ -20,7 +20,25 @@
 
 Las herramientas existentes cubren una fracción del mundo. `validator.js` solo valida 6 tax IDs de LATAM. `cpf-cnpj-validator` cubre Brasil. `rut.js` cubre Chile. Ninguna trae El Salvador, Guatemala, Honduras, República Dominicana o Costa Rica con verificación de checksum.
 
-`nationid` llena ese vacío. A partir de v1.0 trae **34 países con ~120 códigos de documento**, todos con algoritmos documentados desde fuentes oficiales — y promete estabilidad de API más un test de gobernanza en CI que exige a cada spec con `confidence: "high"` que cite una fuente del emisor de primera mano.
+`nationid` llena ese vacío. A partir de v1.7 trae **52 países con ~145 códigos de documento**, todos con algoritmos documentados desde fuentes oficiales — y promete estabilidad de API más un test de gobernanza en CI que exige a cada spec con `confidence: "high"` que cite una fuente del emisor de primera mano.
+
+## Novedades en v1.7 (2026-05-24)
+
+- 🇪🇺 **EU-VAT completo** — 16 miembros UE + 1 participante EEA shipean validadores de IVA en un release batched: `IE_VAT`, `AT_UID`, `LU_VAT`, `GR_VAT`, `CZ_DIC`, `HU_VAT`, `RO_VAT`, `BG_VAT`, `HR_OIB`, `SK_VAT`, `SI_VAT`, `LT_VAT`, `LV_VAT`, `EE_VAT`, `MT_VAT`, `CY_VAT`, `IS_VSK`. Desbloquea **EU VIES feature parity** como un solo tagline.
+- **Primitiva ISO/IEC 7064 MOD 11,10** — `mod11_10CheckDigit` + `mod11_10Valid` exportados desde `nationid/algorithms`. Length-generic; usada por HR_OIB, DE_USTID, DE_STEUER_ID.
+- **Handling del prefijo griego `EL`/`GR`** built-in — acepta ambos en input, normaliza a `EL` (forma canónica VIES). Cierra el #1 bug histórico de EU-VAT.
+- **Cada URL en cada JSDoc verificada en vivo** via `browser_fetch` (TLS impersonation firefox133) antes del publish — arregla 5 URLs rotas en India v1.2 ya shipping y 3 en v1.7. Snapshots de `web.archive.org` aceptados como cita supplementary cuando el cert del emisor bloquea checks programáticos.
+- 6606 → 6900+ tests, 52 países × ~145 códigos.
+
+## Novedades en v1.2 (2026-05-23)
+
+- 🇮🇳 **Soporte para India** — primer país de Asia. Cinco specs nuevos bajo `nationid/in`: `IN_AADHAAR` (Verhoeff + rechazo de palíndromos, UIDAI), `IN_VID` (alias de 16 dígitos para Aadhaar), `IN_PAN` (lista blanca por tipo de entidad, Income Tax Department), `IN_GSTIN` (Luhn mod-36 + PAN embebido + código de estado, CBIC), `IN_EPIC` (solo formato, ECI).
+- **Primitiva Verhoeff** — `verhoeffValid` y `verhoeffCheckDigit` se exportan desde `nationid/algorithms`. Tablas canónicas D₅ + permutaciones tomadas literalmente del IS 4905:1968.
+- 6488 → 6606 tests, 35 países × ~125 códigos. Tarball 2.9 MB unpacked (+200 KB).
+
+## Novedades en v1.1 (2026-05-22)
+
+- **Catálogo de países bajo `nationid/catalog`** — `getCountryInfo`, `listCountries`, `countryName`, `flagEmoji`. Usa `Intl.DisplayNames` (CLDR), así que cualquier locale que soporte el runtime funciona out-of-the-box — no solo `es / en / pt`.
 
 ## Novedades en v1.0
 
@@ -77,7 +95,7 @@ Probá todos los países y todos los helpers sin instalar nada: **https://lu1tr0
 
 El playground cubre:
 
-- ✅ `validate / parse / format / normalize` para los 34 países
+- ✅ `validate / parse / format / normalize` para cada país soportado
 - 🎯 `extract` (fecha de nacimiento, sexo, región) cuando el documento lo codifica
 - 🔒 `pii` enmascarado + hash SHA-256 para display y almacenamiento seguro
 - 🌍 `i18n` mensajes de error en `es`, `en`, `pt`
@@ -127,18 +145,18 @@ listDocuments("MX", "es");
 //    longName: "Clave Única de Registro de Población",
 //    purpose: "identity", confidence: "high", ... }, ...]
 
-// Catálogo de países (v1.1) — nombres + banderas para los 34 países.
+// Catálogo de países (v1.1) — nombres + banderas para los 35 países.
 // Usa Intl.DisplayNames (CLDR), así que cualquier locale del runtime sirve.
 import { getCountryInfo, listCountries, flagEmoji } from "nationid/catalog";
 getCountryInfo("MX", "es");
 // { code: "MX", alpha3: "MEX", name: "México", flag: "🇲🇽" }
 flagEmoji("BR");          // "🇧🇷"
-listCountries("pt").length; // 34
+listCountries("pt").length; // 52
 ```
 
 Cada subpath se tree-shakea independiente. Los locales sueltos (`nationid/i18n/es`, `/en`, `/pt`) pesan menos de 200 B cada uno.
 
-## Cobertura (34 países)
+## Cobertura (52 países)
 
 | País | Personal | Tributario |
 |------|----------|-----|
@@ -177,6 +195,23 @@ Cada subpath se tree-shakea independiente. Los locales sueltos (`nationid/i18n/e
 | 🇩🇰 Dinamarca | CPR | CVR, Moms |
 | 🇫🇮 Finlandia | HETU | Y-tunnus, ALV |
 | 🇮🇳 India *(v1.2)* | Aadhaar, VID, EPIC (electoral) | PAN, GSTIN |
+| 🇮🇪 Irlanda *(v1.7)* | — | IVA |
+| 🇦🇹 Austria *(v1.7)* | — | UID (USt-IdNr) |
+| 🇱🇺 Luxemburgo *(v1.7)* | — | TVA |
+| 🇬🇷 Grecia *(v1.7)* | — | IVA (AFM, prefijo VIES `EL`) |
+| 🇨🇿 Chequia *(v1.7)* | — | DIČ (persona jurídica) |
+| 🇭🇺 Hungría *(v1.7)* | — | IVA (közösségi adószám) |
+| 🇷🇴 Rumania *(v1.7)* | — | IVA (CUI / CIF) |
+| 🇧🇬 Bulgaria *(v1.7)* | — | IVA (persona jurídica) |
+| 🇭🇷 Croacia *(v1.7)* | OIB | OIB |
+| 🇸🇰 Eslovaquia *(v1.7)* | — | IVA (IČ DPH) |
+| 🇸🇮 Eslovenia *(v1.7)* | — | IVA (DDV) |
+| 🇱🇹 Lituania *(v1.7)* | — | IVA (PVM) |
+| 🇱🇻 Letonia *(v1.7)* | — | IVA (PVN, persona jurídica high / personal moderate) |
+| 🇪🇪 Estonia *(v1.7)* | — | IVA (KMKR) |
+| 🇲🇹 Malta *(v1.7)* | — | IVA |
+| 🇨🇾 Chipre *(v1.7)* | — | IVA |
+| 🇮🇸 Islandia *(v1.7)* | — | VSK (solo formato, EEA sin VIES) |
 
 La documentación per-país completa con algoritmos y fuentes citadas vive en [`docs/countries/`](./docs/countries).
 
@@ -221,7 +256,12 @@ Si tu producto usa `nationid` y querés aparecer acá, abrí un PR con una entra
 - **v0.5** — Familia pasaporte + algoritmo ICAO 9303 + BR_CNPJ alfanumérico + MX_NSS + correcciones del audit ✅
 - **v0.6** — Europa principal: GB, FR, DE, IT, NL, BE, CH, PL, SE, NO, DK, FI ✅
 - **v1.0** — API estabilizada. Cada spec con `confidence: "high"` respaldado por una cita first-party (verificado en CI). Tarball -76%. Inferencia con narrowing para `parse` / `getSpec` / `extract*`. ✅
-- **v1.1+** — Asia (IN, CN, JP, KR, SG, HK, TW + AU, NZ, ZA, IL), `@nationid/react` con `<DocumentInput>`, más locales i18n, mutation testing, REGISTRY lazy para tree-shaking completo desde el root.
+- **v1.1** — Catálogo de países bajo `nationid/catalog`: nombres + banderas + ISO alpha-3; cualquier locale BCP 47 via `Intl.DisplayNames`. ✅
+- **v1.2** — Asia fase 1: India (Aadhaar, VID, PAN, GSTIN, EPIC) + primitiva Verhoeff. ✅
+- **v1.7** — EU-VAT completo: 16 miembros UE + Islandia (EEA). Primitiva ISO/IEC 7064 MOD 11,10. Patrón de URL liveness audit. ✅
+- **v1.3 / v1.4 / v1.5 / v1.6** — Asia fase 2 (research + verification completos): JP (My Number + 法人番号), SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementando a continuación.
+- **v1.8** — Balcanes via primitiva JMBG (RS/BA/MK/ME) + prefijo GB Northern Ireland `XI` + `BG_EGN` + `CZ_RC` (desbloquea las ramas 10-digit BG y full CZ DIC).
+- **v1.x** — `@nationid/react` con `<DocumentInput>`, más locales i18n, mutation testing (Stryker), REGISTRY lazy para tree-shaking completo desde el root.
 
 ## Contribuir
 

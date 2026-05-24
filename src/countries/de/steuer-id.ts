@@ -25,6 +25,7 @@
  * and replicated by `validator.js isTaxID('de-DE')` and `python-stdnum.de.idnr`.
  */
 
+import { mod11_10CheckDigit } from "../../algorithms/iso7064.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
@@ -53,7 +54,7 @@ export const steuerIdSpec: DocumentSpec = {
     const digits = stripNonDigits(input);
     if (!RAW_REGEX.test(digits)) return false;
     if (!hasValidRepeatPattern(digits.slice(0, 10))) return false;
-    return computeMod1110DV(digits.slice(0, 10)) === digits.charCodeAt(10) - 48;
+    return mod11_10CheckDigit(digits.slice(0, 10)) === digits.charCodeAt(10) - 48;
   },
 
   format(input: string): string {
@@ -80,7 +81,7 @@ export const steuerIdSpec: DocumentSpec = {
     if (!hasValidRepeatPattern(digits.slice(0, 10))) {
       return { ok: false, code: CODE, reason: { kind: "invalid_format" } };
     }
-    if (computeMod1110DV(digits.slice(0, 10)) !== digits.charCodeAt(10) - 48) {
+    if (mod11_10CheckDigit(digits.slice(0, 10)) !== digits.charCodeAt(10) - 48) {
       return { ok: false, code: CODE, reason: { kind: "invalid_checksum" } };
     }
     return {
@@ -110,16 +111,4 @@ function hasValidRepeatPattern(body10: string): boolean {
     }
   }
   return repeats === 1 && (repeatCount === 2 || repeatCount === 3);
-}
-
-/** ISO/IEC 7064 MOD 11,10 check digit for a 10-digit body. */
-function computeMod1110DV(body10: string): number {
-  let check = 10;
-  for (let i = 0; i < body10.length; i++) {
-    const d = body10.charCodeAt(i) - 48;
-    let p = (d + check) % 10;
-    if (p === 0) p = 10;
-    check = (p * 2) % 11;
-  }
-  return (11 - check) % 10;
 }
