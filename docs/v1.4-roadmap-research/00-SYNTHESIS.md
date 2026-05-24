@@ -1,4 +1,4 @@
-# 00 — Synthesis: world-document backlog for v1.7 → v2.x
+# 00 — Synthesis: world-document backlog for v2.5 → v3.x
 
 > Cross-region synthesis of 4 parallel `research-analyst` agents that ran
 > 2026-05-23 against Asia-Pacific (14), Rest-of-Europe (27), MENA (20), and
@@ -6,8 +6,14 @@
 > (issuer, top documents, algorithm, oracle availability, confidence
 > ceiling, effort estimate).
 >
-> Currently shipped: 35 countries (v1.0–v1.2). Already deep-researched and
-> queued for v1.3-v1.6: JP, KR, SG, TW. This document plans v1.7 onward.
+> **Numbering note**: this doc was written when the roadmap used `v1.X`
+> milestone labels. After the major bump to `nationid@2.0.0` (EU-VAT batch),
+> the cadence below has been updated to use semver-correct labels: Asia
+> phase 2 = v2.1-v2.4, post-Asia batches = v2.5+, architectural release =
+> v3.0. The research findings themselves are unchanged.
+>
+> Currently shipped: 52 countries (v1.0–v2.0). Already deep-researched and
+> queued for v2.1-v2.4: JP, SG, KR, TW. This document plans v2.5 onward.
 
 ---
 
@@ -21,18 +27,20 @@
 | Sub-Saharan Africa | 24 | 2 (ZA, NG) | 2 (KE, GH) | ~25 |
 | **Total new** | **85** | **13** | **15** | **~150** |
 
-Plus 4 queued (JP/KR/SG/TW = ~12 specs) and 35 shipped (~125 specs).
+Plus 4 queued (JP/KR/SG/TW = ~12 specs) and 52 shipped (~145 specs after v2.0).
 
-**Realistic 18-month ceiling**: 35 (shipped) + 4 (queued v1.3-v1.6) + 28 (S/A
-across all regions) = **67 countries × ~190 specs by mid-2027**. The
-remaining 50 countries (~80 specs) defer to v2.x.
+**Realistic 18-month ceiling**: 52 (shipped) + 4 (queued v2.1-v2.4) + 28 (S/A
+across all regions) = **84 countries × ~210 specs by mid-2027**. The
+remaining 50 countries (~80 specs) defer to v3.x.
 
 ---
 
 ## Cross-region S-tier ranking (where to spend the next 60h)
 
 Ranked by `(strategic value) / (implementation hours)`. Asia phase-2 already
-queued (JP/SG/KR/TW = v1.3-v1.6) is not re-listed here.
+queued (JP/SG/KR/TW = v2.1-v2.4) is not re-listed here. The EU-VAT batch
+that originally appeared here as "v1.7" shipped as `nationid@2.0.0` on
+2026-05-24 and is no longer in this backlog.
 
 | # | Country | Region | Specs | Effort | Strategic value | Oracle |
 |--:|---------|--------|------:|-------:|-----------------|--------|
@@ -56,20 +64,18 @@ queued (JP/SG/KR/TW = v1.3-v1.6) is not re-listed here.
 Some batches deliver disproportionate value because one shared primitive
 unlocks N countries.
 
-### Batch 1 — **EU-VAT completion** (v1.7 candidate)
+### Batch 1 — **EU-VAT completion** (SHIPPED as nationid@2.0.0 on 2026-05-24) ✅
 
-10–16 new VAT codes for currently-unshipped EU members: AT, BG, CY, CZ, EE,
-GR, HR, HU, IE, LT, LU, LV, MT, RO, SI, SK. All have `python-stdnum/<cc>/vat.py`
-or share the existing EU mod-N algorithms.
+17 VAT codes shipped for currently-unshipped EU members + Iceland: IE, AT,
+LU, GR, CZ, HU, RO, BG, HR, SK, SI, LT, LV, EE, MT, CY, IS. 15 high + 2
+moderate confidence. Hoisted `mod11_10CheckDigit` (ISO/IEC 7064 MOD 11,10)
+to `nationid/algorithms`. Greek `EL`/`GR` prefix normalisation built in.
 
-- **Effort**: 25-30h batched (vs ~5h each if shipped depth-first).
-- **Marketing**: unlocks "EU VIES feature parity" claim independent of
-  personal IDs. Single bullet in the announcement post.
-- **Risk**: low — every VAT spec already validated upstream by stdnum.
-- **Recommendation**: ship as **v1.7.0 "EU-VAT complete"**, then iterate
-  personal IDs per country in v1.8+.
+- **Actual effort**: ~1 sprint (research + verification + 17 specs + tests +
+  docs + URL liveness audit + signing infrastructure).
+- **Outcome**: "EU VIES feature parity" claim unlocked.
 
-### Batch 2 — **JMBG core primitive** (v1.8 candidate)
+### Batch 2 — **JMBG core primitive** (v2.5 candidate)
 
 Implementing the weighted mod-11 + region tables for the JMBG (former
 Yugoslavia personal ID) once unlocks BA, MK, ME, RS, and reuses for HR
@@ -78,19 +84,19 @@ pre-OIB + SI EMSO + XK.
 - **Effort**: 8h for the primitive + ~2h per country = 18h for 5 countries
   / 10 specs.
 - **Strategic value**: completes the Balkans in one release.
-- **Recommendation**: ship as **v1.8.0 "Balkans complete via JMBG"**.
+- **Recommendation**: ship as **v2.5.0 "Balkans complete via JMBG"**.
 
-### Batch 3 — **MENA Wave A** (v1.9 candidate)
+### Batch 3 — **MENA Wave A** (v2.6 candidate)
 
 5 highest-value MENA countries together (IL, TR, EG, AE, SA), per the MENA
 agent's wave plan.
 
 - **Effort**: 28h.
 - **Coverage**: ~285M people, 4 `high`-confidence specs.
-- **Recommendation**: ship as **v1.9.0 "MENA Wave A"** with a regional
+- **Recommendation**: ship as **v2.6.0 "MENA Wave A"** with a regional
   showcase update + RTL-safe i18n for the playground (one-time investment).
 
-### Batch 4 — **APAC core** (v1.10 candidate)
+### Batch 4 — **APAC core** (v2.7 candidate)
 
 ID + AU + CN + MY + PH in one release (or split across two minor versions).
 
@@ -99,7 +105,7 @@ ID + AU + CN + MY + PH in one release (or split across two minor versions).
 - **Risk**: 3 of 5 are format-only ceilings (ID NIK, MY NRIC, PH PCN) —
   load-bearing on the confidence framework.
 
-### Batch 5 — **SSA Wave A** (v1.11 candidate)
+### Batch 5 — **SSA Wave A** (v2.8 candidate)
 
 ZA + NG + KE + GH + RW per SSA agent's plan.
 
@@ -112,35 +118,39 @@ ZA + NG + KE + GH + RW per SSA agent's plan.
 
 ---
 
-## Proposed release cadence v1.7 → v2.0
+## Proposed release cadence post-v2.0
 
 | Release | Theme | Countries / batches | Effort | Coverage delta |
 |---------|-------|---------------------|-------:|----------------|
-| v1.7.0 | EU-VAT complete | 10–16 VAT codes (no personal IDs) | 25-30h | EU-27 VIES parity claim |
-| v1.8.0 | Balkans via JMBG | RS, BA, MK, ME (+optional XK placeholder) | 18h | 5 countries / 10 specs |
-| v1.9.0 | MENA Wave A | IL, TR, EG, AE, SA | 28h + 8h RTL i18n | 5 countries / 9 specs / 285M pop |
-| v1.10.0 | APAC core | AU + CN + ID + MY + PH | 50h | 5 countries / 12 specs / 1.85B pop |
-| v1.11.0 | SSA Wave A | ZA + NG + KE + GH + RW | 25h | 5 countries / 8 specs / 425M pop |
-| v1.12.0 | EU personal IDs catch-up | RO, IE, CZ, GR, AT, HU + others | 30h | 6 countries / 12 specs |
-| **v2.0.0** | Stability re-promise + i18n expansion | API freeze v2 + Arabic/Hebrew/Chinese i18n locales + lazy REGISTRY | 40h | architectural release |
+| v2.0.0 ✅ | EU-VAT complete | IE, AT, LU, GR, CZ, HU, RO, BG, HR, SK, SI, LT, LV, EE, MT, CY, IS | ~1 sprint | **SHIPPED 2026-05-24**: 17 countries / 17 specs / EU-27 VIES parity |
+| v2.1.0 | Asia phase 2 — Japan | JP_MY_NUMBER + JP_CORPORATE_NUMBER | 1 day | 1 country / 2 specs |
+| v2.2.0 | Asia phase 2 — Singapore | SG_NRIC, SG_FIN, SG_UEN (3 categories) | 2-3 days | 1 country / 5 specs |
+| v2.3.0 | Asia phase 2 — Korea | KR_RRN, KR_BRN | 1-2 days | 1 country / 2 specs |
+| v2.4.0 | Asia phase 2 — Taiwan | TW_UBN, TW_NID, TW_ARC (post-2021 + legacy) | 2 days | 1 country / 3-4 specs |
+| v2.5.0 | Balkans via JMBG | RS, BA, MK, ME (+optional XK placeholder) | 18h | 5 countries / 10 specs |
+| v2.6.0 | MENA Wave A | IL, TR, EG, AE, SA | 28h + 8h RTL i18n | 5 countries / 9 specs / 285M pop |
+| v2.7.0 | APAC core | AU + CN + ID + MY + PH | 50h | 5 countries / 12 specs / 1.85B pop |
+| v2.8.0 | SSA Wave A | ZA + NG + KE + GH + RW | 25h | 5 countries / 8 specs / 425M pop |
+| v2.9.0 | EU personal IDs catch-up | RO, IE, CZ, GR, AT, HU + others | 30h | 6 countries / 12 specs |
+| **v3.0.0** | Stability re-promise + i18n expansion | API freeze v3 + Arabic/Hebrew/Chinese i18n locales + lazy REGISTRY | 40h | architectural release |
 
-**Total v1.7 → v2.0**: ~220h spread across ~6 months at current cadence
-(1-2 minor releases/month). Adds **~36 new countries × ~75 specs** on top
-of the post-v1.6 baseline of 39 countries × ~137 specs → **~75 countries
-× ~210 specs at v2.0**.
+**Total v2.1 → v3.0**: ~220h spread across ~6 months at current cadence
+(1-2 minor releases/month). Adds **~32 new countries × ~65 specs** on top
+of the post-v2.0 baseline of 52 countries × ~145 specs → **~84 countries
+× ~210 specs at v3.0**.
 
 ---
 
-## Cross-cutting risks (must address before v1.7)
+## Cross-cutting risks (must address before v2.1)
 
 ### 1. Confidence-tier framework is about to be load-bearing
 
 Today 35/35 shipped countries have at least one `high`-confidence spec
-backed by first-party citation. Post-v1.7 a significant fraction of new
+backed by first-party citation. Post-v2.0 a significant fraction of new
 countries (especially APAC + SSA + Gulf) will ship at `moderate` / `low` /
 `format-only` ceilings.
 
-**Action before v1.7**: README + showcase need a prominent visual
+**Action before v2.1**: README + showcase need a prominent visual
 explanation of what `confidence: "format-only"` means and how a consumer
 should layer additional verification (KYC vendor, government API, document
 photo) on top. The governance test already enforces citation; the
@@ -154,10 +164,10 @@ Protection Law (Israel), POPIA (South Africa), KVKK (Turkey) — every new
 region adds laws that restrict cross-border ID transfer, mandate
 masking-at-display, and require breach notification.
 
-**Action before v1.7**: `docs/PII_GUIDANCE.md` already exists (Sprint 1).
+**Action before v2.1**: `docs/PII_GUIDANCE.md` already exists (Sprint 1).
 Extend with a **per-region appendix** added incrementally as each release
-ships — APAC appendix before v1.10, MENA appendix before v1.9, SSA before
-v1.11. One section per region with the 2-3 laws the consumer must comply
+ships — APAC appendix before v2.7, MENA appendix before v2.6, SSA before
+v2.8. One section per region with the 2-3 laws the consumer must comply
 with.
 
 ### 3. Sanctions countries — explicit policy needed
@@ -168,7 +178,7 @@ countries' IDs is **lawful and in high demand** post-2022 precisely because
 counterparty screening is mandatory. python-stdnum and all major KYC SaaS
 ship them.
 
-**Action before v1.7**: draft a README "Sanctions and dual-use validators"
+**Action before v2.1**: draft a README "Sanctions and dual-use validators"
 section. The Rest-of-Europe agent already drafted suggested language for
 RU; reuse-and-extend for the others. Legal review recommended.
 
@@ -178,7 +188,7 @@ Of the 85 backlog countries, ~50 use `python-stdnum/<cc>/*.py` as the
 authoritative cross-library oracle. If python-stdnum stalls or breaks
 backwards-compat, our governance test loses its main external validator.
 
-**Action before v1.10** (when oracle count exceeds 60 specs): port the
+**Action before v2.7** (when oracle count exceeds 60 specs): port the
 specific `stdnum/<cc>/<doc>.py` files we depend on into a small
 `oracles/` test-only TypeScript port, version-pinned to a known-good
 stdnum release. Re-derive yearly. Cost: ~4h initial + 1h/year.
@@ -188,7 +198,7 @@ stdnum release. Re-derive yearly. Cost: ~4h initial + 1h/year.
 CN, JP, KR, SG (multi-script), TW, IL, TR, MENA Arabic countries all need
 the showcase + i18n layer to support `dir="rtl"` and CJK display names.
 
-**Action before v1.9** (MENA Wave A): land the RTL audit in one focused
+**Action before v2.6** (MENA Wave A): land the RTL audit in one focused
 release — 8h is the agent estimate. Reuse for all Arabic countries
 downstream.
 
@@ -259,12 +269,13 @@ Egypt (sandbox API maturity).
 
 ## Next concrete action
 
-After v1.6 (Taiwan) ships, the cleanest next move is **v1.7 EU-VAT
-batch** — lowest risk (every spec has an upstream oracle), highest
-"complete the EU" marketing leverage, no per-country research load.
-~25-30h, one focused weekend.
+The EU-VAT batch shipped as `nationid@2.0.0` on 2026-05-24, ahead of Asia
+phase 2. The cleanest next move is **v2.1 — Japan** (`JP_MY_NUMBER` +
+`JP_CORPORATE_NUMBER`), the lowest-risk of the four queued phase-2
+countries. Plan is in [`../v2.1-plan.md`](../v2.1-plan.md). After Japan,
+ship v2.2 SG → v2.3 KR → v2.4 TW in order.
 
-Then v1.8 onward picks up from this synthesis in the order recommended
+Then v2.5 onward picks up from this synthesis in the order recommended
 above. Each release shipping starts with a per-country / per-batch
 deep-research doc paired with a verification agent (same pattern as the
 v1.2-asia-research/VERIFICATION.md flow that already saved us from the
