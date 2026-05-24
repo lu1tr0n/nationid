@@ -227,6 +227,11 @@
       "import": "./dist/countries/in/index.js",
       "require": "./dist/countries/in/index.cjs"
     },
+    "./jp": {
+      "types": "./dist/countries/jp/index.d.ts",
+      "import": "./dist/countries/jp/index.js",
+      "require": "./dist/countries/jp/index.cjs"
+    },
     "./ie": {
       "types": "./dist/countries/ie/index.d.ts",
       "import": "./dist/countries/ie/index.js",

@@ -44,6 +44,7 @@ import { ieBundle } from "./countries/ie/index.ts";
 import { inBundle } from "./countries/in/index.ts";
 import { isBundle } from "./countries/is/index.ts";
 import { itBundle } from "./countries/it/index.ts";
+import { jpBundle } from "./countries/jp/index.ts";
 import { ltBundle } from "./countries/lt/index.ts";
 import { luBundle } from "./countries/lu/index.ts";
 import { lvBundle } from "./countries/lv/index.ts";
@@ -127,6 +128,8 @@ const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
   fiBundle,
   // v1.2.0 — Asia phase 1
   inBundle,
+  // v2.1.0 — Asia phase 2: Japan
+  jpBundle,
   // v1.7.0 — EU-VAT complete (16 EU + 1 EEA)
   ieBundle,
   atBundle,

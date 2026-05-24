@@ -20,7 +20,13 @@
 
 As ferramentas existentes cobrem uma fração do mundo. `validator.js` valida apenas 6 tax IDs de LATAM. `cpf-cnpj-validator` cobre o Brasil. `rut.js` cobre o Chile. Nenhuma traz El Salvador, Guatemala, Honduras, República Dominicana ou Costa Rica com verificação de checksum.
 
-`nationid` preenche essa lacuna. A partir da v2.0 traz **52 países com ~145 códigos de documento**, todos com algoritmos documentados de fontes oficiais — e promete estabilidade de API mais um teste de governança no CI que exige que cada spec com `confidence: "high"` cite uma fonte de primeira mão do emissor.
+`nationid` preenche essa lacuna. A partir da v2.1 traz **53 países com ~147 códigos de documento**, todos com algoritmos documentados de fontes oficiais — e promete estabilidade de API mais um teste de governança no CI que exige que cada spec com `confidence: "high"` cite uma fonte de primeira mão do emissor.
+
+## Novidades na v2.1 (2026-05-24)
+
+- 🇯🇵 **Japão** — primeiro país da Ásia fase 2. Dois novos specs sob `nationid/jp`: `JP_MY_NUMBER` (Número Individual de 12 dígitos, mod-11 ponderado, Portaria MIC 85/2014) e `JP_CORPORATE_NUMBER` (Número Corporativo de 13 dígitos, mod-9 ponderado, NTA). Ambos em `confidence: "high"`. O número corporativo `7000012050002` da própria NTA é verificável no registro público e é usado como anchor canônico nos tests.
+- **Tests de oracle-agreement** — cada spec JP roda um property test de 10k amostras contra um port inline de `python-stdnum/stdnum/jp/in_.py` (My Number) e `python-stdnum/stdnum/jp/cn.py` (Corporate Number). Cross-validação independente built-in no CI.
+- 6970+ → 7000+ tests, 53 países × ~147 códigos.
 
 ## Novidades na v2.0 (2026-05-24)
 
@@ -28,7 +34,6 @@ As ferramentas existentes cobrem uma fração do mundo. `validator.js` valida ap
 - **Primitiva ISO/IEC 7064 MOD 11,10** — `mod11_10CheckDigit` + `mod11_10Valid` exportados de `nationid/algorithms`. Length-generic; usada por HR_OIB, DE_USTID, DE_STEUER_ID.
 - **Tratamento do prefixo grego `EL`/`GR`** built-in — aceita ambos na entrada, normaliza para `EL` (forma canônica VIES). Fecha o #1 bug histórico de EU-VAT.
 - **Toda URL em todo JSDoc verificada ao vivo** via `browser_fetch` (firefox133 TLS impersonation) antes do publish — corrige 5 URLs quebradas em India v1.2 e 3 em v2.0. Snapshots de `web.archive.org` aceitos como citação suplementar onde o cert do emissor bloqueia checks programáticos.
-- 6606 → 6900+ tests, 52 países × ~145 códigos.
 
 ## Novidades na v1.2 (2026-05-23)
 
@@ -157,7 +162,7 @@ listCountries("pt").length; // 52
 
 Cada subpath é tree-shakable de forma independente. Locales soltos (`nationid/i18n/es`, `/en`, `/pt`) pesam menos de 200 B cada.
 
-## Cobertura (52 países)
+## Cobertura (53 países)
 
 | País | Pessoal | Fiscal |
 |------|---------|--------|
@@ -196,6 +201,7 @@ Cada subpath é tree-shakable de forma independente. Locales soltos (`nationid/i
 | 🇩🇰 Dinamarca | CPR | CVR, Moms |
 | 🇫🇮 Finlândia | HETU | Y-tunnus, ALV |
 | 🇮🇳 Índia *(v1.2)* | Aadhaar, VID, EPIC (eleitoral) | PAN, GSTIN |
+| 🇯🇵 Japão *(v2.1)* | My Number | Corporate Number |
 | 🇮🇪 Irlanda *(v2.0)* | — | IVA |
 | 🇦🇹 Áustria *(v2.0)* | — | UID (USt-IdNr) |
 | 🇱🇺 Luxemburgo *(v2.0)* | — | TVA |
@@ -260,7 +266,8 @@ Se seu produto usa `nationid` e quer aparecer aqui, abra um PR adicionando uma e
 - **v1.1** — Catálogo de países sob `nationid/catalog`: nomes + bandeiras + ISO alpha-3; qualquer locale BCP 47 via `Intl.DisplayNames`. ✅
 - **v1.2** — Ásia fase 1: Índia (Aadhaar, VID, PAN, GSTIN, EPIC) + primitiva Verhoeff. ✅
 - **v2.0** — EU-VAT completo: 16 membros UE + Islândia (EEA). Primitiva ISO/IEC 7064 MOD 11,10. Padrão de URL liveness audit. ✅
-- **v2.1-v2.4** — Ásia fase 2 (research + verification completos): JP (My Number + 法人番号), SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementando em seguida.
+- **v2.1** — Ásia fase 2 — Japão (My Number + 法人番号). Algoritmos MIC + NTA cross-validados contra `python-stdnum`. ✅
+- **v2.2-v2.4** — Ásia fase 2 (research + verification completos): SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementando em seguida.
 - **v2.5** — Bálcãs via primitiva JMBG (RS/BA/MK/ME) + prefixo GB Northern Ireland `XI` + `BG_EGN` + `CZ_RC` (desbloqueia as ramificações 10-digit BG e full CZ DIC).
 - **v2.x** — `@nationid/react` com `<DocumentInput>`, mais locales i18n, mutation testing (Stryker), REGISTRY lazy para tree-shaking completo a partir do root.
 
