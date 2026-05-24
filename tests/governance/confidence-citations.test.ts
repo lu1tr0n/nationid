@@ -71,6 +71,8 @@ const ISSUER_TLD_SUFFIXES: ReadonlyArray<RegExp> = [
   /(?:^|\.)irs\.gov$/i,
   /(?:^|\.)ssa\.gov$/i,
   /(?:^|\.)jus\.br$/i,
+  // v1.7: Austria uses `gv.at` for federal government, not `gov.at`.
+  /(?:^|\.)gv\.at$/i,
 ];
 
 const ISSUER_ALLOWLIST_DOMAINS: ReadonlySet<string> = new Set([
@@ -139,6 +141,43 @@ const ISSUER_ALLOWLIST_DOMAINS: ReadonlySet<string> = new Set([
   "tse.go.cr",
   "hacienda.go.cr",
   "tramites.gob.bo",
+  // v1.7 EU-VAT batch — first-party domains for 17 new countries.
+  // Ireland
+  "revenue.ie",
+  // Austria
+  "bmf.gv.at",
+  "usp.gv.at",
+  // Luxembourg
+  "public.lu",
+  "pfi.public.lu",
+  "guichet.public.lu",
+  // Greece
+  "aade.gr",
+  "gsis.gr",
+  // Czechia
+  "financnisprava.cz",
+  "adisspr.mfcr.cz",
+  // Romania
+  "anaf.ro",
+  // Bulgaria
+  "nra.bg",
+  // Croatia
+  "porezna-uprava.hr",
+  // Slovakia
+  "financnasprava.sk",
+  // Lithuania
+  "vmi.lt",
+  // Estonia
+  "emta.ee",
+  // Malta
+  "legislation.mt",
+  // Iceland (EEA, not VIES)
+  "skatturinn.is",
+  "rsk.is",
+  // Wayback Machine — acceptable as supplementary citation when issuer's
+  // current page has moved or the agency's TLS cert can't be verified
+  // programmatically (e.g. BG NRA). Always paired with a statute citation.
+  "web.archive.org",
 ]);
 
 function isIssuerHost(host: string): boolean {
@@ -182,6 +221,27 @@ const STATUTE_PATTERNS: ReadonlyArray<RegExp> = [
   /\bFederal\s+law\b/i,
   /\bCódigo\s+Tributario\b/i,
   /\bDOU\b/i,
+  // v1.7 EU-VAT batch — statute patterns for EU + national legal frameworks.
+  /\bDirective\s+2006\/112\/EC\b/i,
+  /\bCouncil\s+Regulation\s+\(EU\)\s+No\s+\d+\/\d+\b/i,
+  /\bVAT\s+Consolidation\s+Act\s+\d{4}\b/i, // Ireland
+  /\bUStG\b/i, // Austria/Germany
+  /\bLoi\s+du\s+\d{1,2}\s+\p{L}+\s+\d{4}\b/iu, // Luxembourg / France
+  /\bΝόμος\s+\d+\/\d+/iu, // Greece
+  /\bZákon\s+č\.\s*\d+\/\d+\s+Sb\./i, // Czechia
+  /\bZákon\s+č\.\s*\d+\/\d+\s+Z\.\s*z\./i, // Slovakia
+  /\b\d{4}\.\s+évi\s+[A-Z]+\.\s+törvény\b/iu, // Hungary
+  /\bLegea\s+nr\.\s*\d+\/\d+\b/i, // Romania
+  /\bЗДДС\b/iu, // Bulgaria VAT Act
+  /\bЗакон\s+за\s+ДДС\b/iu, // Bulgaria VAT Act long form
+  /\bZakon\s+o\s+\p{L}+/iu, // Croatian / Slovenian / Serbian generic
+  /\bZDDV-1\b/i, // Slovenia VAT
+  /\bPVM\s+įstatymas\b/iu, // Lithuania VAT
+  /\bPievienotās\s+vērtības\s+nodokļa\s+likums\b/iu, // Latvia VAT
+  /\bKäibemaksuseadus\b/iu, // Estonia VAT
+  /\bValue\s+Added\s+Tax\s+Act\b/i, // Malta / generic EN
+  /\bCap\.\s*\d+\b/i, // Malta / Cyprus "Cap. 406", "Cap. …"
+  /\bLög\s+nr\.\s*\d+\/\d+\b/iu, // Iceland
 ];
 
 /** Returns the JSDoc block at the top of the file (before any imports). */

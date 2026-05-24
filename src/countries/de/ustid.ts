@@ -16,6 +16,7 @@
  * `validator.js isVAT('de-DE')` and `python-stdnum.de.vat`.
  */
 
+import { mod11_10CheckDigit } from "../../algorithms/iso7064.ts";
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
@@ -43,7 +44,7 @@ export const ustidSpec: DocumentSpec = {
   validate(input: string): boolean {
     const cleaned = normalizeUstid(input);
     if (!RAW_REGEX.test(cleaned)) return false;
-    return computeMod1110DV(cleaned.slice(2, 10)) === cleaned.charCodeAt(10) - 48;
+    return mod11_10CheckDigit(cleaned.slice(2, 10)) === cleaned.charCodeAt(10) - 48;
   },
 
   format(input: string): string {
@@ -67,7 +68,7 @@ export const ustidSpec: DocumentSpec = {
     if (!RAW_REGEX.test(cleaned)) {
       return { ok: false, code: CODE, reason: { kind: "invalid_format" } };
     }
-    if (computeMod1110DV(cleaned.slice(2, 10)) !== cleaned.charCodeAt(10) - 48) {
+    if (mod11_10CheckDigit(cleaned.slice(2, 10)) !== cleaned.charCodeAt(10) - 48) {
       return { ok: false, code: CODE, reason: { kind: "invalid_checksum" } };
     }
     return {
@@ -85,16 +86,4 @@ function normalizeUstid(input: string): string {
   if (cleaned.startsWith("DE")) return cleaned;
   if (/^[1-9]\d{8}$/.test(cleaned)) return `DE${cleaned}`;
   return cleaned;
-}
-
-/** ISO/IEC 7064 MOD 11,10 check digit for a body of digits. */
-function computeMod1110DV(body: string): number {
-  let check = 10;
-  for (let i = 0; i < body.length; i++) {
-    const d = body.charCodeAt(i) - 48;
-    let p = (d + check) % 10;
-    if (p === 0) p = 10;
-    check = (p * 2) % 11;
-  }
-  return (11 - check) % 10;
 }

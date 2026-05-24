@@ -45,6 +45,24 @@ const ALL_COUNTRIES = [
   "fi",
   // v1.2.0 — Asia phase 1
   "in",
+  // v1.7.0 — EU-VAT complete (16 EU + 1 EEA)
+  "ie",
+  "at",
+  "lu",
+  "gr",
+  "cz",
+  "hu",
+  "ro",
+  "bg",
+  "hr",
+  "sk",
+  "si",
+  "lt",
+  "lv",
+  "ee",
+  "mt",
+  "cy",
+  "is",
 ] as const;
 
 const COUNTRIES = ALL_COUNTRIES.filter((cc) => existsSync(`src/countries/${cc}/index.ts`));

@@ -768,6 +768,25 @@ const VALID_SAMPLES: Readonly<Record<DocumentTypeCode, ReadonlyArray<string>>> =
     "1000000000000005",
     "1999999999999992",
   ],
+  // v1.7.0 — EU-VAT complete. Vectors are canonical anchors or hand-derived
+  // via the documented algorithm; verified in VERIFICATION.md / test files.
+  IE_VAT: ["IE8473625E", "IE3628739UA"],
+  AT_UID: ["ATU13585627"],
+  LU_VAT: ["LU15027442"],
+  GR_VAT: ["EL094259216"],
+  CZ_DIC: ["CZ25123891"],
+  HU_VAT: ["HU12892312"],
+  RO_VAT: ["RO18547290", "RO123453"],
+  BG_VAT: ["BG100000001"],
+  HR_OIB: ["HR33392005961"],
+  SK_VAT: ["SK1020000003"],
+  SI_VAT: ["SI50223054"],
+  LT_VAT: ["LT100001110"],
+  LV_VAT: ["LV40003009497"],
+  EE_VAT: ["EE100594102"],
+  MT_VAT: ["MT11679112"],
+  CY_VAT: ["CY10259033P"],
+  IS_VSK: ["12345", "123456"],
 };
 
 /**

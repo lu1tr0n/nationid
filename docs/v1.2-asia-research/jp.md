@@ -1,5 +1,12 @@
 # Japan (JP) — research for nationid v1.2
 
+> ⚠️ **Verified 2026-05-23.** Cross-checked against first-party and
+> python-stdnum sources. **Two citation fixes required before implementing**:
+> see [`VERIFICATION.md` §JP-1 and §JP-2](./VERIFICATION.md#japan). Specifically:
+> My Number ordinance long-title; Corporate Number statute swap from
+> `国税庁告示第31号` → `法人番号の指定等に関する省令 第3条`; python-stdnum module names
+> (`cn.py`, `in_.py`). Algorithms, weights, and test vectors verified correct.
+
 > Target codes: `JP_MY_NUMBER`, `JP_CORPORATE_NUMBER`
 > Author: research-agent · Date: 2026-05-23 · Library version: nationid@1.1.0 → planned 1.2.0
 > Scope: Japan only. Driver's licence (運転免許証) and passport (旅券) are deferred.

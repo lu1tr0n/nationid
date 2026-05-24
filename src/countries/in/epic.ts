@@ -2,7 +2,8 @@
  * India — Elector's Photo Identity Card (`IN_EPIC`).
  *
  * Issuer: Election Commission of India (ECI).
- * Source: https://eci.gov.in/
+ * Source: https://www.eci.gov.in/ (issuer root — verified live 2026-05-24).
+ *         https://voters.eci.gov.in/ (National Voter Service Portal).
  * Statute: Representation of the People Act 1950; ECI order Aug 1993
  *          introducing the voter ID card.
  *

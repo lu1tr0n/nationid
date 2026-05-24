@@ -26,32 +26,28 @@ import { cuilSpec } from "../countries/ar/cuil.ts";
 import { cuitSpec } from "../countries/ar/cuit.ts";
 import { dniSpec as arDniSpec } from "../countries/ar/dni.ts";
 import { passportSpec as arPassportSpec } from "../countries/ar/passport.ts";
-
+// v1.7.0 — EU-VAT complete (16 EU + 1 EEA)
+import { uidSpec as atUidSpec } from "../countries/at/uid.ts";
 import { btwSpec as beBtwSpec } from "../countries/be/btw.ts";
 import { nrnSpec } from "../countries/be/nrn.ts";
-
+import { vatSpec as bgVatSpec } from "../countries/bg/vat.ts";
 import { ciSpec as boCiSpec } from "../countries/bo/ci.ts";
 import { nitSpec as boNitSpec } from "../countries/bo/nit.ts";
 import { passportSpec as boPassportSpec } from "../countries/bo/passport.ts";
-
 import { cnhSpec } from "../countries/br/cnh.ts";
 import { cnpjSpec } from "../countries/br/cnpj.ts";
 import { cpfSpec } from "../countries/br/cpf.ts";
 import { passportSpec as brPassportSpec } from "../countries/br/passport.ts";
 import { pisSpec } from "../countries/br/pis.ts";
 import { tituloEleitorSpec } from "../countries/br/titulo-eleitor.ts";
-
 import { bnSpec } from "../countries/ca/bn.ts";
 import { passportSpec as caPassportSpec } from "../countries/ca/passport.ts";
 import { sinSpec } from "../countries/ca/sin.ts";
-
 import { ahvSpec } from "../countries/ch/ahv.ts";
 import { mwstSpec } from "../countries/ch/mwst.ts";
 import { uidSpec } from "../countries/ch/uid.ts";
-
 import { passportSpec as clPassportSpec } from "../countries/cl/passport.ts";
 import { rutSpec as clRutSpec } from "../countries/cl/rut.ts";
-
 import { ccSpec as coCcSpec } from "../countries/co/cc.ts";
 import { ceSpec as coCeSpec } from "../countries/co/ce.ts";
 import { nitSpec as coNitSpec } from "../countries/co/nit.ts";
@@ -59,34 +55,30 @@ import { pasaporteSpec as coPasaporteSpec } from "../countries/co/pasaporte.ts";
 import { pepSpec } from "../countries/co/pep.ts";
 import { pptSpec } from "../countries/co/ppt.ts";
 import { tiSpec } from "../countries/co/ti.ts";
-
 import { cedulaFisicaSpec } from "../countries/cr/cedula-fisica.ts";
 import { cedulaJuridicaSpec } from "../countries/cr/cedula-juridica.ts";
 import { dimexSpec } from "../countries/cr/dimex.ts";
 import { passportSpec as crPassportSpec } from "../countries/cr/passport.ts";
-
+import { vatSpec as cyVatSpec } from "../countries/cy/vat.ts";
+import { dicSpec as czDicSpec } from "../countries/cz/dic.ts";
 import { steuerIdSpec } from "../countries/de/steuer-id.ts";
 import { steuernummerSpec } from "../countries/de/steuernummer.ts";
 import { ustidSpec } from "../countries/de/ustid.ts";
-
 import { cprSpec } from "../countries/dk/cpr.ts";
 import { cvrSpec } from "../countries/dk/cvr.ts";
 import { vatSpec as dkVatSpec } from "../countries/dk/vat.ts";
-
 import { cedulaSpec as doCedulaSpec } from "../countries/do/cedula.ts";
 import { passportSpec as doPassportSpec } from "../countries/do/passport.ts";
 import { rncSpec } from "../countries/do/rnc.ts";
-
 import { cedulaSpec as ecCedulaSpec } from "../countries/ec/cedula.ts";
 import { passportSpec as ecPassportSpec } from "../countries/ec/passport.ts";
 import { rucSpec as ecRucSpec } from "../countries/ec/ruc.ts";
-
+import { vatSpec as eeVatSpec } from "../countries/ee/vat.ts";
 import { dniSpec as esDniSpec } from "../countries/es/dni.ts";
 import { nieSpec } from "../countries/es/nie.ts";
 import { nifPjSpec } from "../countries/es/nif-pj.ts";
 import { nussSpec } from "../countries/es/nuss.ts";
 import { passportSpec as esPassportSpec } from "../countries/es/passport.ts";
-
 import { hetuSpec } from "../countries/fi/hetu.ts";
 import { vatSpec as fiVatSpec } from "../countries/fi/vat.ts";
 import { ytunnusSpec } from "../countries/fi/ytunnus.ts";
@@ -98,78 +90,75 @@ import { nhsSpec } from "../countries/gb/nhs.ts";
 import { ninoSpec } from "../countries/gb/nino.ts";
 import { utrSpec } from "../countries/gb/utr.ts";
 import { vatSpec as gbVatSpec } from "../countries/gb/vat.ts";
+import { vatSpec as grVatSpec } from "../countries/gr/vat.ts";
 import { dpiSpec } from "../countries/gt/dpi.ts";
 import { nitSpec as gtNitSpec } from "../countries/gt/nit.ts";
 import { passportSpec as gtPassportSpec } from "../countries/gt/passport.ts";
 import { dniSpec as hnDniSpec } from "../countries/hn/dni.ts";
 import { passportSpec as hnPassportSpec } from "../countries/hn/passport.ts";
 import { rtnSpec } from "../countries/hn/rtn.ts";
+import { oibSpec as hrOibSpec } from "../countries/hr/oib.ts";
+import { vatSpec as huVatSpec } from "../countries/hu/vat.ts";
+import { vatSpec as ieVatSpec } from "../countries/ie/vat.ts";
 import { aadhaarSpec } from "../countries/in/aadhaar.ts";
 import { epicSpec } from "../countries/in/epic.ts";
 import { gstinSpec } from "../countries/in/gstin.ts";
 import { panSpec } from "../countries/in/pan.ts";
 import { vidSpec } from "../countries/in/vid.ts";
-
+import { vskSpec as isVskSpec } from "../countries/is/vsk.ts";
 import { cfSpec } from "../countries/it/cf.ts";
 import { pivaSpec } from "../countries/it/piva.ts";
-
+import { vatSpec as ltVatSpec } from "../countries/lt/vat.ts";
+import { vatSpec as luVatSpec } from "../countries/lu/vat.ts";
+import { vatSpec as lvVatSpec } from "../countries/lv/vat.ts";
+import { vatSpec as mtVatSpec } from "../countries/mt/vat.ts";
 import { claveElectorSpec } from "../countries/mx/clave-elector.ts";
 import { curpSpec } from "../countries/mx/curp.ts";
 import { nssSpec } from "../countries/mx/nss.ts";
 import { passportSpec as mxPassportSpec } from "../countries/mx/passport.ts";
 import { rfcPfSpec } from "../countries/mx/rfc-pf.ts";
 import { rfcPmSpec } from "../countries/mx/rfc-pm.ts";
-
 import { cedulaSpec as niCedulaSpec } from "../countries/ni/cedula.ts";
 import { passportSpec as niPassportSpec } from "../countries/ni/passport.ts";
 import { rucSpec as niRucSpec } from "../countries/ni/ruc.ts";
-
 import { bsnSpec } from "../countries/nl/bsn.ts";
 import { btwSpec as nlBtwSpec } from "../countries/nl/btw.ts";
-
 import { dnrSpec } from "../countries/no/dnr.ts";
 import { fnrSpec } from "../countries/no/fnr.ts";
 import { mvaSpec } from "../countries/no/mva.ts";
 import { orgnrSpec as noOrgnrSpec } from "../countries/no/orgnr.ts";
-
 import { cedulaSpec as paCedulaSpec } from "../countries/pa/cedula.ts";
 import { passportSpec as paPassportSpec } from "../countries/pa/passport.ts";
 import { rucSpec as paRucSpec } from "../countries/pa/ruc.ts";
-
 import { ceSpec as peCeSpec } from "../countries/pe/ce.ts";
 import { dniSpec as peDniSpec } from "../countries/pe/dni.ts";
 import { passportSpec as pePassportSpec } from "../countries/pe/passport.ts";
 import { rucSpec as peRucSpec } from "../countries/pe/ruc.ts";
-
 import { nipSpec } from "../countries/pl/nip.ts";
 import { peselSpec } from "../countries/pl/pesel.ts";
 import { regonSpec } from "../countries/pl/regon.ts";
-
 import { ccSpec as ptCcSpec } from "../countries/pt/cc.ts";
 import { nifSpec } from "../countries/pt/nif.ts";
 import { passportSpec as ptPassportSpec } from "../countries/pt/passport.ts";
-
 import { ciSpec as pyCiSpec } from "../countries/py/ci.ts";
 import { passportSpec as pyPassportSpec } from "../countries/py/passport.ts";
 import { rucSpec as pyRucSpec } from "../countries/py/ruc.ts";
-
+import { vatSpec as roVatSpec } from "../countries/ro/vat.ts";
 import { orgnrSpec as seOrgnrSpec } from "../countries/se/orgnr.ts";
 import { personnummerSpec } from "../countries/se/personnummer.ts";
 import { vatSpec as seVatSpec } from "../countries/se/vat.ts";
-
+import { vatSpec as siVatSpec } from "../countries/si/vat.ts";
+import { vatSpec as skVatSpec } from "../countries/sk/vat.ts";
 import { duiSpec } from "../countries/sv/dui.ts";
 import { nitSpec as svNitSpec } from "../countries/sv/nit.ts";
 import { passportSpec as svPassportSpec } from "../countries/sv/passport.ts";
-
 import { einSpec } from "../countries/us/ein.ts";
 import { itinSpec } from "../countries/us/itin.ts";
 import { passportSpec as usPassportSpec } from "../countries/us/passport.ts";
 import { ssnSpec } from "../countries/us/ssn.ts";
-
 import { ciSpec as uyCiSpec } from "../countries/uy/ci.ts";
 import { passportSpec as uyPassportSpec } from "../countries/uy/passport.ts";
 import { rutSpec as uyRutSpec } from "../countries/uy/rut.ts";
-
 import { cedulaSpec as veCedulaSpec } from "../countries/ve/cedula.ts";
 import { passportSpec as vePassportSpec } from "../countries/ve/passport.ts";
 import { rifSpec } from "../countries/ve/rif.ts";
@@ -340,6 +329,24 @@ export const PII_SPEC_TABLE: Record<DocumentTypeCode, DocumentSpec> = {
   IN_GSTIN: gstinSpec,
   IN_EPIC: epicSpec,
   IN_VID: vidSpec,
+  // v1.7.0 — EU-VAT complete
+  IE_VAT: ieVatSpec,
+  AT_UID: atUidSpec,
+  LU_VAT: luVatSpec,
+  GR_VAT: grVatSpec,
+  CZ_DIC: czDicSpec,
+  HU_VAT: huVatSpec,
+  RO_VAT: roVatSpec,
+  BG_VAT: bgVatSpec,
+  HR_OIB: hrOibSpec,
+  SK_VAT: skVatSpec,
+  SI_VAT: siVatSpec,
+  LT_VAT: ltVatSpec,
+  LV_VAT: lvVatSpec,
+  EE_VAT: eeVatSpec,
+  MT_VAT: mtVatSpec,
+  CY_VAT: cyVatSpec,
+  IS_VSK: isVskSpec,
 };
 
 /**

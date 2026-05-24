@@ -63,6 +63,24 @@ const EXPECTED_ALPHA3: ReadonlyArray<readonly [string, string]> = [
   ["DK", "DNK"],
   ["FI", "FIN"],
   ["IN", "IND"],
+  // v1.7.0 — EU-VAT complete
+  ["IE", "IRL"],
+  ["AT", "AUT"],
+  ["LU", "LUX"],
+  ["GR", "GRC"],
+  ["CZ", "CZE"],
+  ["HU", "HUN"],
+  ["RO", "ROU"],
+  ["BG", "BGR"],
+  ["HR", "HRV"],
+  ["SK", "SVK"],
+  ["SI", "SVN"],
+  ["LT", "LTU"],
+  ["LV", "LVA"],
+  ["EE", "EST"],
+  ["MT", "MLT"],
+  ["CY", "CYP"],
+  ["IS", "ISL"],
 ];
 
 describe("flagEmoji — Regional Indicator Symbol composition", () => {

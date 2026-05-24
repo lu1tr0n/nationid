@@ -2,9 +2,11 @@
  * India — Permanent Account Number (`IN_PAN`).
  *
  * Issuer: Income Tax Department, Ministry of Finance.
- * Source: https://incometaxindia.gov.in/Pages/i-am/about-pan.aspx
- *         https://incometaxindia.gov.in/tutorials/1.permanent%20account%20number%20(pan).pdf
- * Statute: Income-tax Act 1961, s. 139A; Income-tax Rules 1962, Rule 114.
+ * Source: https://www.incometaxindia.gov.in/ (CBDT portal — issuer root).
+ *         https://www.incometax.gov.in/ (e-Filing portal — PAN services).
+ * Statute: Income-tax Act 1961, s. 139A; Income-tax Rules 1962, Rule 114
+ *          (the binding algorithm / format authority).
+ *          URLs verified live 2026-05-24.
  *
  * Format: 10 chars `LLLLLNNNNL`. The 4th character encodes entity type:
  *   A (AOP), B (BOI), C (Company), F (Firm/LLP), G (Government),

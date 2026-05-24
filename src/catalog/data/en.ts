@@ -725,4 +725,97 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
     longName: "Virtual ID",
     description: "16-digit revocable Aadhaar alias issued by UIDAI, same Verhoeff scheme.",
   },
+
+  // v1.7.0 — EU-VAT complete
+  IE_VAT: {
+    displayName: "VAT",
+    longName: "Irish Value-Added Tax number",
+    description:
+      "8 or 9-character VAT registration issued by Revenue Commissioners; mod-23 letter check.",
+  },
+  AT_UID: {
+    displayName: "UID",
+    longName: "Umsatzsteuer-Identifikationsnummer",
+    description:
+      "ATU + 8-digit Austrian VAT identification issued by BMF; weighted mod-10 check digit.",
+  },
+  LU_VAT: {
+    displayName: "TVA",
+    longName: "Numéro d'identification à la TVA",
+    description: "8-digit Luxembourg VAT number issued by AED; check derived from body6 mod 89.",
+  },
+  GR_VAT: {
+    displayName: "VAT",
+    longName: "Greek VAT number (ΑΦΜ)",
+    description: "9-digit Greek tax/VAT number issued by AADE; VIES prefix EL.",
+  },
+  CZ_DIC: {
+    displayName: "DIČ",
+    longName: "Daňové identifikační číslo",
+    description: "8-digit Czech VAT number for legal entities; weighted mod-11 check.",
+  },
+  HU_VAT: {
+    displayName: "VAT",
+    longName: "Hungarian community tax number",
+    description: "8-digit Hungarian EU VAT number issued by NAV; weighted mod-10 check.",
+  },
+  RO_VAT: {
+    displayName: "VAT",
+    longName: "Romanian Codul Unic de Înregistrare",
+    description: "2-10 digit Romanian tax/VAT number issued by ANAF; weighted mod-11 check.",
+  },
+  BG_VAT: {
+    displayName: "VAT",
+    longName: "Bulgarian VAT number (legal entity)",
+    description:
+      "9-digit Bulgarian VAT number for legal entities issued by NRA; fallback-weighted mod-11.",
+  },
+  HR_OIB: {
+    displayName: "OIB",
+    longName: "Osobni identifikacijski broj",
+    description:
+      "11-digit Croatian personal/tax identifier issued by Porezna uprava; ISO/IEC 7064 MOD 11,10.",
+  },
+  SK_VAT: {
+    displayName: "VAT",
+    longName: "IČ DPH (Slovak VAT)",
+    description: "10-digit Slovak VAT number issued by Finančná správa; divisibility-by-11 check.",
+  },
+  SI_VAT: {
+    displayName: "VAT",
+    longName: "Identifikacijska številka za DDV",
+    description: "8-digit Slovenian VAT number issued by FURS; weighted mod-11 check.",
+  },
+  LT_VAT: {
+    displayName: "VAT",
+    longName: "PVM mokėtojo kodas",
+    description:
+      "9 or 12-digit Lithuanian VAT number issued by VMI; weighted mod-11 with fallback weights.",
+  },
+  LV_VAT: {
+    displayName: "VAT",
+    longName: "Latvian PVN registration",
+    description: "11-digit Latvian VAT number issued by VID; legal-entity branch weighted mod-11.",
+  },
+  EE_VAT: {
+    displayName: "KMKR",
+    longName: "Estonian VAT number",
+    description: "9-digit Estonian VAT number issued by MTA; weighted mod-10 check.",
+  },
+  MT_VAT: {
+    displayName: "VAT",
+    longName: "Malta VAT registration",
+    description: "8-digit Malta VAT number issued by CFR; weighted mod-37 check.",
+  },
+  CY_VAT: {
+    displayName: "VAT",
+    longName: "Cypriot VAT number",
+    description: "8 digits + 1 check letter; positional translation table mod 26.",
+  },
+  IS_VSK: {
+    displayName: "VSK",
+    longName: "Icelandic VAT number",
+    description:
+      "5 or 6-digit Icelandic VAT number issued by RSK; format-only validation (no checksum).",
+  },
 };
