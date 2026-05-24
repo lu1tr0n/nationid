@@ -1,8 +1,8 @@
 ---
-"nationid": minor
+"nationid": major
 ---
 
-# v1.7.0 — EU-VAT complete: 17 new countries
+# v2.0.0 — EU-VAT complete: 17 new countries
 
 Sixteen EU member states and one EEA participant ship their VAT validators
 in a single batched release. Every spec carries a first-party citation
@@ -43,12 +43,12 @@ verified live and (where applicable) cross-validated against
 - **`CZ_DIC`** — 8-digit legal-entity branch only. The 9-digit "special
   natural person" branch and the 10-digit RČ (rodné číslo) branch require
   a Czech date validator with the +50/+20 month offsets; both defer to
-  v1.8 alongside `CZ_RC`.
+  a future release alongside `CZ_RC`.
 - **`BG_VAT`** — 9-digit legal-entity branch only. The 10-digit sole-
   proprietor branch (EGN / PNF / other) depends on an EGN validator that
-  doesn't exist yet; defer to v1.8 alongside `BG_EGN`.
-- **GB Northern Ireland `XI` prefix** — out of scope for v1.7; ships in
-  v1.8 as a `GB_VAT` variant under the Windsor Framework.
+  doesn't exist yet; defer to a future release alongside `BG_EGN`.
+- **GB Northern Ireland `XI` prefix** — out of scope for v2.0; ships in
+  a follow-up release as a `GB_VAT` variant under the Windsor Framework.
 
 ## Greek `EL` / `GR` prefix handling
 
