@@ -5,8 +5,8 @@
  */
 
 import type { CountryDocumentBundle, DocumentSpec, ParseResult } from "../../core/types.ts";
-import { corporateNumberSpec } from "./corporate_number.ts";
-import { myNumberSpec } from "./my_number.ts";
+import { corporateNumberSpec } from "./corporate-number.ts";
+import { myNumberSpec } from "./my-number.ts";
 
 export { corporateNumberSpec, myNumberSpec };
 

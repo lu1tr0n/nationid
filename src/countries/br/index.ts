@@ -27,7 +27,7 @@ const SPECS = {
 export type BRDocumentType = keyof typeof SPECS;
 
 /** Short-alias union accepted by the country-scoped helpers. */
-type BRShortCode = "CPF" | "CNPJ" | "CNH" | "TITULO_ELEITOR" | "PIS" | "PASAPORTE";
+type ShortCode = "CPF" | "CNPJ" | "CNH" | "TITULO_ELEITOR" | "PIS" | "PASAPORTE";
 
 /**
  * Validate a Brazilian (BR) identity or tax document.
@@ -42,26 +42,26 @@ type BRShortCode = "CPF" | "CNPJ" | "CNH" | "TITULO_ELEITOR" | "PIS" | "PASAPORT
  * validate("CNPJ", "11.222.333/0001-81");
  * ```
  */
-export function validate(code: BRDocumentType | BRShortCode, input: string): boolean {
+export function validate(code: BRDocumentType | ShortCode, input: string): boolean {
   return resolveSpec(code).validate(input);
 }
 
 /** Format a Brazilian (BR) document into its canonical display form. */
-export function format(code: BRDocumentType | BRShortCode, input: string): string {
+export function format(code: BRDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).format(input);
 }
 
 /** Normalize a Brazilian (BR) document by stripping separators. */
-export function normalize(code: BRDocumentType | BRShortCode, input: string): string {
+export function normalize(code: BRDocumentType | ShortCode, input: string): string {
   return resolveSpec(code).normalize(input);
 }
 
 /** Parse a Brazilian (BR) document into a structured `ParseResult`. */
-export function parse(code: BRDocumentType | BRShortCode, input: string): ParseResult {
+export function parse(code: BRDocumentType | ShortCode, input: string): ParseResult {
   return resolveSpec(code).parse(input);
 }
 
-function resolveSpec(code: BRDocumentType | BRShortCode): DocumentSpec {
+function resolveSpec(code: BRDocumentType | ShortCode): DocumentSpec {
   if (code === "CPF") return cpfSpec;
   if (code === "CNPJ") return cnpjSpec;
   if (code === "CNH") return cnhSpec;

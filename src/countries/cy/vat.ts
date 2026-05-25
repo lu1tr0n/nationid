@@ -2,7 +2,7 @@
  * Cyprus — VAT (ΦΠΑ — Φόρος Προστιθέμενης Αξίας).
  *
  * Issuer: Tax Department, Ministry of Finance.
- * Source: https://mof.gov.cy/
+ * Source: https://www.gov.cy/mof/
  * Statute: Ν. 95(I)/2000 — Value Added Tax Law (Cyprus VAT Law).
  * Cross-validation: VIES (https://ec.europa.eu/taxation_customs/vies/),
  *                   `python-stdnum.cy.vat`.

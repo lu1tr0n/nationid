@@ -31,7 +31,7 @@ const out = mask("XX_UNKNOWN", "12345"); // ❌ Error: no spec registered for "X
 
 **v0.x:** importing from non-public subpaths like `nationid/core/normalize` or `nationid/countries/mx/curp` worked because Node fell back to the file system after the explicit exports map missed.
 
-**v1.0:** the exports map ends with `"./*": null`, which denies any subpath not listed. Only the documented entries resolve: `nationid`, `nationid/algorithms`, `nationid/<cc>` (34 country subpaths), `nationid/extract`, `nationid/pii`, `nationid/catalog`, `nationid/i18n` (+ `/en`, `/es`, `/pt`).
+**v1.0:** the exports map ends with `"./*": null`, which denies any subpath not listed. Only the documented entries resolve: `nationid`, `nationid/algorithms`, `nationid/<cc>` (53 country subpaths as of v2.1), `nationid/extract`, `nationid/pii`, `nationid/catalog`, `nationid/i18n` (+ `/en`, `/es`, `/pt`).
 
 **Migration:** if you imported a private internal, switch to a documented subpath. Per-country specs are re-exported by their country bundle (`import { curpSpec } from "nationid/mx"`); algorithm primitives come from `nationid/algorithms`. If you need a primitive that is not exported, open an issue — the gap probably points at a missing public API rather than a need to escape the deny rule.
 
@@ -101,7 +101,7 @@ Today `CodesSupporting<"dob"> = "MX_CURP" | "MX_RFC_PF"`, `CodesSupporting<"sex"
 
 - All `validate / format / normalize / parse / getSpec / listSupportedCodes` signatures stay backward-compatible at the type level. `parse()` and `getSpec()` are now generic over `<C extends DocumentTypeCode>`, but with `DocumentTypeCode` as the default parameter — existing `: ParseResult` and `: DocumentSpec` annotations keep working.
 - All country bundles (`mxBundle`, `brBundle`, …) keep the same shape and contents.
-- All 34 country subpaths keep the same entry points.
+- All country subpaths (34 at v1.0, 53 as of v2.1) keep the same entry points.
 - All translations (`nationid/i18n/{en,es,pt}`) keep the same keys.
 - Tarball is **76% smaller** (1.7 MB → 413 KB) thanks to dropped sourcemaps and `extract`/`pii` no longer pulling the root REGISTRY. No code change needed to benefit.
 
@@ -116,6 +116,30 @@ yarn upgrade nationid@1.0.0
 ```
 
 Re-run your test suite. If `pnpm typecheck` and `pnpm test` stay green, you are done.
+
+---
+
+## 0.5 Migrating from v1.x to v2.0
+
+**No code changes required.** v2.0 is a major version bump driven by the EU-VAT batch (17 new countries: IE, AT, LU, GR, CZ, HU, RO, BG, HR, SK, SI, LT, LV, EE, MT, CY, IS). The bump is **additive** — no public APIs were removed, renamed, or had their behaviour changed. The major bump exists only to (a) keep the milestone-label and npm-version slots aligned and (b) signal the "EU VIES feature parity" milestone independently of the per-country roadmap.
+
+New in v2.0:
+
+- 17 new VAT specs under their respective `nationid/<cc>` subpaths.
+- `mod11_10CheckDigit` + `mod11_10Valid` exported from `nationid/algorithms` (ISO/IEC 7064 MOD 11,10, length-generic — used by HR_OIB and the DE Steuer-ID family).
+- Greek `EL` / `GR` prefix normalisation built into `GR_VAT` (accept both on input, normalise to `EL`).
+
+New in v2.1 (released the same day):
+
+- 🇯🇵 Japan: `JP_MY_NUMBER` + `JP_CORPORATE_NUMBER`. Both `confidence: "high"`, cross-validated against `python-stdnum/jp/{in_,cn}.py`.
+
+Upgrade:
+
+```bash
+pnpm add nationid@2.1
+```
+
+That's it.
 
 ---
 
