@@ -1,0 +1,34 @@
+# Dependency Review Action
+#
+# Scans dependency manifest files that change as part of a pull request,
+# surfacing known-vulnerable versions of the packages declared or updated in
+# the PR. If a critical/high CVE is introduced, the action fails the check —
+# preventing the PR from being merged when configured as required.
+#
+# Source: https://github.com/actions/dependency-review-action
+# Recommended by OSSF Scorecard ("Pinned-Dependencies" + "Dependency-Update-Tool").
+
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4.9.0
