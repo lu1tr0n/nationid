@@ -173,6 +173,7 @@ const ISSUER_ALLOWLIST_DOMAINS: ReadonlySet<string> = new Set([
   "emta.ee",
   // Malta
   "legislation.mt",
+  "mtca.gov.mt", // Malta Tax & Customs Administration (post-2024 consolidation of cfr.gov.mt)
   // Iceland (EEA, not VIES)
   "skatturinn.is",
   "rsk.is",

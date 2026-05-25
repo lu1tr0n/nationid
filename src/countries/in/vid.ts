@@ -10,8 +10,8 @@
  * Format: 16 digits, first digit `1` (UIDAI reserves the `1xxx...` range
  * for VID, separate from the `2-9` Aadhaar range).
  *
- * Check digit: Verhoeff (IS 4905:1968) over all 16 digits, same scheme as
- * Aadhaar (only the length differs).
+ * Check digit: Verhoeff scheme (Verhoeff 1969 — see `nationid/algorithms`)
+ * over all 16 digits, same scheme as Aadhaar (only the length differs).
  *
  * Confidence: high. UIDAI publishes algorithm + circular gazetted.
  */
