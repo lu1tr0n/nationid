@@ -32,6 +32,7 @@
  * issuer statutorily defined, multiple independent implementations converge.
  */
 
+import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
@@ -39,14 +40,10 @@ const RAW_REGEX = /^[0-9]{12}$/;
 const FORMATTED_REGEX = /^[0-9]{4} [0-9]{4} [0-9]{4}$/;
 const CODE = "JP_MY_NUMBER";
 
-const WEIGHTS: readonly number[] = [6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+const WEIGHTS = [6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2] as const;
 
-function computeCheckDigit(base: string): number {
-  let sum = 0;
-  for (let i = 0; i < 11; i++) {
-    sum += (base.charCodeAt(i) - 48) * (WEIGHTS[i] as number);
-  }
-  const r = sum % 11;
+function computeCheckDigit(base11: string): number {
+  const r = mod11WeightedSum(base11, WEIGHTS) % 11;
   return r <= 1 ? 0 : 11 - r;
 }
 
