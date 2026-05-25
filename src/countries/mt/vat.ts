@@ -1,8 +1,10 @@
 /**
  * Malta — VAT registration number.
  *
- * Issuer: Commissioner for Revenue (CFR).
- * Source: https://cfr.gov.mt/
+ * Issuer: Malta Tax and Customs Administration (MTCA, formerly CFR — the
+ *         standalone Commissioner for Revenue site `cfr.gov.mt` consolidated
+ *         into `mtca.gov.mt` in 2024-2025).
+ * Source: https://mtca.gov.mt/ (verified live 2026-05-24)
  * Statute: Value Added Tax Act, Cap. 406 (Malta).
  * Cross-validation: VIES (https://ec.europa.eu/taxation_customs/vies/),
  *                   `python-stdnum.mt.vat`.

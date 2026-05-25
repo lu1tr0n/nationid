@@ -38,7 +38,7 @@ Las herramientas existentes cubren una fracción del mundo. `validator.js` solo 
 ## Novedades en v1.2 (2026-05-23)
 
 - 🇮🇳 **Soporte para India** — primer país de Asia. Cinco specs nuevos bajo `nationid/in`: `IN_AADHAAR` (Verhoeff + rechazo de palíndromos, UIDAI), `IN_VID` (alias de 16 dígitos para Aadhaar), `IN_PAN` (lista blanca por tipo de entidad, Income Tax Department), `IN_GSTIN` (Luhn mod-36 + PAN embebido + código de estado, CBIC), `IN_EPIC` (solo formato, ECI).
-- **Primitiva Verhoeff** — `verhoeffValid` y `verhoeffCheckDigit` se exportan desde `nationid/algorithms`. Tablas canónicas D₅ + permutaciones tomadas literalmente del IS 4905:1968.
+- **Primitiva Verhoeff** — `verhoeffValid` y `verhoeffCheckDigit` se exportan desde `nationid/algorithms`. Tablas canónicas D₅ + permutaciones tomadas literalmente de Verhoeff (1969).
 - 6488 → 6606 tests, 35 países × ~125 códigos. Tarball 2.9 MB unpacked (+200 KB).
 
 ## Novedades en v1.1 (2026-05-22)
@@ -156,7 +156,7 @@ import { getCountryInfo, listCountries, flagEmoji } from "nationid/catalog";
 getCountryInfo("MX", "es");
 // { code: "MX", alpha3: "MEX", name: "México", flag: "🇲🇽" }
 flagEmoji("BR");          // "🇧🇷"
-listCountries("pt").length; // 52
+listCountries("pt").length; // 53
 ```
 
 Cada subpath se tree-shakea independiente. Los locales sueltos (`nationid/i18n/es`, `/en`, `/pt`) pesan menos de 200 B cada uno.
@@ -243,7 +243,9 @@ Si tu producto usa `nationid` y querés aparecer acá, abrí un PR con una entra
 | | nationid | validator.js | cpf-cnpj-validator | rut.js |
 |---|---|---|---|---|
 | Países LATAM | **22** | 6 | 1 | 1 |
-| Países europeos | **12** | 8 | 0 | 0 |
+| Países europeos | **31** (UE-27 VIES + UK/CH/NO/IS) | 8 | 0 | 0 |
+| Cobertura EU-VIES IVA | **UE-27 completa** | parcial | 0 | 0 |
+| Países de Asia | **2** (IN, JP; SG/KR/TW siguen) | 0 | 0 | 0 |
 | El Salvador | ✅ | ❌ | ❌ | ❌ |
 | Guatemala | ✅ | ❌ | ❌ | ❌ |
 | Honduras | ✅ | ❌ | ❌ | ❌ |

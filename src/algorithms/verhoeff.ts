@@ -1,12 +1,17 @@
 /**
  * Verhoeff check digit — dihedral-group D₅ scheme.
  *
- * Devised by J. Verhoeff (1969); standardised as Indian Standard IS 4905:1968.
+ * Devised by J. Verhoeff, "Error Detecting Decimal Codes", Mathematical
+ * Centre Tract 29, Mathematisch Centrum, Amsterdam (1969). The algorithm
+ * has no formal ISO/IS designation; UIDAI adopted it for Aadhaar per its
+ * 2010 "A UID Numbering Scheme" working paper (Kanakia, Nadhamuni & Sarma).
+ *
  * Used by India's Aadhaar (12-digit UID) and VID (16-digit Aadhaar alias);
- * detects all single-digit and all transposition errors.
+ * detects all single-digit substitutions and all adjacent transposition
+ * errors.
  *
  * The three tables below are canonical (verbatim from Verhoeff 1969 and
- * cross-verified against python-stdnum's `stdnum.verhoeff`).
+ * cross-verified byte-for-byte against python-stdnum's `stdnum.verhoeff`).
  */
 
 /** Dihedral D₅ multiplication table, indexed `[j][k]` for `j ∘ k`. */

@@ -13,8 +13,9 @@
  * Format: 12 digits, first digit `2`–`9` (UIDAI reserves `0` for system use
  * and `1` for VID). Canonical print form is `NNNN NNNN NNNN`.
  *
- * Check digit: Verhoeff (IS 4905:1968) over all 12 digits. The Verhoeff
- * scheme detects all single-digit and all transposition errors.
+ * Check digit: Verhoeff scheme (Verhoeff 1969 — see `nationid/algorithms`
+ * for the citation and the canonical D₅ tables) over all 12 digits.
+ * Detects all single-digit substitutions and all transposition errors.
  *
  * UIDAI's working paper additionally rejects palindromes; we mirror that
  * runtime guard.

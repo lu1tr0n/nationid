@@ -4,8 +4,8 @@
 
 | Code | Scope | Length | Check digit | Confidence |
 |------|-------|--------|-------------|-----------|
-| `IN_AADHAAR` | personal | 12 | Verhoeff (IS 4905:1968) | high |
-| `IN_VID` | personal | 16 | Verhoeff (IS 4905:1968) | high |
+| `IN_AADHAAR` | personal | 12 | Verhoeff (1969) | high |
+| `IN_VID` | personal | 16 | Verhoeff (1969) | high |
 | `IN_EPIC` | personal | 10 | none (format only) | low |
 | `IN_PAN` | tax | 10 | none (CBDT does not publish the algorithm) | high |
 | `IN_GSTIN` | tax | 15 | Luhn mod-36 + embedded PAN | high |
@@ -31,9 +31,9 @@ biometric ID programme in the world (~1.39 billion enrolled as of 2024).
 
 ### Algorithm
 
-Verhoeff check digit (IS 4905:1968) over all 12 digits. Verhoeff catches
-**all** single-digit substitutions and **all** adjacent-digit transpositions
-— stronger than mod-10 or mod-11 schemes.
+Verhoeff check digit over all 12 digits. Verhoeff catches **all** single-digit
+substitutions and **all** adjacent-digit transpositions — stronger than mod-10
+or mod-11 schemes.
 
 ```
 verhoeffValid(digits):
@@ -43,9 +43,9 @@ verhoeffValid(digits):
   return c == 0
 ```
 
-Implementation uses the canonical Verhoeff D₅ multiplication and
-permutation tables verbatim from IS 4905:1968. The library exports the
-primitive as `verhoeffValid` from `nationid/algorithms`.
+Implementation uses the canonical Verhoeff D₅ multiplication and permutation
+tables verbatim from Verhoeff (1969). The library exports the primitive as
+`verhoeffValid` from `nationid/algorithms`.
 
 In addition to the check-digit test, `IN_AADHAAR` **rejects palindromes**
 per the UIDAI "A UID Numbering Scheme" working paper, which excludes them
@@ -56,8 +56,10 @@ from the issuance space.
 - UIDAI: <https://uidai.gov.in/en/my-aadhaar/about-your-aadhaar.html> ✓ live 2026-05-24
 - UIDAI "A UID Numbering Scheme" working paper (Wayback snapshot):
   <https://web.archive.org/web/20140611025606/http://uidai.gov.in/UID_PDF/Working_Papers/A_UID_Numbering_Scheme.pdf> ✓
-- IS 4905:1968 — Indian Standard "Rules for rounding off numerical values"
-  (Verhoeff scheme reference)
+- Verhoeff, J. (1969), "Error Detecting Decimal Codes", Mathematical Centre
+  Tract 29, Mathematisch Centrum, Amsterdam (algorithm original publication;
+  the Aadhaar check digit has no formal ISO/IS designation despite occasional
+  online references)
 - Cross-validated against `python-stdnum` (`stdnum.in_.aadhaar`)
 
 ### Synthetic test vectors
