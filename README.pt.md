@@ -33,7 +33,7 @@ As ferramentas existentes cobrem uma fração do mundo. `validator.js` valida ap
 - 🇪🇺 **EU-VAT completo** — 16 membros UE + 1 participante EEA enviam validadores de IVA em um release batched: `IE_VAT`, `AT_UID`, `LU_VAT`, `GR_VAT`, `CZ_DIC`, `HU_VAT`, `RO_VAT`, `BG_VAT`, `HR_OIB`, `SK_VAT`, `SI_VAT`, `LT_VAT`, `LV_VAT`, `EE_VAT`, `MT_VAT`, `CY_VAT`, `IS_VSK`. Desbloqueia **paridade EU VIES** como um único tagline.
 - **Primitiva ISO/IEC 7064 MOD 11,10** — `mod11_10CheckDigit` + `mod11_10Valid` exportados de `nationid/algorithms`. Length-generic; usada por HR_OIB, DE_USTID, DE_STEUER_ID.
 - **Tratamento do prefixo grego `EL`/`GR`** built-in — aceita ambos na entrada, normaliza para `EL` (forma canônica VIES). Fecha o #1 bug histórico de EU-VAT.
-- **Toda URL em todo JSDoc verificada ao vivo** via `browser_fetch` (firefox133 TLS impersonation) antes do publish — corrige 5 URLs quebradas em India v1.2 e 3 em v2.0. Snapshots de `web.archive.org` aceitos como citação suplementar onde o cert do emissor bloqueia checks programáticos.
+- **Toda URL em todo JSDoc v2.0+ verificada ao vivo** via `browser_fetch` (firefox133 TLS impersonation) antes do publish — corrige 5 URLs quebradas em India v1.2 e 3 em v2.0. Snapshots de `web.archive.org` aceitos como citação suplementar onde o cert do emissor bloqueia checks programáticos. Specs anteriores à v2.0 estão sendo back-filled ao mesmo padrão país por país como parte da auditoria arquitetônica pós-v2.1.
 
 ## Novidades na v1.2 (2026-05-23)
 

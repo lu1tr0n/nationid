@@ -1,8 +1,19 @@
 /**
  * Sweden — Personnummer (personal identification number).
  *
- * Issuer: Skatteverket (Swedish Tax Agency).
- * Source: https://www.skatteverket.se/
+ * Issuer: Skatteverket (Swedish Tax Agency, Folkbokföringen).
+ * Statute: Folkbokföringslag (1991:481), §18 — defines the structure of the
+ *   identifier, the `-`/`+` separator rule, and the 8-digit machine form.
+ *   https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/folkbokforingslag-1991481_sfs-1991-481/
+ * Samordningsnummer statute: Lag (2022:1697) om samordningsnummer.
+ *   https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-20221697-om-samordningsnummer_sfs-2022-1697/
+ * Consumer-facing reference pages (live-verified 2026-05-24, HTTP 200):
+ *   https://www.skatteverket.se/privat/folkbokforing/personnummerochsamordningsnummer.4.3810a01c150939e893f18c29.html
+ *   https://www.skatteverket.se/privat/folkbokforing/samordningsnummer.4.5c281c7015abecc2e201130b.html
+ * Cross-validation oracle (pinned commit): python-stdnum at
+ *   https://raw.githubusercontent.com/arthurdejong/python-stdnum/5d4ad17cae8abeab21f446b5569f85d185566330/stdnum/se/personnummer.py
+ * npm reference implementation: `personnummer` v3.2.1
+ *   (https://github.com/personnummer/js, src/index.ts).
  *
  * Format: 10 or 12 digits.
  *   - 10-digit form:  YYMMDD-NNNC          (hyphen for under 100 years)
@@ -17,13 +28,22 @@
  * Coordination numbers (samordningsnummer): same shape, day-of-month + 60.
  * The library accepts these because they are issued by Skatteverket against
  * the same algorithm and are valid identifiers for tax / banking purposes.
+ * Skatteverket's published worked example `701063-2391` (a man born
+ * 1970-10-03 with day field 03+60=63) is hand-verified in
+ * `docs/research/v2.2-source-of-truth/se.md`.
  *
  * Check digit: standard Luhn (ISO/IEC 7812-1) over the 10-digit form
  * `YYMMDDNNNC` (i.e. for the 12-digit form, drop the century before
  * computing the checksum).
  *
- * Confidence: high — Skatteverket publishes the algorithm; cross-validated
- * against the `personnummer` (npm) reference implementation.
+ * Out of scope: interim numbers (`interimspersonnummer`, used by health-care
+ * systems before identity verification) substitute one of
+ * `[TRSUWXJKLMN]` for the first individnummer digit. nationid currently
+ * rejects them; the npm `personnummer` package accepts them under
+ * `allowInterimNumber`. Track as a v2.3+ scope decision.
+ *
+ * Confidence: high — Folkbokföringslagen §18 + python-stdnum oracle +
+ * Skatteverket's own published samordningsnummer example all agree.
  */
 
 import { luhnValid } from "../../algorithms/luhn.ts";

@@ -14,7 +14,8 @@
  * be divisible by 11.
  *
  * Confidence: high. Algorithm published by Finančná správa; rejecting the
- * python-stdnum "RČ-might-also-be-VAT" branch per v1.7 VERIFICATION §SK.
+ * python-stdnum "RČ-might-also-be-VAT" branch per v2.0 EU-VAT
+ * VERIFICATION §SK.
  */
 
 import { stripAndUpper } from "../../core/normalize.ts";

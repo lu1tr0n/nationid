@@ -7,10 +7,10 @@
  * Cross-validation: VIES (https://ec.europa.eu/taxation_customs/vies/),
  *                   `python-stdnum.cz.dic`.
  *
- * Format: `CZ` + 8 digits. **v1.7 ships the 8-digit legal-entity branch
- * only** (per VERIFICATION §CZ). The 9-digit "special natural person"
- * branch (first digit `6`) and 10-digit RČ branch are deferred to v1.8
- * alongside `CZ_RC`.
+ * Format: `CZ` + 8 digits. **Scope: 8-digit legal-entity branch only**
+ * (per v2.0 EU-VAT VERIFICATION §CZ). The 9-digit "special natural
+ * person" branch (first digit `6`) and 10-digit RČ branch are deferred
+ * to a future `CZ_RC` spec.
  *
  * Check digit: 8th digit. Weights `[8,7,6,5,4,3,2]` over the first 7 body
  * digits. `r = sum mod 11`; `check = (11 - r) mod 11`; if `check === 10`,

@@ -220,7 +220,7 @@ export const catalogCommon: Record<DocumentTypeCode, CommonEntry> = {
   },
   JP_CORPORATE_NUMBER: { purpose: "tax", knownAs: ["Corporate Number", "法人番号"] },
 
-  // v1.7.0 — EU-VAT complete
+  // v2.0.0 — EU-VAT complete
   IE_VAT: { purpose: "tax", knownAs: ["VAT", "Irish VAT number"] },
   AT_UID: { purpose: "tax", knownAs: ["UID", "USt-IdNr", "Umsatzsteuer-Identifikationsnummer"] },
   LU_VAT: { purpose: "tax", knownAs: ["TVA", "VAT"] },

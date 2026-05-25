@@ -26,7 +26,7 @@ import { cuilSpec } from "../countries/ar/cuil.ts";
 import { cuitSpec } from "../countries/ar/cuit.ts";
 import { dniSpec as arDniSpec } from "../countries/ar/dni.ts";
 import { passportSpec as arPassportSpec } from "../countries/ar/passport.ts";
-// v1.7.0 — EU-VAT complete (16 EU + 1 EEA)
+// v2.0.0 — EU-VAT complete (16 EU + 1 EEA)
 import { uidSpec as atUidSpec } from "../countries/at/uid.ts";
 import { btwSpec as beBtwSpec } from "../countries/be/btw.ts";
 import { nrnSpec } from "../countries/be/nrn.ts";
@@ -333,7 +333,7 @@ export const PII_SPEC_TABLE: Record<DocumentTypeCode, DocumentSpec> = {
   IN_VID: vidSpec,
   JP_MY_NUMBER: jpMyNumberSpec,
   JP_CORPORATE_NUMBER: jpCorporateNumberSpec,
-  // v1.7.0 — EU-VAT complete
+  // v2.0.0 — EU-VAT complete
   IE_VAT: ieVatSpec,
   AT_UID: atUidSpec,
   LU_VAT: luVatSpec,
