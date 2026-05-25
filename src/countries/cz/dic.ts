@@ -2,7 +2,7 @@
  * Czechia — DIČ (Daňové identifikační číslo) — legal-entity 8-digit branch.
  *
  * Issuer: Finanční správa České republiky.
- * Source: https://www.financnisprava.cz/
+ * Source: https://financnisprava.gov.cz/
  * Statute: Zákon č. 235/2004 Sb., o dani z přidané hodnoty, §94–95.
  * Cross-validation: VIES (https://ec.europa.eu/taxation_customs/vies/),
  *                   `python-stdnum.cz.dic`.

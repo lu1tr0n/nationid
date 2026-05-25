@@ -759,7 +759,7 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
     description: "8-digit Luxembourg VAT number issued by AED; check derived from body6 mod 89.",
   },
   GR_VAT: {
-    displayName: "VAT",
+    displayName: "ΑΦΜ",
     longName: "Greek VAT number (ΑΦΜ)",
     description: "9-digit Greek tax/VAT number issued by AADE; VIES prefix EL.",
   },
@@ -769,17 +769,17 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
     description: "8-digit Czech VAT number for legal entities; weighted mod-11 check.",
   },
   HU_VAT: {
-    displayName: "VAT",
+    displayName: "ÁFA",
     longName: "Hungarian community tax number",
     description: "8-digit Hungarian EU VAT number issued by NAV; weighted mod-10 check.",
   },
   RO_VAT: {
-    displayName: "VAT",
+    displayName: "CUI",
     longName: "Romanian Codul Unic de Înregistrare",
     description: "2-10 digit Romanian tax/VAT number issued by ANAF; weighted mod-11 check.",
   },
   BG_VAT: {
-    displayName: "VAT",
+    displayName: "ДДС",
     longName: "Bulgarian VAT number (legal entity)",
     description:
       "9-digit Bulgarian VAT number for legal entities issued by NRA; fallback-weighted mod-11.",
@@ -791,23 +791,23 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
       "11-digit Croatian personal/tax identifier issued by Porezna uprava; ISO/IEC 7064 MOD 11,10.",
   },
   SK_VAT: {
-    displayName: "VAT",
+    displayName: "IČ DPH",
     longName: "IČ DPH (Slovak VAT)",
     description: "10-digit Slovak VAT number issued by Finančná správa; divisibility-by-11 check.",
   },
   SI_VAT: {
-    displayName: "VAT",
+    displayName: "DDV",
     longName: "Identifikacijska številka za DDV",
     description: "8-digit Slovenian VAT number issued by FURS; weighted mod-11 check.",
   },
   LT_VAT: {
-    displayName: "VAT",
+    displayName: "PVM",
     longName: "PVM mokėtojo kodas",
     description:
       "9 or 12-digit Lithuanian VAT number issued by VMI; weighted mod-11 with fallback weights.",
   },
   LV_VAT: {
-    displayName: "VAT",
+    displayName: "PVN",
     longName: "Latvian PVN registration",
     description: "11-digit Latvian VAT number issued by VID; legal-entity branch weighted mod-11.",
   },
@@ -822,7 +822,7 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
     description: "8-digit Malta VAT number issued by CFR; weighted mod-37 check.",
   },
   CY_VAT: {
-    displayName: "VAT",
+    displayName: "ΦΠΑ",
     longName: "Cypriot VAT number",
     description: "8 digits + 1 check letter; positional translation table mod 26.",
   },

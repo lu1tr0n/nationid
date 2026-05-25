@@ -191,7 +191,7 @@ const REGISTRY: ReadonlyMap<DocumentTypeCode, DocumentSpec> = (() => {
  * const dui = getSpec("SV_DUI");
  * dui.code;                    // "SV_DUI" — literal, not the whole union
  * console.log(dui.country);    // "SV"
- * console.log(dui.confidence); // "structural"
+ * console.log(dui.confidence); // "moderate"
  * ```
  */
 export function getSpec<C extends DocumentTypeCode>(code: C): DocumentSpec<C> {

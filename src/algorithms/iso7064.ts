@@ -38,13 +38,13 @@
  * import { mod11_10CheckDigit } from "nationid/algorithms";
  *
  * // DE USt-IdNr: 8-digit body
- * mod11_10CheckDigit("13585627"); // 7  → ATU13585627
+ * mod11_10CheckDigit("12345678"); // 8 → DE123456788
  *
  * // HR OIB: 10-digit body
- * mod11_10CheckDigit("3339200596"); // 1  → HR33392005961
+ * mod11_10CheckDigit("3339200596"); // 1 → HR33392005961
  *
- * // DE Steuer-ID: 10-digit body (different from USt-IdNr length)
- * mod11_10CheckDigit("1234567890"); // varies by body
+ * // DE Steuer-ID: 10-digit body (different length from USt-IdNr)
+ * mod11_10CheckDigit("4703689281"); // 6 → 47036892816
  * ```
  */
 export function mod11_10CheckDigit(body: string): number {
