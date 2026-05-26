@@ -740,7 +740,7 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
       "13-digit identifier for legal entities issued by Japan's National Tax Agency; weighted mod-9 check digit (leftmost position).",
   },
 
-  // v1.7.0 — EU-VAT complete
+  // v2.0.0 — EU-VAT complete
   IE_VAT: {
     displayName: "VAT",
     longName: "Irish Value-Added Tax number",

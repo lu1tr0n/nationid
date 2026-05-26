@@ -1,19 +1,33 @@
 /**
  * Sweden — Organisationsnummer (legal-entity registration number).
  *
- * Issuer: Bolagsverket (Swedish Companies Registration Office).
- * Source: https://bolagsverket.se/
+ * Issuer: Bolagsverket (Swedish Companies Registration Office) as principal
+ *   registrar; Skatteverket, Kammarkollegiet, Lantmäteriet, and
+ *   Statistikmyndigheten SCB also assign orgnrs in their respective domains.
+ * Statute: Lag (1974:174) om identitetsbeteckning för juridiska personer m.fl.
+ *   https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1974174-om-identitetsbeteckning-for_sfs-1974-174/
+ * Canonical reference page (live-verified 2026-05-24, HTTP 200):
+ *   https://bolagsverket.se/foretag/organisationsnummer.1207.html
+ *   The page publishes the first-digit company-form table and Bolagsverket's
+ *   own orgnr `202100-5489` as an explicit hand-verifiable anchor.
+ * Cross-validation oracle (pinned commit): python-stdnum at
+ *   https://raw.githubusercontent.com/arthurdejong/python-stdnum/5d4ad17cae8abeab21f446b5569f85d185566330/stdnum/se/orgnr.py
  *
  * Format: 10 digits, displayed as `XXXXXX-XXXX`.
  *
  * Disambiguation rule: the third digit must be `>= 2`. This separates orgnr
  * from personnummer (whose third digit is always 0 or 1, as it is the second
- * digit of the month). Skatteverket and Bolagsverket both publish the rule.
+ * digit of the month). nationid enforces this guard; python-stdnum does
+ * not — the stricter behaviour is deliberate and protects callers that
+ * autodetect personnummer vs orgnr from a 10-digit string.
  *
  * Check digit: standard Luhn (ISO/IEC 7812-1) over all 10 digits.
  *
- * Confidence: high — Bolagsverket publishes the algorithm; cross-validated
- * against the `swedish-organisationsnummer` and `validator.js` rules.
+ * Confidence: high — direct algorithmic match against python-stdnum,
+ * real-world public orgnrs (SAAB AB `556036-0793`, Volvo Personvagnar
+ * `556074-3089`, Bolagsverket's own `202100-5489`), and the issuer's
+ * published example. Full audit trail in
+ * `docs/research/v2.2-source-of-truth/se.md`.
  */
 
 import { luhnValid } from "../../algorithms/luhn.ts";

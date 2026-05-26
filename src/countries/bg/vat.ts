@@ -11,9 +11,9 @@
  * Cross-validation: VIES (https://ec.europa.eu/taxation_customs/vies/),
  *                   `python-stdnum.bg.vat`.
  *
- * Format: `BG` + 9 digits. **v1.7 ships 9-digit legal-entity only** (per
- * VERIFICATION §BG-1). The 10-digit branch (sole proprietor with embedded
- * EGN / PNF / other) is deferred to v1.8 alongside `BG_EGN`.
+ * Format: `BG` + 9 digits. **Scope: 9-digit legal-entity only** (per
+ * v2.0 EU-VAT VERIFICATION §BG-1). The 10-digit branch (sole proprietor
+ * with embedded EGN / PNF / other) is deferred to a future `BG_EGN` spec.
  *
  * Check digit: 9th digit. Primary weights `[1,2,3,4,5,6,7,8]` over the 8
  * body digits, sum mod 11. If result is 10, retry with fallback weights

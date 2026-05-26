@@ -1,5 +1,5 @@
 /**
- * Country catalog — locale-aware names and flag emojis for the 34 countries
+ * Country catalog — locale-aware names and flag emojis for the 53 countries
  * shipped by `nationid`.
  *
  * Design notes:
@@ -85,7 +85,7 @@ const COUNTRY_ALPHA3: Readonly<Record<CountryCode, string>> = {
   IN: "IND",
   // Asia phase 2 (v2.1.0)
   JP: "JPN",
-  // EU-VAT complete (v1.7.0)
+  // EU-VAT complete (v2.0.0)
   IE: "IRL",
   AT: "AUT",
   LU: "LUX",

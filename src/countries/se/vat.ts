@@ -1,8 +1,16 @@
 /**
  * Sweden — VAT registration number (Momsregistreringsnummer / SE VAT).
  *
- * Issuer: Skatteverket.
- * Source: https://www.skatteverket.se/
+ * Issuer: Skatteverket (Swedish Tax Agency).
+ * Statute: Mervärdesskattelag (2023:200) — current VAT law, replaced
+ *   SFS 1994:200 effective 2023-07-01.
+ *   https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/mervardesskattelag-2023200_sfs-2023-200/
+ * Canonical reference page (live-verified 2026-05-24, HTTP 200):
+ *   https://www.skatteverket.se/foretag/moms/saljavarorochtjanster/forsaljningtillandraeulander/kontrolleramomsregistreringsnummervatnummer/momsregistreringsnummer.4.18e1b10334ebe8bc80002649.html
+ *   Sweden row reads literally `SE 999999999999 | 12 siffror` with note
+ *   "De två sista siffrorna är alltid 01."
+ * Cross-validation oracle (pinned commit): python-stdnum at
+ *   https://raw.githubusercontent.com/arthurdejong/python-stdnum/5d4ad17cae8abeab21f446b5569f85d185566330/stdnum/se/vat.py
  *
  * Format: `SE` + 10-digit Organisationsnummer + `01` = 14 chars total.
  * The trailing `01` is a sequence number for branches; for the principal
@@ -10,12 +18,19 @@
  * mass distribution; other sequences exist but are not commonly exposed.
  *
  * The library accepts the principal form (`SE` + orgnr + `01`) and validates:
- *   - `SE` prefix
- *   - 10-digit orgnr (Luhn) — third digit must be >= 2
- *   - trailing `01` (the only sequence we trust without an authoritative
- *     branch list)
+ *   - `SE` prefix — **mandatory**. python-stdnum makes it optional;
+ *     nationid mirrors the EU-VIES presentation form which always carries
+ *     the country code, and treats a bare 12-digit string as invalid input.
+ *   - 10-digit orgnr (Luhn) — third digit must be >= 2 (inherits the
+ *     personnummer disambiguation guard from `orgnr.ts`).
+ *   - Trailing `01` — the only sequence Skatteverket publishes as
+ *     canonical and that VIES accepts without a branch directory.
+ *     Non-`01` sequences exist in real filings but are intentionally
+ *     refused because the library has no authoritative branch list to
+ *     check them against.
  *
- * Confidence: high — VIES + Skatteverket both expose the format.
+ * Confidence: high — VIES + Skatteverket both expose the format; orgnr
+ * Luhn is independently audited.
  */
 
 import { luhnValid } from "../../algorithms/luhn.ts";

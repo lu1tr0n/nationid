@@ -33,7 +33,7 @@ Existing tools cover a fraction of the world. `validator.js` only validates 6 LA
 - 🇪🇺 **EU-VAT complete** — 16 EU members + 1 EEA participant ship VAT validators in one batched release: `IE_VAT`, `AT_UID`, `LU_VAT`, `GR_VAT`, `CZ_DIC`, `HU_VAT`, `RO_VAT`, `BG_VAT`, `HR_OIB`, `SK_VAT`, `SI_VAT`, `LT_VAT`, `LV_VAT`, `EE_VAT`, `MT_VAT`, `CY_VAT`, `IS_VSK`. Unlocks **EU VIES feature parity** as a single tagline.
 - **ISO/IEC 7064 MOD 11,10 primitive** — `mod11_10CheckDigit` + `mod11_10Valid` exported from `nationid/algorithms`. Length-generic; used by HR_OIB, DE_USTID, DE_STEUER_ID.
 - **Greek `EL`/`GR` prefix handling** built in — accept both on input, normalise to `EL` (canonical VIES form). Closes the #1 historical EU-VAT bug.
-- **Every URL in every JSDoc verified live** via `browser_fetch` (firefox133 TLS impersonation) before publish — fixes 5 broken URLs caught in shipped India v1.2 and 3 in v2.0. `web.archive.org` snapshots accepted as supplementary citation where issuer cert blocks programmatic checks.
+- **Every URL in every v2.0+ JSDoc verified live** via `browser_fetch` (firefox133 TLS impersonation) before publish — fixes 5 broken URLs caught in shipped India v1.2 and 3 in v2.0. `web.archive.org` snapshots accepted as supplementary citation where issuer cert blocks programmatic checks. Pre-v2.0 specs are being back-filled to the same standard on a country-by-country basis as part of the post-v2.1 architecture audit.
 
 ## What's new in v1.2 (2026-05-23)
 

@@ -82,11 +82,22 @@ export type {
 /**
  * Country bundles registered with the root API.
  *
- * Adding a new country requires:
+ * Adding a new country requires updating every place that derives from the
+ * country/document code unions:
  *   1. Create `src/countries/<cc>/index.ts` exporting a `CountryDocumentBundle`.
- *   2. Import the bundle here and append it to this list.
- *   3. Extend the `CountryCode` and `DocumentTypeCode` unions in `core/types.ts`.
- *   4. Add a subpath export entry in `package.json` and an entry in `tsup.config.ts`.
+ *   2. Import the bundle here and append it to `BUNDLES` below.
+ *   3. Extend the `CountryCode` and `DocumentTypeCode` unions in
+ *      `core/types.ts`.
+ *   4. Add a subpath export entry in `package.json` and a matching entry in
+ *      `tsup.config.ts`.
+ *   5. Register the alpha-2 → alpha-3 + display fallback in
+ *      `src/catalog/countries.ts` and the per-locale strings in
+ *      `src/catalog/data/{common,en,es,pt}.ts`.
+ *   6. Add the new doc codes to `src/pii/spec-table.ts` so `pii/mask`,
+ *      `pii/hash`, `pii/lastN` know about them.
+ *   7. Add property-test arbitraries in
+ *      `tests/property/_arbitraries/<cc>.ts` and wire them into the spec-driven
+ *      fast-check generator registry.
  */
 const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
   // v0.1.0
@@ -130,7 +141,7 @@ const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
   inBundle,
   // v2.1.0 — Asia phase 2: Japan
   jpBundle,
-  // v1.7.0 — EU-VAT complete (16 EU + 1 EEA)
+  // v2.0.0 — EU-VAT complete (16 EU + 1 EEA)
   ieBundle,
   atBundle,
   luBundle,
@@ -307,7 +318,7 @@ export function parse<C extends DocumentTypeCode>(code: C, input: string): Parse
  * @returns Read-only array of all registered document type codes.
  * @example
  * ```ts
- * listSupportedCodes().length; // e.g. 50+
+ * listSupportedCodes().length; // 142 as of v2.1
  * listSupportedCodes().filter(c => c.startsWith("MX_")); // Mexico-only codes
  * ```
  */

@@ -757,7 +757,7 @@ export const catalogEs: Record<DocumentTypeCode, LocaleStrings> = {
       "Identificador de 13 dígitos para entidades jurídicas emitido por la Agencia Tributaria de Japón; dígito de control mod-9 ponderado en la posición más a la izquierda.",
   },
 
-  // v1.7.0 — EU-VAT completo
+  // v2.0.0 — EU-VAT completo
   IE_VAT: {
     displayName: "VAT",
     longName: "Número de IVA irlandés",

@@ -48,7 +48,7 @@ export type CountryCode =
   | "IN"
   // v2.1.0 — Asia phase 2: Japan
   | "JP"
-  // v1.7.0 — EU-VAT complete (16 EU members + 1 EEA Iceland)
+  // v2.0.0 — EU-VAT complete (16 EU members + 1 EEA Iceland)
   | "IE"
   | "AT"
   | "LU"
@@ -237,7 +237,7 @@ export type DocumentTypeCode =
   // v2.1.0 — Asia phase 2: Japan
   | "JP_MY_NUMBER"
   | "JP_CORPORATE_NUMBER"
-  // v1.7.0 — EU-VAT complete (17 codes, 16 EU + 1 EEA)
+  // v2.0.0 — EU-VAT complete (17 codes, 16 EU + 1 EEA)
   | "IE_VAT"
   | "AT_UID"
   | "LU_VAT"
