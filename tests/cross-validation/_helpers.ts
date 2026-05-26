@@ -1703,3 +1703,175 @@ export function generateInvalidItins(count: number): string[] {
   }
   return out;
 }
+
+/* ---------- NL BSN ---------- */
+
+/**
+ * NL BSN eleven-test:
+ *   sum = 9d1 + 8d2 + 7d3 + 6d4 + 5d5 + 4d6 + 3d7 + 2d8 - d9
+ *   valid iff sum mod 11 == 0
+ *
+ * To derive a valid d9 from a body of 8 digits:
+ *   partial = 9d1 + 8d2 + ... + 2d8
+ *   need d9 ≡ partial (mod 11)
+ *   if partial mod 11 == 10 there is no valid 1-digit d9 — reject and retry.
+ */
+function bsnCheck(body8: string): number | null {
+  let partial = 0;
+  for (let i = 0; i < 8; i++) {
+    const d = body8.charCodeAt(i) - 48;
+    partial += d * (9 - i);
+  }
+  const r = partial % 11;
+  return r === 10 ? null : r;
+}
+
+/** Generate `count` algorithmically-valid NL BSNs. */
+export function generateValidBsns(count: number): string[] {
+  const rng = mulberry32(seedFromString("NL_BSN_VALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body = randDigits(rng, 8);
+    const dv = bsnCheck(body);
+    if (dv === null) continue;
+    const bsn = body + String(dv);
+    if (bsn === "000000000") continue; // both libs reject this placeholder
+    out.push(bsn);
+  }
+  return out;
+}
+
+/** Generate `count` invalid NL BSNs by flipping the check digit. */
+export function generateInvalidBsns(count: number): string[] {
+  const rng = mulberry32(seedFromString("NL_BSN_INVALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body = randDigits(rng, 8);
+    const dv = bsnCheck(body);
+    if (dv === null) continue;
+    const wrong = (dv + 1 + randInt(rng, 9)) % 10; // any digit other than dv
+    if (wrong === dv) continue;
+    out.push(body + String(wrong));
+  }
+  return out;
+}
+
+/* ---------- HR OIB ---------- */
+
+/**
+ * HR OIB check digit via ISO/IEC 7064 MOD 11,10 over the first 10 body
+ * digits. Algorithm:
+ *
+ *   p = 10
+ *   for digit d in body:
+ *     s = (d + p) mod 10
+ *     if s == 0: s = 10
+ *     p = (s * 2) mod 11
+ *   check = (11 - p) mod 10
+ */
+function oibCheck(body10: string): number {
+  let p = 10;
+  for (let i = 0; i < 10; i++) {
+    const d = body10.charCodeAt(i) - 48;
+    let s = (d + p) % 10;
+    if (s === 0) s = 10;
+    p = (s * 2) % 11;
+  }
+  return (11 - p) % 10;
+}
+
+/** Generate `count` algorithmically-valid HR OIBs (bare 11-digit form). */
+export function generateValidOibs(count: number): string[] {
+  const rng = mulberry32(seedFromString("HR_OIB_VALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body = randDigits(rng, 10);
+    out.push(body + String(oibCheck(body)));
+  }
+  return out;
+}
+
+/** Generate `count` invalid HR OIBs by flipping the check digit. */
+export function generateInvalidOibs(count: number): string[] {
+  const rng = mulberry32(seedFromString("HR_OIB_INVALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const body = randDigits(rng, 10);
+    const dv = oibCheck(body);
+    const wrong = (dv + 1 + randInt(rng, 9)) % 10;
+    if (wrong === dv) continue;
+    out.push(body + String(wrong));
+  }
+  return out;
+}
+
+/* ---------- PL PESEL ---------- */
+
+const PESEL_WEIGHTS = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3] as const;
+const PESEL_CENTURY_OFFSETS = [0, 20, 40, 60, 80] as const;
+
+/**
+ * PL PESEL check digit:
+ *   sum = Σ weights[i] * digit[i]  (i = 0..9, weights = [1,3,7,9,1,3,7,9,1,3])
+ *   check = (10 - sum mod 10) mod 10
+ */
+function peselCheck(body10: string): number {
+  let sum = 0;
+  for (let i = 0; i < 10; i++) {
+    const d = body10.charCodeAt(i) - 48;
+    const w = PESEL_WEIGHTS[i];
+    if (w === undefined) continue;
+    sum += d * w;
+  }
+  return (10 - (sum % 10)) % 10;
+}
+
+/**
+ * Generate `count` algorithmically-valid PL PESELs across all five
+ * century-offset variants. Date is restricted to day 1..28 to avoid
+ * month-length collisions; this keeps both nationid's plausibility check
+ * and python-stdnum happy.
+ */
+export function generateValidPesels(count: number): string[] {
+  const rng = mulberry32(seedFromString("PL_PESEL_VALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const yy = randInt(rng, 100); // 0..99
+    const month = 1 + randInt(rng, 12); // 1..12
+    const offset = PESEL_CENTURY_OFFSETS[randInt(rng, PESEL_CENTURY_OFFSETS.length)];
+    if (offset === undefined) continue;
+    const mmEncoded = month + offset;
+    const dd = 1 + randInt(rng, 28); // 1..28
+    const yyStr = String(yy).padStart(2, "0");
+    const mmStr = String(mmEncoded).padStart(2, "0");
+    const ddStr = String(dd).padStart(2, "0");
+    const serial = randDigits(rng, 4);
+    const body = yyStr + mmStr + ddStr + serial;
+    out.push(body + String(peselCheck(body)));
+  }
+  return out;
+}
+
+/** Generate `count` invalid PL PESELs (valid date encoding, wrong check digit). */
+export function generateInvalidPesels(count: number): string[] {
+  const rng = mulberry32(seedFromString("PL_PESEL_INVALID"));
+  const out: string[] = [];
+  while (out.length < count) {
+    const yy = randInt(rng, 100);
+    const month = 1 + randInt(rng, 12);
+    const offset = PESEL_CENTURY_OFFSETS[randInt(rng, PESEL_CENTURY_OFFSETS.length)];
+    if (offset === undefined) continue;
+    const mmEncoded = month + offset;
+    const dd = 1 + randInt(rng, 28);
+    const yyStr = String(yy).padStart(2, "0");
+    const mmStr = String(mmEncoded).padStart(2, "0");
+    const ddStr = String(dd).padStart(2, "0");
+    const serial = randDigits(rng, 4);
+    const body = yyStr + mmStr + ddStr + serial;
+    const dv = peselCheck(body);
+    const wrong = (dv + 1 + randInt(rng, 9)) % 10;
+    if (wrong === dv) continue;
+    out.push(body + String(wrong));
+  }
+  return out;
+}
