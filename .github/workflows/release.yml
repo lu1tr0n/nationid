@@ -47,7 +47,9 @@ jobs:
         # Without this, changesets/action detects OIDC and tries to use it,
         # but the underlying `npm publish` (v10) falls back to anonymous
         # auth and the registry returns 404 ("auth missing", masked).
-        run: npm install -g npm@latest
+        # Pinned (not @latest) so Scorecard's Pinned-Dependencies check passes
+        # and publish behaviour stays reproducible; bump deliberately.
+        run: npm install -g npm@11.5.1
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
