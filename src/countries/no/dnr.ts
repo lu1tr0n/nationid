@@ -84,13 +84,12 @@ export const dnrSpec: DocumentSpec = {
 };
 
 function hasValidDnrDate(digits: string): boolean {
-  // D-number day-of-month is in [41, 71].
+  // D-number day-of-month is the canonical day (1..31) offset by +40, so the
+  // valid range is exactly [41, 71]. That bound alone fully validates the day;
+  // a post-offset `canonical` recheck would always pass (dead code).
   const dd = parseInt(digits.slice(0, 2), 10);
   const mm = parseInt(digits.slice(2, 4), 10);
   if (mm < 1 || mm > 12) return false;
   if (dd < 41 || dd > 71) return false;
-  // After subtracting the +40 offset the canonical day must still be valid.
-  const canonical = dd - 40;
-  if (canonical < 1 || canonical > 31) return false;
   return true;
 }

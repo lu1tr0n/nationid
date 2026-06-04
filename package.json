@@ -396,6 +396,11 @@
   "nano-staged": {
     "*.{ts,js,jsx,tsx,json,md,yml,yaml}": "biome check --no-errors-on-unmatched --write --staged"
   },
+  "pnpm": {
+    "overrides": {
+      "brace-expansion@>=5.0.0 <5.0.6": ">=5.0.6"
+    }
+  },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.2",
     "@biomejs/biome": "^2.0.0",
