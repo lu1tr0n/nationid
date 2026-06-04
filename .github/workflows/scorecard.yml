@@ -6,6 +6,9 @@ on:
     - cron: "30 6 * * 1"
   push:
     branches: [main]
+  # Allow an on-demand re-scan from the Actions tab (e.g. to refresh alerts
+  # right after a fix lands instead of waiting for the weekly schedule).
+  workflow_dispatch:
 
 permissions: read-all
 
