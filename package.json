@@ -1,6 +1,6 @@
 {
   "name": "nationid",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "TypeScript-first, zero-dependency validator for national identity and tax documents from every country.",
   "keywords": [
     "id",
