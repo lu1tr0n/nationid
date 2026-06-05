@@ -27,6 +27,7 @@ Existing tools cover a fraction of the world. `validator.js` only validates 6 LA
 - 🇸🇬 **Singapore** — second country of Asia phase 2. Three new specs under `nationid/sg`: `SG_NRIC` (9-char identity number for citizens/PRs, weighted mod-11 check letter, ICA) and `SG_FIN` (9-char foreigner identity number incl. the 2022 M-series, ICA/MOM), both `personal`; and `SG_UEN` (Unique Entity Number, three category formats each with its own check letter, ACRA), `tax`. All three at `confidence: "high"`.
 - **UEN check digits** — `SG_UEN` upgrades from format-only to full check-letter validation across all three categories (Business, Local Company, Other Entity), with the 38-code entity-type whitelist. Constants are taken verbatim from `python-stdnum/stdnum/sg/uen.py`; the four doctest fixtures (`00192200M`, `197401143C`, `S16FC0121D`, `T01FC6132D`) anchor the suite, alongside the real-world Cat B UENs `196800306E` (DBS) and `199201624D` (Singtel).
 - **Oracle-agreement tests** — every SG spec runs a property test against an independent re-implementation of the published algorithm (NRIC/FIN weighted mod-11, plus the three UEN categories). Singapore's authoritative URLs are all on `*.gov.sg` hosts, so the governance citation test passes without a host-allowlist patch.
+- 7000+ → 7800+ tests, 54 countries × 145 codes.
 
 ## What's new in v2.1 (2026-05-24)
 
