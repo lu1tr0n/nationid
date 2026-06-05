@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0
+
+### Minor Changes
+
+- b9a9c98: Add Singapore: SG_NRIC, SG_FIN, SG_UEN (NRIC/FIN weighted mod-11 + UEN 3-category check digits).
+
 ## 2.1.0
 
 ### Minor Changes
