@@ -232,6 +232,11 @@
       "import": "./dist/countries/jp/index.js",
       "require": "./dist/countries/jp/index.cjs"
     },
+    "./sg": {
+      "types": "./dist/countries/sg/index.d.ts",
+      "import": "./dist/countries/sg/index.js",
+      "require": "./dist/countries/sg/index.cjs"
+    },
     "./ie": {
       "types": "./dist/countries/ie/index.d.ts",
       "import": "./dist/countries/ie/index.js",
@@ -434,7 +439,7 @@
   },
   "size-limit": [
     {
-      "name": "full registry (root, all 53 countries through v2.1)",
+      "name": "full registry (root, all 54 countries through v2.2)",
       "path": "dist/index.js",
       "limit": "45 KB"
     },
@@ -484,7 +489,7 @@
       "limit": "1 KB"
     },
     {
-      "name": "v0.3 — catalog subpath (all 3 locales, 53 countries)",
+      "name": "v0.3 — catalog subpath (all 3 locales, 54 countries)",
       "path": "dist/catalog/index.js",
       "limit": "40 KB"
     }

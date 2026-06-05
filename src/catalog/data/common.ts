@@ -220,6 +220,14 @@ export const catalogCommon: Record<DocumentTypeCode, CommonEntry> = {
   },
   JP_CORPORATE_NUMBER: { purpose: "tax", knownAs: ["Corporate Number", "法人番号"] },
 
+  // v2.2.0 — Singapore
+  SG_NRIC: {
+    purpose: "identity",
+    knownAs: ["NRIC", "National Registration Identity Card", "IC"],
+  },
+  SG_FIN: { purpose: "identity", knownAs: ["FIN", "Foreign Identification Number"] },
+  SG_UEN: { purpose: "tax", knownAs: ["UEN", "Unique Entity Number"] },
+
   // v2.0.0 — EU-VAT complete
   IE_VAT: { purpose: "tax", knownAs: ["VAT", "Irish VAT number"] },
   AT_UID: { purpose: "tax", knownAs: ["UID", "USt-IdNr", "Umsatzsteuer-Identifikationsnummer"] },

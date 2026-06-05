@@ -757,6 +757,26 @@ export const catalogEs: Record<DocumentTypeCode, LocaleStrings> = {
       "Identificador de 13 dígitos para entidades jurídicas emitido por la Agencia Tributaria de Japón; dígito de control mod-9 ponderado en la posición más a la izquierda.",
   },
 
+  // v2.2.0 — Singapur
+  SG_NRIC: {
+    displayName: "NRIC",
+    longName: "Número de tarjeta de identidad nacional",
+    description:
+      "Número de identidad de 9 caracteres para ciudadanos y residentes permanentes de Singapur emitido por la ICA; letra de control mod-11 ponderada.",
+  },
+  SG_FIN: {
+    displayName: "FIN",
+    longName: "Número de identificación de extranjeros",
+    description:
+      "Número de identidad de 9 caracteres para extranjeros con permisos de larga duración en Singapur (ICA/MOM); letra de control mod-11 ponderada.",
+  },
+  SG_UEN: {
+    displayName: "UEN",
+    longName: "Número único de entidad",
+    description:
+      "Identificador de entidades de Singapur (ACRA y otros organismos); tres formatos por categoría, cada uno con su propia letra de control ponderada.",
+  },
+
   // v2.0.0 — EU-VAT completo
   IE_VAT: {
     displayName: "VAT",

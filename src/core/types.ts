@@ -48,6 +48,8 @@ export type CountryCode =
   | "IN"
   // v2.1.0 — Asia phase 2: Japan
   | "JP"
+  // v2.2.0 — Asia phase 3: Singapore
+  | "SG"
   // v2.0.0 — EU-VAT complete (16 EU members + 1 EEA Iceland)
   | "IE"
   | "AT"
@@ -237,6 +239,10 @@ export type DocumentTypeCode =
   // v2.1.0 — Asia phase 2: Japan
   | "JP_MY_NUMBER"
   | "JP_CORPORATE_NUMBER"
+  // v2.2.0 — Asia phase 3: Singapore
+  | "SG_NRIC"
+  | "SG_FIN"
+  | "SG_UEN"
   // v2.0.0 — EU-VAT complete (17 codes, 16 EU + 1 EEA)
   | "IE_VAT"
   | "AT_UID"

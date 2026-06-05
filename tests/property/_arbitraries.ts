@@ -789,6 +789,40 @@ const VALID_SAMPLES: Readonly<Record<DocumentTypeCode, ReadonlyArray<string>>> =
     "7000000000010",
     "9000000000009",
   ],
+  // v2.2.0 — Singapore. NRIC/FIN anchors hand-computed against the SAP KBA
+  // #2572734 algorithm; UEN anchors are the python-stdnum sg/uen.py doctest
+  // fixtures plus real-world Cat B UENs (DBS, Singtel).
+  SG_NRIC: [
+    "S0000001I",
+    "S1234567D",
+    "S9876543C",
+    "S0000000J",
+    "T0123456G",
+    "T0000000G",
+    "T1234567J",
+  ],
+  SG_FIN: [
+    "F0000001U",
+    "F1234567N",
+    "F9999999M",
+    "G0000000R",
+    "G1122334L",
+    "G5872776N",
+    "M0000000T",
+    "M5012345J",
+    "M1234567K",
+  ],
+  SG_UEN: [
+    "00192200M",
+    "53000001J",
+    "52912345B",
+    "197401143C",
+    "196800306E",
+    "199201624D",
+    "S16FC0121D",
+    "T01FC6132D",
+    "T08LL0001K",
+  ],
   // v1.7.0 — EU-VAT complete. Vectors are canonical anchors or hand-derived
   // via the documented algorithm; verified in VERIFICATION.md / test files.
   IE_VAT: ["IE8473625E", "IE3628739UA"],

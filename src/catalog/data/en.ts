@@ -740,6 +740,26 @@ export const catalogEn: Record<DocumentTypeCode, LocaleStrings> = {
       "13-digit identifier for legal entities issued by Japan's National Tax Agency; weighted mod-9 check digit (leftmost position).",
   },
 
+  // v2.2.0 — Singapore
+  SG_NRIC: {
+    displayName: "NRIC",
+    longName: "National Registration Identity Card number",
+    description:
+      "9-character identity number for Singapore citizens and permanent residents issued by ICA; weighted mod-11 check letter.",
+  },
+  SG_FIN: {
+    displayName: "FIN",
+    longName: "Foreign Identification Number",
+    description:
+      "9-character identity number for foreigners with long-term passes in Singapore (ICA/MOM); weighted mod-11 check letter.",
+  },
+  SG_UEN: {
+    displayName: "UEN",
+    longName: "Unique Entity Number",
+    description:
+      "Singapore's entity identifier (ACRA and other agencies); three category formats, each with its own weighted check letter.",
+  },
+
   // v2.0.0 — EU-VAT complete
   IE_VAT: {
     displayName: "VAT",

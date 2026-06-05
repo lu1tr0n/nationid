@@ -1,5 +1,24 @@
 # Singapore (SG) — source-of-truth verification report
 
+> **Correction note (2026-06-04, applied during v2.2 implementation).** Three
+> synthetic worked-examples in this report had arithmetic slips (the algorithm
+> *constants* — weights, offsets, tables — were all correct; only these derived
+> check letters were wrong). They were caught by the independent
+> oracle-agreement property tests in `tests/cross-validation/stdnum-sg.test.ts`
+> and recomputed by hand. The authoritative values now live in the code and
+> tests. Corrections:
+> - **NRIC `S9876543`** → check **`C`** (not `B`). Weighted sum is **184**
+>   (not 158); `R = 184 mod 11 = 8`; `"JZIHGFEDCBA"[8] = C`.
+> - **FIN `F9999999`** → check **`M`** (not `X`). All-9s weighted sum is
+>   **261** (not 198); `R = 261 mod 11 = 8`; `"XWUTRQPNMLK"[8] = M`. The
+>   `M9999999` vector is correspondingly `R = (261+3) mod 11 = 0` → `"…"[0] = X`.
+> - **UEN Business `53000001`** → check **`J`** (not `D`). `R = 63 mod 11 = 8`;
+>   `"XMKECAWLJDB"[8] = J` (`D` is index 9 — an off-by-one in the original walk).
+>
+> The python-stdnum doctest fixtures (`00192200M`, `197401143C`, `S16FC0121D`,
+> `T01FC6132D`) and the real-world Cat B UENs (`196800306E`, `199201624D`) were
+> all correct as written and are used as anchors.
+
 Verified: 2026-05-24
 
 Method: algorithm constants and worked examples hand-computed from primary
