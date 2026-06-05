@@ -47,6 +47,8 @@ const ALL_COUNTRIES = [
   "in",
   // v2.1.0 — Asia phase 2: Japan
   "jp",
+  // v2.2.0 — Asia phase 3: Singapore
+  "sg",
   // v1.7.0 — EU-VAT complete (16 EU + 1 EEA)
   "ie",
   "at",

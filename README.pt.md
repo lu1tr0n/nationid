@@ -20,7 +20,13 @@
 
 As ferramentas existentes cobrem uma fração do mundo. `validator.js` valida apenas 6 tax IDs de LATAM. `cpf-cnpj-validator` cobre o Brasil. `rut.js` cobre o Chile. Nenhuma traz El Salvador, Guatemala, Honduras, República Dominicana ou Costa Rica com verificação de checksum.
 
-`nationid` preenche essa lacuna. A partir da v2.1 traz **53 países com ~147 códigos de documento**, todos com algoritmos documentados de fontes oficiais — e promete estabilidade de API mais um teste de governança no CI que exige que cada spec com `confidence: "high"` cite uma fonte de primeira mão do emissor.
+`nationid` preenche essa lacuna. A partir da v2.2 traz **54 países com ~145 códigos de documento**, todos com algoritmos documentados de fontes oficiais — e promete estabilidade de API mais um teste de governança no CI que exige que cada spec com `confidence: "high"` cite uma fonte de primeira mão do emissor.
+
+## Novidades na v2.2
+
+- 🇸🇬 **Singapura** — segundo país da Ásia fase 2. Três novos specs sob `nationid/sg`: `SG_NRIC` (número de identidade de 9 caracteres para cidadãos e residentes permanentes, letra de verificação mod-11 ponderada, ICA) e `SG_FIN` (número de identidade de 9 caracteres para estrangeiros, incluindo a série M de 2022, ICA/MOM), ambos `personal`; e `SG_UEN` (Número Único de Entidade, três formatos por categoria, cada um com sua própria letra de verificação, ACRA), `tax`. Os três em `confidence: "high"`.
+- **Letras de verificação do UEN** — `SG_UEN` passa de validação apenas de formato para validação completa da letra de verificação nas três categorias (Negócio, Empresa Local, Outra Entidade), com a lista branca de 38 códigos de tipo de entidade. As constantes vêm literalmente de `python-stdnum/stdnum/sg/uen.py`; os quatro fixtures de doctest (`00192200M`, `197401143C`, `S16FC0121D`, `T01FC6132D`) ancoram a suíte, junto com os UEN reais de categoria B `196800306E` (DBS) e `199201624D` (Singtel).
+- **Tests de oracle-agreement** — cada spec SG roda um property test contra uma reimplementação independente do algoritmo publicado (NRIC/FIN mod-11 ponderado, mais as três categorias do UEN). Todas as URLs oficiais de Singapura estão em hosts `*.gov.sg`, então o teste de governança passa sem alterar a lista de hosts.
 
 ## Novidades na v2.1 (2026-05-24)
 
@@ -157,12 +163,12 @@ import { getCountryInfo, listCountries, flagEmoji } from "nationid/catalog";
 getCountryInfo("BR", "pt");
 // { code: "BR", alpha3: "BRA", name: "Brasil", flag: "🇧🇷" }
 flagEmoji("MX");          // "🇲🇽"
-listCountries("pt").length; // 53
+listCountries("pt").length; // 54
 ```
 
 Cada subpath é tree-shakable de forma independente. Locales soltos (`nationid/i18n/es`, `/en`, `/pt`) pesam menos de 200 B cada.
 
-## Cobertura (53 países)
+## Cobertura (54 países)
 
 | País | Pessoal | Fiscal |
 |------|---------|--------|
@@ -202,6 +208,7 @@ Cada subpath é tree-shakable de forma independente. Locales soltos (`nationid/i
 | 🇫🇮 Finlândia | HETU | Y-tunnus, ALV |
 | 🇮🇳 Índia *(v1.2)* | Aadhaar, VID, EPIC (eleitoral) | PAN, GSTIN |
 | 🇯🇵 Japão *(v2.1)* | My Number | Corporate Number |
+| 🇸🇬 Singapura *(v2.2)* | NRIC, FIN | UEN |
 | 🇮🇪 Irlanda *(v2.0)* | — | IVA |
 | 🇦🇹 Áustria *(v2.0)* | — | UID (USt-IdNr) |
 | 🇱🇺 Luxemburgo *(v2.0)* | — | TVA |
@@ -246,7 +253,7 @@ Se seu produto usa `nationid` e quer aparecer aqui, abra um PR adicionando uma e
 | Países LATAM | **22** | 6 | 1 | 1 |
 | Países europeus | **31** (UE-27 VIES + UK/CH/NO/IS) | 8 | 0 | 0 |
 | Cobertura EU-VIES IVA | **UE-27 completa** | parcial | 0 | 0 |
-| Países da Ásia | **2** (IN, JP; SG/KR/TW seguem) | 0 | 0 | 0 |
+| Países da Ásia | **3** (IN, JP, SG; KR/TW seguem) | 0 | 0 | 0 |
 | El Salvador | ✅ | ❌ | ❌ | ❌ |
 | Guatemala | ✅ | ❌ | ❌ | ❌ |
 | Honduras | ✅ | ❌ | ❌ | ❌ |
@@ -269,7 +276,8 @@ Se seu produto usa `nationid` e quer aparecer aqui, abra um PR adicionando uma e
 - **v1.2** — Ásia fase 1: Índia (Aadhaar, VID, PAN, GSTIN, EPIC) + primitiva Verhoeff. ✅
 - **v2.0** — EU-VAT completo: 16 membros UE + Islândia (EEA). Primitiva ISO/IEC 7064 MOD 11,10. Padrão de URL liveness audit. ✅
 - **v2.1** — Ásia fase 2 — Japão (My Number + 法人番号). Algoritmos MIC + NTA cross-validados contra `python-stdnum`. ✅
-- **v2.2-v2.4** — Ásia fase 2 (research + verification completos): SG (NRIC/FIN/UEN), KR (RRN/BRN), TW (ID/Tax). Implementando em seguida.
+- **v2.2** — Ásia fase 2 — Singapura (NRIC, FIN, UEN). Algoritmos ICA/ACRA, UEN cross-validado contra `python-stdnum/stdnum/sg/uen.py`. ✅
+- **v2.3-v2.4** — Ásia fase 2 (research + verification completos): KR (RRN/BRN), TW (ID/Tax). Implementando em seguida.
 - **v2.5** — Bálcãs via primitiva JMBG (RS/BA/MK/ME) + prefixo GB Northern Ireland `XI` + `BG_EGN` + `CZ_RC` (desbloqueia as ramificações 10-digit BG e full CZ DIC).
 - **v2.x** — `@nationid/react` com `<DocumentInput>`, mais locales i18n, mutation testing (Stryker), REGISTRY lazy para tree-shaking completo a partir do root.
 

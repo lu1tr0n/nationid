@@ -149,6 +149,9 @@ import { vatSpec as roVatSpec } from "../countries/ro/vat.ts";
 import { orgnrSpec as seOrgnrSpec } from "../countries/se/orgnr.ts";
 import { personnummerSpec } from "../countries/se/personnummer.ts";
 import { vatSpec as seVatSpec } from "../countries/se/vat.ts";
+import { finSpec as sgFinSpec } from "../countries/sg/fin.ts";
+import { nricSpec as sgNricSpec } from "../countries/sg/nric.ts";
+import { uenSpec as sgUenSpec } from "../countries/sg/uen.ts";
 import { vatSpec as siVatSpec } from "../countries/si/vat.ts";
 import { vatSpec as skVatSpec } from "../countries/sk/vat.ts";
 import { duiSpec } from "../countries/sv/dui.ts";
@@ -333,6 +336,10 @@ export const PII_SPEC_TABLE: Record<DocumentTypeCode, DocumentSpec> = {
   IN_VID: vidSpec,
   JP_MY_NUMBER: jpMyNumberSpec,
   JP_CORPORATE_NUMBER: jpCorporateNumberSpec,
+  // v2.2.0 — Singapore
+  SG_NRIC: sgNricSpec,
+  SG_FIN: sgFinSpec,
+  SG_UEN: sgUenSpec,
   // v2.0.0 — EU-VAT complete
   IE_VAT: ieVatSpec,
   AT_UID: atUidSpec,

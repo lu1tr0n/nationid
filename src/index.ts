@@ -60,6 +60,7 @@ import { ptBundle } from "./countries/pt/index.ts";
 import { pyBundle } from "./countries/py/index.ts";
 import { roBundle } from "./countries/ro/index.ts";
 import { seBundle } from "./countries/se/index.ts";
+import { sgBundle } from "./countries/sg/index.ts";
 import { siBundle } from "./countries/si/index.ts";
 import { skBundle } from "./countries/sk/index.ts";
 import { svBundle } from "./countries/sv/index.ts";
@@ -159,6 +160,8 @@ const BUNDLES: ReadonlyArray<CountryDocumentBundle> = [
   mtBundle,
   cyBundle,
   isBundle,
+  // v2.2.0 — Singapore
+  sgBundle,
 ];
 
 /**
