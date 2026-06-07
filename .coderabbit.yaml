@@ -13,12 +13,7 @@ language: en
 
 # Cordial, professional, technically dense. No filler, no boilerplate praise.
 # Match the tone of the existing commit history and PR review threads.
-tone_instructions: |
-  Keep the review professional with warmth: open with a short positive note
-  when the change deserves it (do not invent one), give findings as concrete
-  observations with file:line citations, and propose concrete diffs over
-  abstract critiques. Avoid AI-attribution phrases and do not sign reviews.
-  When uncertain, say so explicitly rather than asserting.
+tone_instructions: "Professional with warmth. Open with a brief positive note only if deserved. Give findings as concrete observations with file:line cites and concrete diffs over abstract critique. No AI attribution. Say so when uncertain."
 
 early_access: false
 
