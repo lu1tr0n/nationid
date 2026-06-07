@@ -17,6 +17,7 @@
  * `python-stdnum.pl.regon` and the npm `polish-regon` package.
  */
 
+import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
@@ -88,15 +89,8 @@ export const regonSpec: DocumentSpec = {
 
 function checkRegon9(digits: string): boolean {
   if (digits.length !== 9) return false;
-  let sum = 0;
-  for (let i = 0; i < 8; i++) {
-    const d = digits.charCodeAt(i) - 48;
-    const w = WEIGHTS_9[i];
-    if (w === undefined) return false;
-    sum += d * w;
-  }
-  let expected = sum % 11;
-  if (expected === 10) expected = 0;
+  const r = mod11WeightedSum(digits.slice(0, 8), WEIGHTS_9) % 11;
+  const expected = r === 10 ? 0 : r;
   return expected === digits.charCodeAt(8) - 48;
 }
 
@@ -104,14 +98,7 @@ function checkRegon14(digits: string): boolean {
   if (digits.length !== 14) return false;
   // The 9-digit principal must independently pass mod-11.
   if (!checkRegon9(digits.slice(0, 9))) return false;
-  let sum = 0;
-  for (let i = 0; i < 13; i++) {
-    const d = digits.charCodeAt(i) - 48;
-    const w = WEIGHTS_14[i];
-    if (w === undefined) return false;
-    sum += d * w;
-  }
-  let expected = sum % 11;
-  if (expected === 10) expected = 0;
+  const r = mod11WeightedSum(digits.slice(0, 13), WEIGHTS_14) % 11;
+  const expected = r === 10 ? 0 : r;
   return expected === digits.charCodeAt(13) - 48;
 }
