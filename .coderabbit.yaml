@@ -1,0 +1,146 @@
+# CodeRabbit configuration for nationid.
+#
+# Reference: https://docs.coderabbit.ai/reference/configuration
+#
+# Project context: nationid is a zero-dependency TypeScript library that
+# validates national identity and tax documents for 54 countries. Algorithm
+# correctness, source-of-truth provenance, and API stability are first-class
+# concerns. The codebase follows strict TypeScript, biome formatting, and the
+# conventions captured in docs/CATALOG.md, docs/STYLE_GUIDE.md, and
+# docs/GOVERNANCE.md.
+
+language: en
+
+# Cordial, professional, technically dense. No filler, no boilerplate praise.
+# Match the tone of the existing commit history and PR review threads.
+tone_instructions: |
+  Keep the review professional with warmth: open with a short positive note
+  when the change deserves it (do not invent one), give findings as concrete
+  observations with file:line citations, and propose concrete diffs over
+  abstract critiques. Avoid AI-attribution phrases and do not sign reviews.
+  When uncertain, say so explicitly rather than asserting.
+
+early_access: false
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+
+  # Surface library-specific risks per file pattern. CodeRabbit applies these on
+  # top of its default checks, so each entry should add what the defaults miss.
+  path_instructions:
+    - path: "src/countries/**/*.ts"
+      instructions: |
+        Country specs encode checksum algorithms. Verify every algorithm change
+        against a primary issuer source plus at least one independent
+        implementation (typically `python-stdnum`). Flag:
+        - Inline weighted mod-11 loops that could use `mod11WeightedSum` from
+          `src/algorithms/mod11.ts`. CH_UID, PL_NIP, PL_REGON are the canonical
+          examples post-v2.2.1.
+        - Check-digit policy variants (r==1 reject, r==10 reject, r==10 -> 0,
+          dv = r vs 11-r): the policy must match the source-of-truth doc in
+          `docs/research/<release>/<cc>.md`, not be assumed.
+        - Confidence claim mismatches: `confidence: "high"` requires a
+          first-party issuer citation in the spec JSDoc (statute or canonical
+          algorithm URL) and an oracle test in
+          `tests/cross-validation/stdnum-<cc>.test.ts`.
+        - Any `Date.now()`, `Math.random()`, locale-sensitive `toLowerCase()`,
+          or other non-deterministic primitives. Specs must be pure and
+          reproducible.
+
+    - path: "src/algorithms/**/*.ts"
+      instructions: |
+        Algorithm primitives are shared across many country specs. Flag any
+        change that alters return shape or error semantics, since downstream
+        callers depend on them precisely. New primitives must include unit
+        tests in `tests/algorithms/` covering both the success path and the
+        rejection cases (e.g., r==10 for mod-11 variants).
+
+    - path: "docs/countries/**/*.md"
+      instructions: |
+        Country docs follow the canonical shape in `docs/countries/_template.md`:
+        Documents table + per-spec Overview / Algorithm / Sources / Synthetic
+        test vectors / Recent reforms / Open questions. Flag:
+        - Missing sections vs the template (53/53 country docs conform as of
+          v2.2.1; drift is a regression).
+        - Synthetic test vectors that do not appear in the matching
+          `tests/countries/<cc>.test.ts`, since docs and runtime must stay in
+          sync.
+        - URLs without a `verified live YYYY-MM-DD` annotation when introduced.
+          Per `feedback_url_liveness_audit`, every cited URL must be live at
+          merge time; broken or invented URLs are a hard blocker.
+
+    - path: "tests/cross-validation/**/*.ts"
+      instructions: |
+        Cross-validation oracles must re-derive the algorithm from the spec
+        document independently of the production implementation. Flag any
+        oracle that imports from `src/countries/` (would defeat its purpose).
+        Oracles should run ≥10,000 random bases against the production code
+        when the algorithm is fully published.
+
+    - path: "tests/countries/**/*.test.ts"
+      instructions: |
+        Each country spec needs ≥5 valid and ≥3 invalid samples, with at least
+        one invalid-format and one invalid-checksum case. Flag specs missing
+        either coverage.
+
+    - path: ".changeset/*.md"
+      instructions: |
+        Changeset entries describe the release in the present tense, group
+        changes by feature/refactor/docs/fix, and reference issue numbers
+        where applicable. Avoid AI-attribution lines. Patches must explicitly
+        confirm no API surface changes; minors must enumerate the new specs
+        or features added.
+
+    - path: "package.json"
+      instructions: |
+        Subpath exports listed in `exports` must match the build output in
+        `tsup.config.ts` and the spec registry in `src/index.ts`. Flag any
+        added export missing its tsup entry, and any tsup entry missing its
+        package.json export. The `provenance: true` field under
+        `publishConfig` must remain present for npm signing.
+
+    - path: ".github/workflows/**"
+      instructions: |
+        Workflow changes can affect the release pipeline. Flag any change
+        that removes pinned-by-sha action references, removes step-security
+        Harden-Runner, or weakens permission scopes. The release workflow
+        must keep using Trusted Publisher OIDC (no NPM_TOKEN secret).
+
+  # Tool integration. CodeRabbit can ingest linter/SAST output if present.
+  tools:
+    biome:
+      enabled: true
+    actionlint:
+      enabled: true
+    markdownlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    gitleaks:
+      enabled: true
+
+chat:
+  auto_reply: true
+
+# Knowledge base lets CodeRabbit reference the project's ADRs and feedback
+# files when reasoning about a change. These are checked into the repo.
+knowledge_base:
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
+  pull_requests:
+    scope: auto
