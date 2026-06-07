@@ -24,6 +24,7 @@
  * `python-stdnum.ch.uid` and `validator.js isVAT('CH')`.
  */
 
+import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripAndUpper } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
@@ -93,14 +94,7 @@ export const uidSpec: DocumentSpec = {
 export function checkUid(cleaned: string): boolean {
   if (!RAW_REGEX.test(cleaned)) return false;
   const body = cleaned.slice(3); // 9 digits
-  let sum = 0;
-  for (let i = 0; i < 8; i++) {
-    const d = body.charCodeAt(i) - 48;
-    const w = WEIGHTS[i];
-    if (w === undefined) return false;
-    sum += d * w;
-  }
-  const r = sum % 11;
+  const r = mod11WeightedSum(body.slice(0, 8), WEIGHTS) % 11;
   if (r === 1) return false; // UID never issued.
   const expected = r === 0 ? 0 : 11 - r;
   return expected === body.charCodeAt(8) - 48;

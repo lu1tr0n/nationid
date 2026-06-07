@@ -20,6 +20,7 @@
  * `validator.js isTaxID('pl-PL')`.
  */
 
+import { mod11WeightedSum } from "../../algorithms/mod11.ts";
 import { stripNonDigits } from "../../core/normalize.ts";
 import type { DocumentSpec, ParseResult } from "../../core/types.ts";
 
@@ -86,14 +87,7 @@ export const nipSpec: DocumentSpec = {
 
 function checkNip(digits: string): boolean {
   if (digits.length !== 10) return false;
-  let sum = 0;
-  for (let i = 0; i < 9; i++) {
-    const d = digits.charCodeAt(i) - 48;
-    const w = WEIGHTS[i];
-    if (w === undefined) return false;
-    sum += d * w;
-  }
-  const r = sum % 11;
+  const r = mod11WeightedSum(digits.slice(0, 9), WEIGHTS) % 11;
   if (r === 10) return false; // NIP would not be issued.
   return r === digits.charCodeAt(9) - 48;
 }
