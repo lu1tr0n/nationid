@@ -58,14 +58,25 @@ jobs:
         run: pnpm verify
 
       - name: Create release PR or publish
-        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
         with:
+          # v2 renamed every input this step used: version -> version-script,
+          # publish -> publish-script, commit -> commit-message,
+          # title -> pr-title. Unknown inputs are ignored silently, so keeping
+          # the v1 names would leave the action running on its defaults.
+          #
           # `pnpm run version` not `pnpm version` — the latter is pnpm's built-in
           # npm-style version-manipulation command and silently no-ops here,
           # leaving changeset files unconsumed. Same trap on `publish`.
-          version: pnpm run version
-          publish: pnpm run release
-          commit: "chore: release"
-          title: "chore: release"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version-script: pnpm run version
+          publish-script: pnpm run release
+          commit-message: "chore: release"
+          pr-title: "chore: release"
+          # v2 no longer reads the GITHUB_TOKEN environment variable; the token
+          # goes through this input. Left explicit rather than relying on its
+          # `${{ github.token }}` default.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Default. Release commit and tags are pushed through the GitHub API
+          # instead of the git CLI, so they carry GitHub's GPG signature and are
+          # attributed to the token owner. Set to true to go back to the CLI.
+          push-with-git-cli: false
